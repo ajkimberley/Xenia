@@ -1,3 +1,5 @@
+// Comment to test CI trigger
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
