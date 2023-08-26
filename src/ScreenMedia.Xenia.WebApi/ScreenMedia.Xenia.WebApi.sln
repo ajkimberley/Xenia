@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenMedia.Xenia.WebApi", "ScreenMedia.Xenia.WebApi\ScreenMedia.Xenia.WebApi.csproj", "{ED42559A-46B1-41B6-8992-64CF7846FC81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenMedia.Xenia.WebApi.IntegrationTests", "ScreenMedia.Xenia.WebApi.IntegrationTests\ScreenMedia.Xenia.WebApi.IntegrationTests.csproj", "{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED42559A-46B1-41B6-8992-64CF7846FC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED42559A-46B1-41B6-8992-64CF7846FC81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED42559A-46B1-41B6-8992-64CF7846FC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED42559A-46B1-41B6-8992-64CF7846FC81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7782CD5-1164-4C30-9CD4-0AC2091600EF}
+	EndGlobalSection
+EndGlobal
