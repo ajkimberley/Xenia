@@ -34,7 +34,7 @@ steps:
   displayName: dotnet test and collect code coverage
   inputs:
     command: 'test'
-    projects: '$(srcPath)/**/*.Tests.csproj'
+    projects: '$(srcPath)/**/*.*Tests.csproj'
     arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
     publishTestResults: true
 
