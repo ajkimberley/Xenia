@@ -1,0 +1,16 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  pipelines:
+  - pipeline: CI-Pipeline
+    source: ScreenMedia.Xenia-CI
+    trigger:
+      branches:
+        include:
+        - main
+
+steps:
+- download: CI-Pipeline
+  artifact: WebApi
+  
