@@ -49,4 +49,4 @@ steps:
     azureSubscription: '$(azureServiceConnection)'
     appType: 'webAppLinux'
     appName: 'xenia-web-api'
-    package: 'CI-Pipeline/WebApi/ScreenMedia.Xenia.WebApi.zip'
+    package: '$(Pipeline.Workspace)/CI-Pipeline/WebApi/ScreenMedia.Xenia.WebApi.zip'
