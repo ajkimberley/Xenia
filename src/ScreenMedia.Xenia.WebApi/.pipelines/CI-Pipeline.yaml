@@ -1,0 +1,48 @@
+trigger:
+  branches:
+    include:
+    - '*'
+  paths:
+    include:
+    - 'src/ScreenMedia.Xenia.WebApi/'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  dotnetVersion: '7.x'
+
+stages:
+  - stage: BuildAndTest
+  - displayName: BuildAndTest
+
+  steps:
+
+  - task: UseDotNet@2
+    displayName: 'Install and Use .NET $(dotnetVersion)'
+    inputs:
+      version: 7.x
+      performMultiLevelLookup: true
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build $(buildConfiguration)'
+    inputs:
+      command: 'build'
+      arguments: '--configuration $(buildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: dotnet test and collect code coverage
+      inputs:
+        command: 'test'
+        projects: '**/*.Tests.csproj'
+        arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
+        publishTestResults: true
+
+    - task: PublishCodeCoverageResults@1
+      displayName: 'publish code coverage'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(Agent.TempDirectory)/**/coverage.cobertura.xml
