@@ -55,8 +55,9 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: '$(srcPath)/.pipelines/deployments/**'
-    targetFolder: '$(Build.ArtifactStagingDirectory)/Templates'
+    SourceFolder: '$(srcPath)/.pipelines/deployments/'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/Templates'
 
 - publish: '$(Build.ArtifactStagingDirectory)/WebApi'
   displayName: Publish Web Api

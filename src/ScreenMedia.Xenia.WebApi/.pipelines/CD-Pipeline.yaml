@@ -16,8 +16,8 @@ variables:
   azureServiceConnection: MyServiceConnection
   resourceGroupName: ScreenMedia.Xenia.Dev
   location: 'UK South'
-  templateFile: '$(Pipeline.Workspace)/ResourceTemplates/main.bicep'
-  templateParametersFile: '$(Pipeline.Workspace)/ResourceTemplates/parameters.json'
+  templateFile: '$(Pipeline.Workspace)/CI-Pipeline/ResourceTemplates/main.bicep'
+  templateParametersFile: '$(Pipeline.Workspace)/CI-Pipeline/ResourceTemplates/parameters.json'
 
 steps:
 
