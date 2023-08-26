@@ -22,12 +22,15 @@ variables:
 steps:
 
 - download: CI-Pipeline
+  displayName: Download WebApi Artifact
   artifact: WebApi
 
 - download: CI-Pipeline
+  displayName: Download Azure Resource Tempaltes Artifact
   artifact: ResourceTemplates
 
 - task: AzureResourceManagerTemplateDeployment@3
+  displayName: Deploy Azure App Service
   inputs:
     deploymentScope: 'Resource Group'
     azureResourceManagerConnection: '$(azureServiceConnection)'
@@ -39,3 +42,11 @@ steps:
     csmParametersFile: '$(templateParametersFile)'
     deploymentMode: 'Incremental'
     deploymentName: 'DeployPipelineTemplate'
+
+- task: AzureWebApp@1
+  displayName: Publish Xenia WebApi to App Service
+  inputs:
+    azureSubscription: '<Azure service connection>'
+    appType: 'webAppLinux'
+    appName: 'xenia-web-api'
+    package: 'CI-Pipeline/WebApi/ScreenMedia.Xenia.WebApi.zip'
