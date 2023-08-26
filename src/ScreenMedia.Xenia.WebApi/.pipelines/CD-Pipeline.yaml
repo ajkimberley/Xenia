@@ -46,7 +46,7 @@ steps:
 - task: AzureWebApp@1
   displayName: Publish Xenia WebApi to App Service
   inputs:
-    azureSubscription: '<Azure service connection>'
+    azureSubscription: '$(azureServiceConnection)'
     appType: 'webAppLinux'
     appName: 'xenia-web-api'
     package: 'CI-Pipeline/WebApi/ScreenMedia.Xenia.WebApi.zip'
