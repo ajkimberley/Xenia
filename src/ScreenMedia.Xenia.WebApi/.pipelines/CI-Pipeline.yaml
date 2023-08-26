@@ -14,7 +14,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   dotnetVersion: '7.x'
-  srcPath: '$(Pipeline.Workspace)/src/ScreenMedia.Xenia.WebApi/'
+  srcPath: 'src/ScreenMedia.Xenia.WebApi/'
 
 steps:
 - task: UseDotNet@2
