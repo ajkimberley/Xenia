@@ -10,7 +10,30 @@ resources:
         include:
         - main
 
+variables:
+  azureServiceConnection: MyServiceConnection
+  resourceGroupName: ScreenMedia.Xenia.Dev
+  location: 'UK South'
+  templateFile: '$(Pipeline.Workspace)/ResourceTemplates/main.bicep'
+  templateParametersFile: '$(Pipeline.Workspace)/ResourceTemplates/parameters.json'
+
 steps:
+
 - download: CI-Pipeline
   artifact: WebApi
-  
+
+- download: CI-Pipeline
+  artifact: ResourceTemplates
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: '$(azureServiceConnection)'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: '$(resourceGroupName)'
+    location: '$(location)'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(templateFile)'
+    csmParametersFile: '$(templateParametersFile)'
+    deploymentMode: 'Incremental'
+    deploymentName: 'DeployPipelineTemplate'

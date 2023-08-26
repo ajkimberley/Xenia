@@ -50,9 +50,18 @@ steps:
     command: publish
     publishWebProjects: False
     projects: '$(srcPath)/*/ScreenMedia.Xenia.WebApi.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/WebApi'
     zipAfterPublish: True
 
-- publish: '$(Build.ArtifactStagingDirectory)'
+- task: CopyFiles@2
+  inputs:
+    contents: '$(srcPath)/.pipelines/deployments/**'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/Templates'
+
+- publish: '$(Build.ArtifactStagingDirectory)/WebApi'
   displayName: Publish Web Api
   artifact: WebApi
+
+- publish: $(Build.ArtifactStagingDirectory)/Templates
+  displayName: Publish Azure Resource Tempaltes
+  artifact: ResourceTemplates
