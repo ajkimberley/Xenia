@@ -44,3 +44,15 @@ steps:
     codeCoverageTool: Cobertura
     summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml
     failIfCoverageEmpty: true
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: False
+    projects: '$(srcPath)/*/ScreenMedia.Xenia.WebApi.csproj'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+
+- publish: '$(Build.ArtifactStagingDirectory)'
+  displayName: Publish Web Api
+  artifact: WebApi
