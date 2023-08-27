@@ -48,21 +48,6 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
     }
 
     [Fact]
-    public async Task PostHotelPersistsHotelsWhenDtoIsValid()
-    {
-        var client = _applicationFactory.CreateClient();
-        var requestContent = JsonContent.Create(new HotelDto("Some Hotel Name"), new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
-        using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
-
-        var response = await client.PostAsync("api/Hotels", requestContent);
-        _ = response.EnsureSuccessStatusCode();
-
-        Assert.Equal(1, context.Hotels.Count());
-    }
-
-    [Fact]
     public async Task PostHotelReturns400WhenHotelDtoIsInValid()
     {
         var client = _applicationFactory.CreateClient();
@@ -73,11 +58,32 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    [Theory]
+    [InlineData("Travel Bodge")]
+    [InlineData("Mediocre Inn")]
+    [InlineData("Holiday Bin")]
+    public async Task PostHotelPersistsHotelsWhenDtoIsValid(string hotelName)
+    {
+        var client = _applicationFactory.CreateClient();
+        var requestContent = JsonContent.Create(new HotelDto(hotelName), new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+
+        var response = await client.PostAsync("api/Hotels", requestContent);
+        _ = response.EnsureSuccessStatusCode();
+
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(1, context.Hotels.Count());
+            Assert.Equal(hotelName, context.Hotels.Single().Name);
+        });
+    }
+
     public void Dispose()
     {
         using var scope = _applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<HotelManagementContext>();
         _ = (context?.Database.EnsureDeleted());
     }
-
 }
