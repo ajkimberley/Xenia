@@ -7,16 +7,16 @@ namespace ScreenMedia.Xenia.WebApi.Queries;
 
 public record GetHotelsQuery() : IRequest<IEnumerable<HotelDto>>;
 
-public class GetHotels : IRequestHandler<GetHotelsQuery, IEnumerable<HotelDto>>
+public class GetHotelsHandler : IRequestHandler<GetHotelsQuery, IEnumerable<HotelDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public GetHotels(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+    public GetHotelsHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
     public async Task<IEnumerable<HotelDto>> Handle(GetHotelsQuery request, CancellationToken cancellationToken)
     {
         var hotels = await _unitOfWork.Hotels.GetAllAsync();
-        var dtos = hotels.Select(hotel => new HotelDto(hotel.Name));
+        var dtos = hotels.Select(hotel => new HotelDto(hotel.Name, hotel.Id));
         return dtos;
     }
 }

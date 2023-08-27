@@ -40,7 +40,11 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
 
         var response = await client.PostAsync("api/Hotels", requestContent);
 
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType?.ToString());
+        });
     }
 
     [Fact]
@@ -69,6 +73,8 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
         var response = await client.PostAsync("api/Hotels", requestContent);
         _ = response.EnsureSuccessStatusCode();
 
+        var actual = await response.Content.ReadFromJsonAsync<HotelCreatedResponse>();
+
         Assert.NotEmpty(context.Hotels.Where(h => h.Name == hotelName));
     }
 
@@ -79,6 +85,7 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
         using var scope = _applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+
         var hotels = context.Hotels.ToList();
         context.Hotels.RemoveRange(hotels);
         _ = context.SaveChanges();
@@ -95,6 +102,7 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
         using var scope = _applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+
         _ = context.Add(Hotel.Create("Foo"));
         _ = context.SaveChanges();
 

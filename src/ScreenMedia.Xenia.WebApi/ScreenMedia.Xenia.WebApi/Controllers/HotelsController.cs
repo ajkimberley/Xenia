@@ -33,8 +33,17 @@ public class HotelsController : ControllerBase
     public async Task<IActionResult> AddHotel(HotelDto dto)
     {
         var cmd = new CreateHotelCommand(dto.Name);
-        var id = await _mediator.Send(cmd);
+        var createdHotel = await _mediator.Send(cmd);
 
-        return Created($"localhost:7072/api/hotels/{id}", id);
+        var hotelLinks = new List<LinkDto>();
+        //{
+        //    new LinkDto(Url.Link(nameof(GetHotel), new { id = createdHotel.Id }), "self", "GET"),
+        //    new LinkDto(Url.Link(nameof(UpdateHotel), new { id = createdHotel.Id }), "update_hotel", "PUT"),
+        //    new LinkDto(Url.Link(nameof(DeleteHotel), new { id = createdHotel.Id }), "delete_hotel", "DELETE")
+        //};
+
+        var hotelCreatedResponse = new HotelCreatedResponse(createdHotel, hotelLinks);
+
+        return Created($"localhost:7072/api/hotels/{createdHotel.Id}", hotelCreatedResponse);
     }
 }
