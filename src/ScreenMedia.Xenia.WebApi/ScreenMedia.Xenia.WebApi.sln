@@ -9,12 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.WebApi.In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.HotelManagement.Domain", "ScreenMedia.Xenia.HotelManagement.Domain\ScreenMedia.Xenia.HotelManagement.Domain.csproj", "{64B405EF-DCDE-4434-87D0-5BA0F727B86D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenMedia.Xenia.HotelManagement.Persistence", "ScreenMedia.Xenia.HotelManagement.Persistence\ScreenMedia.Xenia.HotelManagement.Persistence.csproj", "{684AAB48-6CE0-4529-BAAA-39598A433AB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.HotelManagement.Persistence", "ScreenMedia.Xenia.HotelManagement.Persistence\ScreenMedia.Xenia.HotelManagement.Persistence.csproj", "{684AAB48-6CE0-4529-BAAA-39598A433AB4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C41EBA8D-CC97-48EF-988D-61A9478740D0}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenMedia.Xenia.WebApi.Commands.UnitTests", "ScreenMedia.Xenia.WebApi.UnitTests\ScreenMedia.Xenia.WebApi.Commands.UnitTests.csproj", "{92A83A8D-1BDC-421B-B433-BADDED792150}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92A83A8D-1BDC-421B-B433-BADDED792150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92A83A8D-1BDC-421B-B433-BADDED792150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92A83A8D-1BDC-421B-B433-BADDED792150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92A83A8D-1BDC-421B-B433-BADDED792150}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
