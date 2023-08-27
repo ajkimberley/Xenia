@@ -116,4 +116,54 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
             Assert.NotEmpty(actual);
         });
     }
+
+    [Fact]
+    public async Task GetHotelReturns400WhenIdInvalid()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+
+        var response = await client.GetAsync("api/Hotels/foo");
+
+        Assert.Equivalent(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetHotelReturns404WhenHotelNotInRepo()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+
+        var response = await client.GetAsync($"api/Hotels/{Guid.NewGuid()}");
+
+        Assert.Equivalent(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetHotelReturns200WhenHotelInRepo()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+
+        var entityEntry = context.Add(Hotel.Create("Foo"));
+        _ = context.SaveChanges();
+
+        var createdHotel = entityEntry.Entity;
+        var expected = new HotelDto(createdHotel.Name, createdHotel.Id);
+
+        var response = await client.GetAsync($"api/Hotels/{entityEntry.Entity.Id}");
+        var actual = await response.Content.ReadFromJsonAsync<HotelDto>();
+
+        Assert.Multiple(() =>
+        {
+            Assert.Equivalent(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected, actual);
+        });
+    }
 }

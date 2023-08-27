@@ -1,10 +1,12 @@
 ﻿using MediatR;
 
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 using ScreenMedia.Xenia.WebApi.Commands;
 using ScreenMedia.Xenia.WebApi.Dtos;
+using ScreenMedia.Xenia.WebApi.Exceptions;
 using ScreenMedia.Xenia.WebApi.Queries;
 
 namespace ScreenMedia.Xenia.WebApi.Controllers;
@@ -26,6 +28,26 @@ public class HotelsController : ControllerBase
         var dtos = await _mediator.Send(qry);
 
         return dtos.IsNullOrEmpty() ? NoContent() : Ok(dtos);
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(HotelDto))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetHotel([FromRoute] string id)
+    {
+        if (!Guid.TryParse(id, out var hotelId)) return BadRequest("Invalid hotel Id.");
+
+        try
+        {
+            var qry = new GetHotelQuery(hotelId);
+            var dto = await _mediator.Send(qry);
+            return Ok(dto);
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpPost]
