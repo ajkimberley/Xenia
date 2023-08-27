@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenMedia.Xenia.WebApi", "ScreenMedia.Xenia.WebApi\ScreenMedia.Xenia.WebApi.csproj", "{ED42559A-46B1-41B6-8992-64CF7846FC81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.WebApi", "ScreenMedia.Xenia.WebApi\ScreenMedia.Xenia.WebApi.csproj", "{ED42559A-46B1-41B6-8992-64CF7846FC81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenMedia.Xenia.WebApi.IntegrationTests", "ScreenMedia.Xenia.WebApi.IntegrationTests\ScreenMedia.Xenia.WebApi.IntegrationTests.csproj", "{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.WebApi.IntegrationTests", "ScreenMedia.Xenia.WebApi.IntegrationTests\ScreenMedia.Xenia.WebApi.IntegrationTests.csproj", "{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.HotelManagement.Domain", "ScreenMedia.Xenia.HotelManagement.Domain\ScreenMedia.Xenia.HotelManagement.Domain.csproj", "{64B405EF-DCDE-4434-87D0-5BA0F727B86D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenMedia.Xenia.HotelManagement.Persistence", "ScreenMedia.Xenia.HotelManagement.Persistence\ScreenMedia.Xenia.HotelManagement.Persistence.csproj", "{684AAB48-6CE0-4529-BAAA-39598A433AB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64B405EF-DCDE-4434-87D0-5BA0F727B86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64B405EF-DCDE-4434-87D0-5BA0F727B86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64B405EF-DCDE-4434-87D0-5BA0F727B86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64B405EF-DCDE-4434-87D0-5BA0F727B86D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
