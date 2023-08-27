@@ -14,7 +14,6 @@ public class HotelsController : ControllerBase
     public HotelsController(HotelManagementContext hotelManagementContext)
         => _hotelManagementContext = hotelManagementContext;
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(object))]
     public async Task<IActionResult> AddHotel(HotelDto dto)
@@ -29,5 +28,4 @@ public class HotelsController : ControllerBase
         // Either poll or redirect to get method
         return Created("foo", null);
     }
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 }
