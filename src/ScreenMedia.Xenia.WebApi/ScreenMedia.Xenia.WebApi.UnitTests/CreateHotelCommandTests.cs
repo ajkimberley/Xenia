@@ -18,12 +18,17 @@ public class CreateHotelCommandTests
     [InlineData("Travel Bodge")]
     [InlineData("Mediocre Inn")]
     [InlineData("Holiday Bin")]
-    public async Task Given_ValidCommand_Should_ReturnId(string hotelName)
+    public async Task Given_ValidCommand_Should_AddHotelToRepo(string hotelName)
     {
         var cmd = new CreateHotelCommand(hotelName);
 
-        await _sut.Handle(cmd, CancellationToken.None);
+        _ = await _sut.Handle(cmd, CancellationToken.None);
+        var actual = _uow.Hotels.GetAllAsync().Result.SingleOrDefault();
 
-        Assert.NotEmpty(_uow.Hotels.GetAllAsync().Result);
+        Assert.Multiple(() =>
+        {
+            Assert.NotNull(actual);
+            Assert.Equal(hotelName, actual.Name);
+        });
     }
 }
