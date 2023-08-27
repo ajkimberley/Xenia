@@ -14,6 +14,12 @@ public class XeniaWebApplicationFactory<TProgram> : WebApplicationFactory<TProgr
             _ = services.Remove(dbContextDescriptor);
             _ = services.AddDbContext<HotelManagementContext>((container, options)
                 => options.UseSqlServer("Server=localhost;Database=XeniaTest;Trusted_Connection=True;TrustServerCertificate=True"));
+
+            using var scope = services.BuildServiceProvider().CreateScope();
+            var scopedServices = scope.ServiceProvider;
+            var context = scopedServices.GetRequiredService<HotelManagementContext>();
+            _ = context.Database.EnsureDeleted();
+            _ = context.Database.EnsureCreated();
         });
         _ = builder.UseEnvironment("Development");
     }

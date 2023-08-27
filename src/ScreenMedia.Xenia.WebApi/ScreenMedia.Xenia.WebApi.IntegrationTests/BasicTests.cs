@@ -7,17 +7,12 @@ using ScreenMedia.Xenia.WebApi.Dtos;
 
 namespace ScreenMedia.Xenia.WebApi.IntegrationTests;
 
-public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Program>>, IDisposable
+public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Program>>
 {
     private readonly XeniaWebApplicationFactory<Program> _applicationFactory;
 
-    public BasicTests(XeniaWebApplicationFactory<Program> applicationFactory)
-    {
+    public BasicTests(XeniaWebApplicationFactory<Program> applicationFactory) =>
         _applicationFactory = applicationFactory;
-        using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<HotelManagementContext>();
-        _ = (context?.Database.EnsureCreated());
-    }
 
     [Fact]
     public async Task HelloHealthCheck()
@@ -73,17 +68,6 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
         var response = await client.PostAsync("api/Hotels", requestContent);
         _ = response.EnsureSuccessStatusCode();
 
-        Assert.Multiple(() =>
-        {
-            Assert.Equal(1, context.Hotels.Count());
-            Assert.Equal(hotelName, context.Hotels.Single().Name);
-        });
-    }
-
-    public void Dispose()
-    {
-        using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<HotelManagementContext>();
-        _ = (context?.Database.EnsureDeleted());
+        Assert.NotEmpty(context.Hotels.Where(h => h.Name == hotelName));
     }
 }
