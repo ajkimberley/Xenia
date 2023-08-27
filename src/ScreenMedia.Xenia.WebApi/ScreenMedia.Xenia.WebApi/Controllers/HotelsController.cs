@@ -1,6 +1,5 @@
 ﻿using MediatR;
 
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,8 +18,8 @@ public class HotelsController : ControllerBase
 
     public HotelsController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(HotelDto))]
+    [HttpGet(Name = nameof(GetHotels))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<HotelDto>))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetHotels()
     {
@@ -30,11 +29,11 @@ public class HotelsController : ControllerBase
         return dtos.IsNullOrEmpty() ? NoContent() : Ok(dtos);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = nameof(GetHotel))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(HotelDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetHotel([FromRoute] string id)
+    public async Task<IActionResult> GetHotel(string id)
     {
         if (!Guid.TryParse(id, out var hotelId)) return BadRequest("Invalid hotel Id.");
 
@@ -50,22 +49,22 @@ public class HotelsController : ControllerBase
         }
     }
 
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(object))]
-    public async Task<IActionResult> AddHotel(HotelDto dto)
+    [HttpPost(Name = nameof(CreateHotel))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(HotelResponse))]
+    public async Task<IActionResult> CreateHotel(HotelDto dto)
     {
         var cmd = new CreateHotelCommand(dto.Name);
         var createdHotel = await _mediator.Send(cmd);
 
-        var hotelLinks = new List<LinkDto>();
-        //{
-        //    new LinkDto(Url.Link(nameof(GetHotel), new { id = createdHotel.Id }), "self", "GET"),
-        //    new LinkDto(Url.Link(nameof(UpdateHotel), new { id = createdHotel.Id }), "update_hotel", "PUT"),
-        //    new LinkDto(Url.Link(nameof(DeleteHotel), new { id = createdHotel.Id }), "delete_hotel", "DELETE")
-        //};
+        // TODO: Validate Host header
+        var selfLink = Url.Link(nameof(GetHotel), new { id = createdHotel.Id.ToString() });
+        var hotelLinks = new List<LinkDto>
+        {
+            new LinkDto(selfLink!, "self", "GET")
+        };
 
-        var hotelCreatedResponse = new HotelCreatedResponse(createdHotel, hotelLinks);
+        var hotelCreatedResponse = new HotelResponse(createdHotel, hotelLinks);
 
-        return Created($"localhost:7072/api/hotels/{createdHotel.Id}", hotelCreatedResponse);
+        return Created(selfLink!, hotelCreatedResponse);
     }
 }

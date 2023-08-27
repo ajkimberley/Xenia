@@ -33,7 +33,8 @@ if (app.Environment.IsDevelopment())
     // TODO: Replace with migrations
     using var scope = app.Services.CreateScope();
     using var context = scope.ServiceProvider.GetService<HotelManagementContext>();
-    _ = (context?.Database.EnsureCreated());
+    _ = context?.Database.EnsureDeleted();
+    _ = context?.Database.EnsureCreated();
 }
 
 app.UseHttpsRedirection();

@@ -73,7 +73,7 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
         var response = await client.PostAsync("api/Hotels", requestContent);
         _ = response.EnsureSuccessStatusCode();
 
-        var actual = await response.Content.ReadFromJsonAsync<HotelCreatedResponse>();
+        var actual = await response.Content.ReadFromJsonAsync<HotelResponse>();
 
         Assert.NotEmpty(context.Hotels.Where(h => h.Name == hotelName));
     }
