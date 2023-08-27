@@ -15,6 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<HotelManagementContext>((container, options) =>
     _ = options.UseSqlServer("Server=localhost;Database=Xenia;Trusted_Connection=True;TrustServerCertificate=True"));
 
+builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

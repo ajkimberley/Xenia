@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
 
-using ScreenMedia.Xenia.HotelManagement.Domain;
-using ScreenMedia.Xenia.HotelManagement.Persistence;
+using Microsoft.AspNetCore.Mvc;
+
+using ScreenMedia.Xenia.WebApi.Commands;
 using ScreenMedia.Xenia.WebApi.Dtos;
 
 namespace ScreenMedia.Xenia.WebApi.Controllers;
@@ -9,10 +10,9 @@ namespace ScreenMedia.Xenia.WebApi.Controllers;
 [ApiController]
 public class HotelsController : ControllerBase
 {
-    private readonly HotelManagementContext _hotelManagementContext;
+    private readonly IMediator _mediator;
 
-    public HotelsController(HotelManagementContext hotelManagementContext)
-        => _hotelManagementContext = hotelManagementContext;
+    public HotelsController(IMediator mediator) => _mediator = mediator;
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(object))]
@@ -20,10 +20,8 @@ public class HotelsController : ControllerBase
     {
         // Create hotel command
         // Execute command
-        var hotel = Hotel.Create(dto.Name);
-
-        _ = _hotelManagementContext.Add(hotel);
-        _ = await _hotelManagementContext.SaveChangesAsync();
+        var cmd = new CreateHotelCommand(dto.Name);
+        await _mediator.Send(cmd);
 
         // Either poll or redirect to get method
         return Created("foo", null);
