@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
+using ScreenMedia.Xenia.HotelManagement.Domain;
 using ScreenMedia.Xenia.HotelManagement.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,9 @@ builder.Services.AddDbContext<HotelManagementContext>((container, options) =>
 
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
 
+// Composition Root
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,9 +36,9 @@ if (app.Environment.IsDevelopment())
     _ = (context?.Database.EnsureCreated());
 }
 
-_ = app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
-_ = app.MapControllers();
+app.MapControllers();
 
 app.Run();
 

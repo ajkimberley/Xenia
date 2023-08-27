@@ -6,6 +6,7 @@ using ScreenMedia.Xenia.WebApi.Commands;
 using ScreenMedia.Xenia.WebApi.Dtos;
 
 namespace ScreenMedia.Xenia.WebApi.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class HotelsController : ControllerBase

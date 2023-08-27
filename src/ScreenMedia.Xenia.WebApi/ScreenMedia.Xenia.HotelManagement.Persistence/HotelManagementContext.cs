@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using ScreenMedia.Xenia.HotelManagement.Domain;
+using ScreenMedia.Xenia.HotelManagement.Domain.Entities;
 
 namespace ScreenMedia.Xenia.HotelManagement.Persistence;
 
