@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 
+using ScreenMedia.Xenia.HotelManagement.Domain.Entities;
 using ScreenMedia.Xenia.HotelManagement.Persistence;
 using ScreenMedia.Xenia.WebApi.Dtos;
 
@@ -69,5 +70,42 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
         _ = response.EnsureSuccessStatusCode();
 
         Assert.NotEmpty(context.Hotels.Where(h => h.Name == hotelName));
+    }
+
+    [Fact]
+    public async Task GetAllHotelsReturns204WhenDatabaseContainsNoHotels()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+        var hotels = context.Hotels.ToList();
+        context.Hotels.RemoveRange(hotels);
+        _ = context.SaveChanges();
+
+        var response = await client.GetAsync("api/Hotels");
+
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetAllHotelsReturns200WhenDatabaseContainsHotels()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+        _ = context.Add(Hotel.Create("Foo"));
+        _ = context.SaveChanges();
+
+        var response = await client.GetAsync("api/Hotels");
+        _ = response.EnsureSuccessStatusCode();
+
+        var actual = await response.Content.ReadFromJsonAsync<IEnumerable<HotelDto>>();
+        Assert.Multiple(() =>
+        {
+            Assert.NotNull(actual);
+            Assert.NotEmpty(actual);
+        });
     }
 }
