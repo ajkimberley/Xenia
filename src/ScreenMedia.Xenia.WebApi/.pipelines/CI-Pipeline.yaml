@@ -31,12 +31,14 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: dotnet test and collect code coverage
+  displayName: run unit tests and collect code coverage
   inputs:
     command: 'test'
-    projects: '$(srcPath)/**/*.*Tests.csproj'
+    projects: '$(srcPath)/**/*.*UnitTests.csproj'
     arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
     publishTestResults: true
+
+# TODO: Decide on strategy for integration tests - Azure SQL, Virtual Machine, In-Memory Db?
 
 - task: PublishCodeCoverageResults@1
   displayName: 'publish code coverage'
