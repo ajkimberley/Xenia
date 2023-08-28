@@ -6,7 +6,7 @@ namespace ScreenMedia.Xenia.HotelManagement.Persistence.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    private readonly HotelManagementContext _context;
+    protected readonly HotelManagementContext _context;
 
     public GenericRepository(HotelManagementContext context) => _context = context;
 

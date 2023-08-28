@@ -21,12 +21,14 @@ public class HotelsController : ControllerBase
     [HttpGet(Name = nameof(GetHotels))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<HotelDto>))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> GetHotels()
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetHotels([FromQuery] string? name)
     {
-        var qry = new GetHotelsQuery();
+        var qry = new GetHotelsQuery(name);
         var dtos = await _mediator.Send(qry);
 
-        return dtos.IsNullOrEmpty() ? NoContent() : Ok(dtos);
+        return dtos.IsNullOrEmpty()
+            ? name != null ? NotFound() : NoContent() : Ok(dtos);
     }
 
     [HttpGet("{id}", Name = nameof(GetHotel))]

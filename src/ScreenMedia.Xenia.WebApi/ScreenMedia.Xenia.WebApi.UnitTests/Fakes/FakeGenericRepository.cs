@@ -1,10 +1,9 @@
 ﻿using ScreenMedia.Xenia.Domain.Common;
-using ScreenMedia.Xenia.HotelManagement.Domain.Repositories;
 
 namespace ScreenMedia.Xenia.WebApi.Commands.UnitTests.Fakes;
 internal class FakeGenericRepository<T> : IGenericRepository<T> where T : Entity
 {
-    private readonly List<T> _list = new();
+    protected readonly List<T> _list = new();
 
     public Task AddAsync(T entity)
     {

@@ -25,7 +25,7 @@ public class GetHotelQueryTests
 
     [Theory]
     [MemberData(nameof(HotelDtoTestData))]
-    public async Task Given_CorrectHotelInRepo_Should_ReturnCorrectHotel(HotelDto dto)
+    public async Task Given_HotelInRepo_Should_ReturnCorrectHotel(HotelDto dto)
     {
         var newHotel = Hotel.Create(dto.Name);
         await _uow.Hotels.AddAsync(newHotel);

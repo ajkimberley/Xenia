@@ -111,7 +111,7 @@ public sealed class HotelControllerTests
 
         var response = await client.GetAsync("api/Hotels/foo");
 
-        Assert.Equivalent(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
     [Fact]
@@ -124,7 +124,7 @@ public sealed class HotelControllerTests
 
         var response = await client.GetAsync($"api/Hotels/{Guid.NewGuid()}");
 
-        Assert.Equivalent(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
     [Fact]
@@ -146,8 +146,79 @@ public sealed class HotelControllerTests
 
         Assert.Multiple(() =>
         {
-            Assert.Equivalent(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(expected, actual);
         });
+    }
+
+    [Fact]
+    public async Task GetHotelByIdReturns200AndCorrectHotelWhenHotelInRepo()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+
+        var hotels = context.Hotels.ToList();
+        context.Hotels.RemoveRange(hotels);
+        _ = context.SaveChanges();
+        var entityEntry = context.Add(Hotel.Create("Foo"));
+        _ = context.SaveChanges();
+
+        var createdHotel = entityEntry.Entity;
+        var expected = new HotelDto(createdHotel.Name, createdHotel.Id);
+
+        var response = await client.GetAsync($"api/Hotels/{entityEntry.Entity.Id}");
+        var actual = await response.Content.ReadFromJsonAsync<HotelDto>();
+
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected, actual);
+        });
+    }
+
+    [Fact]
+    public async Task GetHotelsByNameReturns200AndCorrectHotelsWhenHotelInRepo()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+
+        var hotels = context.Hotels.ToList();
+        context.Hotels.RemoveRange(hotels);
+        _ = context.SaveChanges();
+        var entityEntry = context.Add(Hotel.Create("Foo"));
+        _ = context.SaveChanges();
+
+        var createdHotel = entityEntry.Entity;
+        var expected = new List<HotelDto>() { new HotelDto(createdHotel.Name, createdHotel.Id) };
+
+        var response = await client.GetAsync($"api/Hotels?name={entityEntry.Entity.Name}");
+        var actual = await response.Content.ReadFromJsonAsync<List<HotelDto>>();
+
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected, actual);
+        });
+    }
+
+    [Fact]
+    public async Task GetHotelsByNameReturns404WhenNoHotelFoundInRepo()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+
+        var hotels = context.Hotels.ToList();
+        context.Hotels.RemoveRange(hotels);
+        _ = context.SaveChanges();
+
+        var response = await client.GetAsync($"api/Hotels?name=foo");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 }
