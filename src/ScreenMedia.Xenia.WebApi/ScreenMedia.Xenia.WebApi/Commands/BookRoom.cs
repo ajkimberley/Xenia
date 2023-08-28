@@ -11,13 +11,13 @@ public record PlaceBookingCommand(string HotelId,
                                   PersonDto BookedBy,
                                   DateTime From,
                                   DateTime To,
-                                  List<RoomRequestDto> RoomRequests) : IRequest<BookingResponseDto>;
+                                  RoomRequestDto RoomRequests) : IRequest<BookingResponseDto>;
 
-public class PlaceBooking : IRequestHandler<PlaceBookingCommand, BookingResponseDto>
+public class BookRoom : IRequestHandler<PlaceBookingCommand, BookingResponseDto>
 {
     private readonly IUnitOfWork unitOfWork;
 
-    public PlaceBooking(IUnitOfWork unitOfWork) => this.unitOfWork = unitOfWork;
+    public BookRoom(IUnitOfWork unitOfWork) => this.unitOfWork = unitOfWork;
 
     public async Task<BookingResponseDto> Handle(PlaceBookingCommand request, CancellationToken cancellationToken)
     {

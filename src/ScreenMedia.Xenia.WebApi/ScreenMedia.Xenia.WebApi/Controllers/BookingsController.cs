@@ -23,6 +23,6 @@ public class BookingsController : ControllerBase
         if (dto is null) return BadRequest("Request body was invalid.");
         var cmd = new PlaceBookingCommand(dto.HotelId, dto.State, dto.BookedBy, dto.From, dto.To, dto.RoomRequests);
         var resposne = await _mediator.Send(cmd);
-        return Created("Foo", new BookingResponseDto());
+        return Created("Foo", resposne);
     }
 }

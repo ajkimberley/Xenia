@@ -38,9 +38,8 @@ public sealed class BookingControllerTests
             new PersonDto("John", "smith", "jsmith@example.com"),
             new DateTime(2024, 1, 1),
             new DateTime(2024, 1, 7),
-            new List<RoomRequestDto>() {
-                new RoomRequestDto("Double", new List<PersonDto>() {
-                    new PersonDto("John", "Smith", "jsmith@example.com") }) });
+            new RoomRequestDto("Double", new List<PersonDto>() {
+                new PersonDto("John", "Smith", "jsmith@example.com") }));
         var requestContent = JsonContent.Create(bookingDto, new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
 
         var response = await client.PostAsync("api/Bookings", requestContent);
@@ -71,9 +70,8 @@ public sealed class BookingControllerTests
             new PersonDto("John", "smith", "jsmith@example.com"),
             new DateTime(2024, 1, 1),
             new DateTime(2024, 1, 7),
-            new List<RoomRequestDto>() {
-                        new RoomRequestDto("Double", new List<PersonDto>() {
-                            new PersonDto("John", "Smith", "jsmith@example.com") }) });
+            new RoomRequestDto("Double", new List<PersonDto>() {
+                new PersonDto("John", "Smith", "jsmith@example.com") }));
 
         var requestContent = JsonContent.Create(bookingDto, new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
         var response = await client.PostAsync("api/Bookings", requestContent);
