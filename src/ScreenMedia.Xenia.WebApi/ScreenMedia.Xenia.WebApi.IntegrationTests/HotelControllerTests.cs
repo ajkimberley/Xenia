@@ -8,29 +8,13 @@ using ScreenMedia.Xenia.WebApi.Dtos;
 
 namespace ScreenMedia.Xenia.WebApi.IntegrationTests;
 
-public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Program>>
+[Collection("WebApi Collection")]
+public sealed class HotelControllerTests
 {
     private readonly XeniaWebApplicationFactory<Program> _applicationFactory;
 
-    public BasicTests(XeniaWebApplicationFactory<Program> applicationFactory) =>
+    public HotelControllerTests(XeniaWebApplicationFactory<Program> applicationFactory) =>
         _applicationFactory = applicationFactory;
-
-    [Fact]
-    public async Task HelloHealthCheck()
-    {
-        var client = _applicationFactory.CreateClient();
-        var expected = "Hello Xenia";
-
-        var response = await client.GetAsync("api/Hello");
-        var actual = await response.Content.ReadAsStringAsync();
-
-        Assert.Multiple(() =>
-        {
-            Assert.True(response.IsSuccessStatusCode);
-            Assert.Equal("text/plain; charset=utf-8", response.Content.Headers.ContentType?.ToString());
-            Assert.Equal(expected, actual);
-        });
-    }
 
     [Fact]
     public async Task PostHotelReturns201WhenHotelDtoIsValid()
@@ -48,7 +32,7 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
     }
 
     [Fact]
-    public async Task PostHotelReturns400WhenHotelDtoIsInValid()
+    public async Task PostHotelReturns400WhenHotelDtoIsInvalid()
     {
         var client = _applicationFactory.CreateClient();
         var requestContent = JsonContent.Create("{\"Foo\": \"Bar\"}", new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
@@ -62,7 +46,7 @@ public sealed class BasicTests : IClassFixture<XeniaWebApplicationFactory<Progra
     [InlineData("Travel Bodge")]
     [InlineData("Mediocre Inn")]
     [InlineData("Holiday Bin")]
-    public async Task PostHotelPersistsHotelsWhenDtoIsValid(string hotelName)
+    public async Task PostHotelPersistsHotelWhenDtoIsValid(string hotelName)
     {
         var client = _applicationFactory.CreateClient();
         var requestContent = JsonContent.Create(new HotelDto(hotelName), new MediaTypeHeaderValue(MediaTypeNames.Application.Json));

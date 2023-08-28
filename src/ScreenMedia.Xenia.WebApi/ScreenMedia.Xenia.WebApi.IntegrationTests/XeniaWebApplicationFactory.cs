@@ -1,9 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 
+using ScreenMedia.Xenia.Bookings.Persistence;
 using ScreenMedia.Xenia.HotelManagement.Persistence;
 
 namespace ScreenMedia.Xenia.WebApi.IntegrationTests;
+
+[CollectionDefinition("WebApi Collection")]
+public class WebApiCollection : ICollectionFixture<XeniaWebApplicationFactory<Program>>
+{
+    // This class has no code, and is never created. Its purpose is simply
+    // to be the place to apply [CollectionDefinition] and all the
+    // ICollectionFixture<> interfaces.
+}
+
 public class XeniaWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -13,6 +23,8 @@ public class XeniaWebApplicationFactory<TProgram> : WebApplicationFactory<TProgr
             var dbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<HotelManagementContext>));
             _ = services.Remove(dbContextDescriptor);
             _ = services.AddDbContext<HotelManagementContext>((container, options)
+                => options.UseSqlServer("Server=localhost;Database=XeniaTest;Trusted_Connection=True;TrustServerCertificate=True"));
+            _ = services.AddDbContext<BookingContext>((container, options)
                 => options.UseSqlServer("Server=localhost;Database=XeniaTest;Trusted_Connection=True;TrustServerCertificate=True"));
 
             using var scope = services.BuildServiceProvider().CreateScope();

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
-using ScreenMedia.Xenia.HotelManagement.Domain;
+using ScreenMedia.Xenia.Bookings.Persistence;
 using ScreenMedia.Xenia.HotelManagement.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +21,8 @@ builder.Services.AddDbContext<HotelManagementContext>((container, options) =>
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
 
 // Composition Root
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<ScreenMedia.Xenia.Bookings.Domain.IUnitOfWork, ScreenMedia.Xenia.Bookings.Persistence.UnitOfWork>();
+builder.Services.AddTransient<ScreenMedia.Xenia.HotelManagement.Domain.IUnitOfWork, ScreenMedia.Xenia.HotelManagement.Persistence.UnitOfWork>();
 
 var app = builder.Build();
 
@@ -32,9 +35,13 @@ if (app.Environment.IsDevelopment())
     // For initial dev purposes only
     // TODO: Replace with migrations
     using var scope = app.Services.CreateScope();
-    using var context = scope.ServiceProvider.GetService<HotelManagementContext>();
-    _ = context?.Database.EnsureDeleted();
-    _ = context?.Database.EnsureCreated();
+
+    using var hotelContext = scope.ServiceProvider.GetService<HotelManagementContext>();
+    _ = hotelContext?.Database.EnsureDeleted();
+    _ = hotelContext?.Database.EnsureCreated();
+
+    using var bookingContext = scope.ServiceProvider.GetService<BookingContext>();
+    bookingContext?.GetService<IRelationalDatabaseCreator>().CreateTables();
 }
 
 app.UseHttpsRedirection();

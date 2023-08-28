@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ScreenMedia.Xenia.Bookings.Domain\ScreenMedia.Xenia.Bookings.Domain.csproj" />
+    <ProjectReference Include="..\ScreenMedia.Xenia.Bookings.Persistence\ScreenMedia.Xenia.Bookings.Persistence.csproj" />
     <ProjectReference Include="..\ScreenMedia.Xenia.HotelManagement.Domain\ScreenMedia.Xenia.HotelManagement.Domain.csproj" />
     <ProjectReference Include="..\ScreenMedia.Xenia.HotelManagement.Persistence\ScreenMedia.Xenia.HotelManagement.Persistence.csproj" />
   </ItemGroup>

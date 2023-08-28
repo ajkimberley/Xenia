@@ -1,9 +1,7 @@
-﻿namespace ScreenMedia.Xenia.HotelManagement.Domain.Entities;
+﻿using ScreenMedia.Xenia.Domain.Common;
 
-// TODO:
-// 1. Add more properties
-// 2. Substitute or supplement GUID for user-friendly Id
-// 3. Validation
+namespace ScreenMedia.Xenia.HotelManagement.Domain.Entities;
+
 public class Hotel : Entity
 {
     private Hotel(Guid id, string name)

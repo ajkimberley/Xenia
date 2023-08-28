@@ -3,7 +3,7 @@ using ScreenMedia.Xenia.HotelManagement.Domain.Repositories;
 using ScreenMedia.Xenia.HotelManagement.Persistence.Repositories;
 
 namespace ScreenMedia.Xenia.HotelManagement.Persistence;
-public class UnitOfWork : IUnitOfWork
+public class UnitOfWork : IUnitOfWork, IDisposable
 {
     private readonly HotelManagementContext _context;
 

@@ -2,13 +2,13 @@
 
 using ScreenMedia.Xenia.Domain.Common;
 
-namespace ScreenMedia.Xenia.HotelManagement.Persistence.Repositories;
+namespace ScreenMedia.Xenia.Bookings.Persistence.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    private readonly HotelManagementContext _context;
+    private readonly BookingContext _context;
 
-    public GenericRepository(HotelManagementContext context) => _context = context;
+    public GenericRepository(BookingContext context) => _context = context;
 
     public async Task<T?> GetByIdAsync(Guid id) => await _context.Set<T>().FindAsync(id);
 

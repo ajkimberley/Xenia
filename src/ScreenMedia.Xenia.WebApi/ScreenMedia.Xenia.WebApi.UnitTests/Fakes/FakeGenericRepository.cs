@@ -1,4 +1,4 @@
-﻿using ScreenMedia.Xenia.HotelManagement.Domain;
+﻿using ScreenMedia.Xenia.Domain.Common;
 using ScreenMedia.Xenia.HotelManagement.Domain.Repositories;
 
 namespace ScreenMedia.Xenia.WebApi.Commands.UnitTests.Fakes;

@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScreenMedia.Xenia.Domain.Common\ScreenMedia.Xenia.Domain.Common.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ScreenMedia.Xenia.Bookings.Domain\ScreenMedia.Xenia.Bookings.Domain.csproj" />
   </ItemGroup>
 
 </Project>
