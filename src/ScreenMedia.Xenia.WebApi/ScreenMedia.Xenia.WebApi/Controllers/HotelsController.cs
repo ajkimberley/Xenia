@@ -31,17 +31,15 @@ public class HotelsController : ControllerBase
             ? name != null ? NotFound() : NoContent() : Ok(dtos);
     }
 
-    [HttpGet("{id}", Name = nameof(GetHotel))]
+    [HttpGet("{id:guid}", Name = nameof(GetHotel))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(HotelDto))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetHotel(string id)
+    public async Task<IActionResult> GetHotel(Guid id)
     {
-        if (!Guid.TryParse(id, out var hotelId)) return BadRequest("Invalid hotel Id.");
-
         try
         {
-            var qry = new GetHotelQuery(hotelId);
+            var qry = new GetHotelQuery(id);
             var dto = await _mediator.Send(qry);
             return Ok(dto);
         }

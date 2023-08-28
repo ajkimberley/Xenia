@@ -102,7 +102,7 @@ public sealed class HotelControllerTests
     }
 
     [Fact]
-    public async Task GetHotelReturns400WhenIdInvalid()
+    public async Task GetHotelReturns404WhenIdInvalid()
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
@@ -111,7 +111,7 @@ public sealed class HotelControllerTests
 
         var response = await client.GetAsync("api/Hotels/foo");
 
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
     [Fact]
