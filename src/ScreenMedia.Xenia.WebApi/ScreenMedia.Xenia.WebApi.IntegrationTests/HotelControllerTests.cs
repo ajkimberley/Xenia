@@ -96,6 +96,7 @@ public sealed class HotelControllerTests
         var actual = await response.Content.ReadFromJsonAsync<IEnumerable<HotelDto>>();
         Assert.Multiple(() =>
         {
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.NotNull(actual);
             Assert.NotEmpty(actual);
         });
