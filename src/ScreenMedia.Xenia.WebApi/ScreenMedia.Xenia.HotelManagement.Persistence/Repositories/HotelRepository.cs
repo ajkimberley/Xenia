@@ -12,4 +12,9 @@ public class HotelRepository : GenericRepository<Hotel>, IHotelRepository
         await _context.Set<Hotel>()
                       .Where(h => h.Name == name)
                       .ToListAsync();
+
+    public async Task<Hotel?> GetHotelWithRoomsByIdAsync(Guid id) =>
+        await _context.Set<Hotel>()
+                      .Include(h => h.Rooms)
+                      .SingleOrDefaultAsync(h => h.Id == id);
 }

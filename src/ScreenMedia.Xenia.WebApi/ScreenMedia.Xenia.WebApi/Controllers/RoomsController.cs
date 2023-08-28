@@ -1,19 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+
+using Microsoft.AspNetCore.Mvc;
 
 using ScreenMedia.Xenia.WebApi.Dtos;
+using ScreenMedia.Xenia.WebApi.Exceptions;
+using ScreenMedia.Xenia.WebApi.Queries;
 
 namespace ScreenMedia.Xenia.WebApi.Controllers;
-[Route("api/hotels/{hotelId}/[controller]")]
+[Route("api/hotels/{hotelId:Guid}/[controller]")]
 [ApiController]
 public class RoomsController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public RoomsController(IMediator mediator) => _mediator = mediator;
+
     [HttpGet(Name = nameof(GetRooms))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RoomDto>))]
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public async Task<IActionResult> GetRooms()
+    public async Task<IActionResult> GetRooms([FromRoute] Guid hotelId)
     {
-        var dtos = new List<RoomDto> { new RoomDto() };
-        return Ok(dtos);
+        try
+        {
+            var qry = new GetRoomsQuery(hotelId);
+            var dtos = await _mediator.Send(qry);
+
+            return Ok(dtos);
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 }

@@ -1,3 +1,5 @@
-﻿namespace ScreenMedia.Xenia.WebApi.Dtos;
+﻿using ScreenMedia.Xenia.HotelManagement.Domain.Enums;
 
-public record RoomDto();
+namespace ScreenMedia.Xenia.WebApi.Dtos;
+
+public record RoomDto(Guid HotelId, RoomType RoomType, int Capacity);

@@ -21,10 +21,10 @@ public class Hotel : Entity
         {
             Room.CreateSingle(newHotel, 1),
             Room.CreateSingle(newHotel, 2),
-            Room.CreateSingle(newHotel, 3),
-            Room.CreateSingle(newHotel, 4),
-            Room.CreateSingle(newHotel, 5),
-            Room.CreateSingle(newHotel, 6),
+            Room.CreateDouble(newHotel, 3),
+            Room.CreateDouble(newHotel, 4),
+            Room.CreateDeluxe(newHotel, 5),
+            Room.CreateDeluxe(newHotel, 6),
         };
         newHotel.Rooms = rooms;
         return newHotel;

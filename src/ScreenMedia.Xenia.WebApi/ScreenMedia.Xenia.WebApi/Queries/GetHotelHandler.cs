@@ -14,9 +14,10 @@ public class GetHotelHandler : IRequestHandler<GetHotelQuery, HotelDto>
 
     public GetHotelHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
-    public async Task<HotelDto> Handle(GetHotelQuery request, CancellationToken cancellationToken)
+    public async Task<HotelDto> Handle(GetHotelQuery query, CancellationToken cancellationToken)
     {
-        var hotel = await _unitOfWork.Hotels.GetByIdAsync(request.Id) ?? throw new ResourceNotFoundException($"No hotel found with Id {request.Id}.");
+        var hotel = await _unitOfWork.Hotels.GetByIdAsync(query.Id)
+                          ?? throw new ResourceNotFoundException($"No hotel found with Id {query.Id}.");
 
         var dto = new HotelDto(hotel.Name, hotel.Id);
         return dto;
