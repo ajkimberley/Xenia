@@ -1,3 +1,5 @@
-﻿namespace ScreenMedia.Xenia.WebApi.Dtos;
+﻿using ScreenMedia.Xenia.Bookings.Domain.Enums;
 
-public record BookingDto(string HotelId, string State, PersonDto BookedBy, DateTime From, DateTime To, RoomRequestDto RoomRequests);
+namespace ScreenMedia.Xenia.WebApi.Dtos;
+
+public record BookingDto(Guid HotelId, Guid RoomId, PersonDto BookedBy, DateTime From, DateTime To, BookingState? BookingState = null);

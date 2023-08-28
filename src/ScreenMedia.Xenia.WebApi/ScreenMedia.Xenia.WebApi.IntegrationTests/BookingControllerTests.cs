@@ -33,13 +33,11 @@ public sealed class BookingControllerTests
     {
         var client = _applicationFactory.CreateClient();
         var bookingDto = new BookingDto(
-            Guid.NewGuid().ToString(),
-            "Requested",
+            Guid.NewGuid(),
+            Guid.NewGuid(),
             new PersonDto("John", "smith", "jsmith@example.com"),
             new DateTime(2024, 1, 1),
-            new DateTime(2024, 1, 7),
-            new RoomRequestDto("Double", new List<PersonDto>() {
-                new PersonDto("John", "Smith", "jsmith@example.com") }));
+            new DateTime(2024, 1, 7));
         var requestContent = JsonContent.Create(bookingDto, new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
 
         var response = await client.PostAsync("api/Bookings", requestContent);
@@ -65,13 +63,11 @@ public sealed class BookingControllerTests
         var expected = new HotelDto(createdHotel.Name, createdHotel.Id);
 
         var bookingDto = new BookingDto(
-            Guid.NewGuid().ToString(),
-            "Requested",
+            Guid.NewGuid(),
+            Guid.NewGuid(),
             new PersonDto("John", "smith", "jsmith@example.com"),
             new DateTime(2024, 1, 1),
-            new DateTime(2024, 1, 7),
-            new RoomRequestDto("Double", new List<PersonDto>() {
-                new PersonDto("John", "Smith", "jsmith@example.com") }));
+            new DateTime(2024, 1, 7));
 
         var requestContent = JsonContent.Create(bookingDto, new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
         var response = await client.PostAsync("api/Bookings", requestContent);
