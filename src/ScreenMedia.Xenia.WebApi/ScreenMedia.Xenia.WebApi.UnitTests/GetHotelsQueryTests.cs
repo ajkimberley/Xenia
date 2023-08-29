@@ -1,4 +1,4 @@
-﻿using ScreenMedia.Xenia.HotelManagement.Domain.Entities;
+﻿using ScreenMedia.Xenia.Bookings.Domain.Entities;
 using ScreenMedia.Xenia.WebApi.Commands.UnitTests.Fakes;
 using ScreenMedia.Xenia.WebApi.Dtos;
 using ScreenMedia.Xenia.WebApi.Queries;

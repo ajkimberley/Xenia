@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using ScreenMedia.Xenia.HotelManagement.Domain.Entities;
-using ScreenMedia.Xenia.HotelManagement.Domain.Repositories;
+using ScreenMedia.Xenia.Bookings.Domain.Entities;
+using ScreenMedia.Xenia.Bookings.Domain.Repositories;
 
-namespace ScreenMedia.Xenia.HotelManagement.Persistence.Repositories;
+namespace ScreenMedia.Xenia.Bookings.Persistence.Repositories;
 public class HotelRepository : GenericRepository<Hotel>, IHotelRepository
 {
-    public HotelRepository(HotelManagementContext context) : base(context) { }
+    public HotelRepository(BookingContext context) : base(context) { }
 
     public async Task<IEnumerable<Hotel>> GetAllAsync(string? name) =>
         await _context.Set<Hotel>()

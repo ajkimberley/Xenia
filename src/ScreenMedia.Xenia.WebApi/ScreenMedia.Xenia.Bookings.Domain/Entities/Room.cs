@@ -1,8 +1,8 @@
-﻿using ScreenMedia.Xenia.Domain.Common;
-using ScreenMedia.Xenia.HotelManagement.Domain.Enums;
-using ScreenMedia.Xenia.HotelManagement.Domain.Exceptions;
+﻿using ScreenMedia.Xenia.Bookings.Domain.Enums;
+using ScreenMedia.Xenia.Bookings.Domain.Exceptions;
+using ScreenMedia.Xenia.Domain.Common;
 
-namespace ScreenMedia.Xenia.HotelManagement.Domain.Entities;
+namespace ScreenMedia.Xenia.Bookings.Domain.Entities;
 
 public class Room : Entity
 {

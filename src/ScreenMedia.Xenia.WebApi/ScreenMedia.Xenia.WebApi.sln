@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.WebApi", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.WebApi.IntegrationTests", "ScreenMedia.Xenia.WebApi.IntegrationTests\ScreenMedia.Xenia.WebApi.IntegrationTests.csproj", "{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.HotelManagement.Domain", "ScreenMedia.Xenia.HotelManagement.Domain\ScreenMedia.Xenia.HotelManagement.Domain.csproj", "{64B405EF-DCDE-4434-87D0-5BA0F727B86D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.HotelManagement.Persistence", "ScreenMedia.Xenia.HotelManagement.Persistence\ScreenMedia.Xenia.HotelManagement.Persistence.csproj", "{684AAB48-6CE0-4529-BAAA-39598A433AB4}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C41EBA8D-CC97-48EF-988D-61A9478740D0}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -38,14 +34,6 @@ Global
 		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3F0EF2E-8300-4608-93DA-F89FA43A0C3C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64B405EF-DCDE-4434-87D0-5BA0F727B86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64B405EF-DCDE-4434-87D0-5BA0F727B86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64B405EF-DCDE-4434-87D0-5BA0F727B86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64B405EF-DCDE-4434-87D0-5BA0F727B86D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{684AAB48-6CE0-4529-BAAA-39598A433AB4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{92A83A8D-1BDC-421B-B433-BADDED792150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92A83A8D-1BDC-421B-B433-BADDED792150}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92A83A8D-1BDC-421B-B433-BADDED792150}.Release|Any CPU.ActiveCfg = Release|Any CPU

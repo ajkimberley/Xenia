@@ -1,6 +1,6 @@
 ﻿using ScreenMedia.Xenia.Domain.Common;
 
-namespace ScreenMedia.Xenia.HotelManagement.Domain.Entities;
+namespace ScreenMedia.Xenia.Bookings.Domain.Entities;
 
 public class Hotel : Entity
 {

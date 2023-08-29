@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 
 using ScreenMedia.Xenia.Bookings.Persistence;
-using ScreenMedia.Xenia.HotelManagement.Persistence;
 
 namespace ScreenMedia.Xenia.WebApi.IntegrationTests;
 
@@ -20,16 +19,14 @@ public class XeniaWebApplicationFactory<TProgram> : WebApplicationFactory<TProgr
     {
         _ = builder.ConfigureServices(services =>
         {
-            var dbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<HotelManagementContext>));
+            var dbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<BookingContext>));
             _ = services.Remove(dbContextDescriptor);
-            _ = services.AddDbContext<HotelManagementContext>((container, options)
-                => options.UseSqlServer("Server=localhost;Database=XeniaTest;Trusted_Connection=True;TrustServerCertificate=True"));
             _ = services.AddDbContext<BookingContext>((container, options)
                 => options.UseSqlServer("Server=localhost;Database=XeniaTest;Trusted_Connection=True;TrustServerCertificate=True"));
 
             using var scope = services.BuildServiceProvider().CreateScope();
             var scopedServices = scope.ServiceProvider;
-            var context = scopedServices.GetRequiredService<HotelManagementContext>();
+            var context = scopedServices.GetRequiredService<BookingContext>();
             _ = context.Database.EnsureDeleted();
             _ = context.Database.EnsureCreated();
         });

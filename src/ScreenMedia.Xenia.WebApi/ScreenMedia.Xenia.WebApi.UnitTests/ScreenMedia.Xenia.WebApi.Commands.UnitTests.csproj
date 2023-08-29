@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScreenMedia.Xenia.HotelManagement.Domain\ScreenMedia.Xenia.HotelManagement.Domain.csproj" />
     <ProjectReference Include="..\ScreenMedia.Xenia.WebApi\ScreenMedia.Xenia.WebApi.csproj" />
   </ItemGroup>
 

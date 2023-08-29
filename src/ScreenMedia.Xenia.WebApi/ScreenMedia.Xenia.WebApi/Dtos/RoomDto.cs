@@ -1,4 +1,4 @@
-﻿using ScreenMedia.Xenia.HotelManagement.Domain.Enums;
+﻿using ScreenMedia.Xenia.Bookings.Domain.Enums;
 
 namespace ScreenMedia.Xenia.WebApi.Dtos;
 

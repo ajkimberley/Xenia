@@ -2,9 +2,8 @@
 using System.Net.Http.Headers;
 using System.Net.Mime;
 
+using ScreenMedia.Xenia.Bookings.Domain.Entities;
 using ScreenMedia.Xenia.Bookings.Persistence;
-using ScreenMedia.Xenia.HotelManagement.Domain.Entities;
-using ScreenMedia.Xenia.HotelManagement.Persistence;
 using ScreenMedia.Xenia.WebApi.Dtos;
 
 namespace ScreenMedia.Xenia.WebApi.IntegrationTests;
@@ -50,14 +49,12 @@ public sealed class BookingControllerTests
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
-        using var hotelContext = scope.ServiceProvider.GetService<HotelManagementContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
         using var bookingContext = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}"); ;
-        var trackedEntity = hotelContext.Hotels.Add(Hotel.Create("Foo"));
+        var trackedEntity = bookingContext.Hotels.Add(Hotel.Create("Foo"));
 
-        var entityEntry = hotelContext.Add(Hotel.Create("Foo"));
-        _ = hotelContext.SaveChanges();
+        var entityEntry = bookingContext.Add(Hotel.Create("Foo"));
+        _ = bookingContext.SaveChanges();
 
         var createdHotel = entityEntry.Entity;
         var expected = new HotelDto(createdHotel.Name, createdHotel.Id);

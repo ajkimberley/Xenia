@@ -10,9 +10,11 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     public UnitOfWork(BookingContext context)
     {
         _context = context;
+        Hotels = new HotelRepository(_context);
         Bookings = new BookingRepository(_context);
     }
 
+    public IHotelRepository Hotels { get; private set; }
     public IBookingRepository Bookings { get; private set; }
 
     public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();

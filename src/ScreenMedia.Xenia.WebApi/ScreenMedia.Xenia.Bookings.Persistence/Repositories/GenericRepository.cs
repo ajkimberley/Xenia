@@ -6,7 +6,7 @@ namespace ScreenMedia.Xenia.Bookings.Persistence.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    private readonly BookingContext _context;
+    internal readonly BookingContext _context;
 
     public GenericRepository(BookingContext context) => _context = context;
 

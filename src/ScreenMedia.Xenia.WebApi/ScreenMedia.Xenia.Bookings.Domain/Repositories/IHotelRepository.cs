@@ -1,7 +1,7 @@
-﻿using ScreenMedia.Xenia.Domain.Common;
-using ScreenMedia.Xenia.HotelManagement.Domain.Entities;
+﻿using ScreenMedia.Xenia.Bookings.Domain.Entities;
+using ScreenMedia.Xenia.Domain.Common;
 
-namespace ScreenMedia.Xenia.HotelManagement.Domain.Repositories;
+namespace ScreenMedia.Xenia.Bookings.Domain.Repositories;
 public interface IHotelRepository : IGenericRepository<Hotel>
 {
     Task<IEnumerable<Hotel>> GetAllAsync(string? name);

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-using ScreenMedia.Xenia.HotelManagement.Domain;
+using ScreenMedia.Xenia.Bookings.Domain;
 using ScreenMedia.Xenia.WebApi.Dtos;
 using ScreenMedia.Xenia.WebApi.Exceptions;
 

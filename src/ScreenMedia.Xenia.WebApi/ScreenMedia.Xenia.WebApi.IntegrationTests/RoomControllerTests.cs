@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-using ScreenMedia.Xenia.HotelManagement.Domain.Entities;
-using ScreenMedia.Xenia.HotelManagement.Domain.Enums;
-using ScreenMedia.Xenia.HotelManagement.Persistence;
+using ScreenMedia.Xenia.Bookings.Domain.Entities;
+using ScreenMedia.Xenia.Bookings.Domain.Enums;
+using ScreenMedia.Xenia.Bookings.Persistence;
 using ScreenMedia.Xenia.WebApi.Dtos;
 
 namespace ScreenMedia.Xenia.WebApi.IntegrationTests;
@@ -20,8 +20,8 @@ public sealed class RoomControllerTests
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+        using var context = scope.ServiceProvider.GetService<BookingContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotel = Hotel.Create("Foo");
         _ = context.Add(hotel);
@@ -52,8 +52,8 @@ public sealed class RoomControllerTests
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<HotelManagementContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(HotelManagementContext)}");
+        using var context = scope.ServiceProvider.GetService<BookingContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var response = await client.GetAsync($"api/hotels/{Guid.NewGuid()}/Rooms");
 
