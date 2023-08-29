@@ -27,7 +27,11 @@ public class BookRoom : IRequestHandler<PlaceBookingCommand, BookingResponseDto>
     {
         var newBooking = Booking.Create(request.HotelId, request.RoomId, request.From, request.To);
         await _unitOfWork.Bookings.AddAsync(newBooking);
-        _ = await _unitOfWork.CompleteAsync();
+        try
+        {
+            _ = await _unitOfWork.CompleteAsync();
+        }
+        catch (Exception ex) { Console.WriteLine(ex); }
         return new BookingResponseDto();
     }
 }

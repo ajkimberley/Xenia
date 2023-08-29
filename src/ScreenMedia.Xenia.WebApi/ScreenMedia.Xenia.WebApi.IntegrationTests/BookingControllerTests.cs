@@ -28,24 +28,7 @@ public sealed class BookingControllerTests
     }
 
     [Fact]
-    public async Task PostBookingReturns201WhenBookingDtoIsValid()
-    {
-        var client = _applicationFactory.CreateClient();
-        var bookingDto = new BookingDto(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            new PersonDto("John", "smith", "jsmith@example.com"),
-            new DateTime(2024, 1, 1),
-            new DateTime(2024, 1, 7));
-        var requestContent = JsonContent.Create(bookingDto, new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
-
-        var response = await client.PostAsync("api/Bookings", requestContent);
-
-        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-    }
-
-    [Fact]
-    public async Task PostBookingPersistsBookingWhenBookingDtoIsValid()
+    public async Task PostBookingReturns201AndPersistsBookingWhenBookingDtoIsValid()
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
@@ -60,8 +43,8 @@ public sealed class BookingControllerTests
         var expected = new HotelDto(createdHotel.Name, createdHotel.Id);
 
         var bookingDto = new BookingDto(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
+            createdHotel.Id,
+            createdHotel.Rooms.First().Id,
             new PersonDto("John", "smith", "jsmith@example.com"),
             new DateTime(2024, 1, 1),
             new DateTime(2024, 1, 7));
@@ -70,8 +53,12 @@ public sealed class BookingControllerTests
         var response = await client.PostAsync("api/Bookings", requestContent);
         _ = response.EnsureSuccessStatusCode();
 
-        var actual = await response.Content.ReadFromJsonAsync<BookingResponseDto>();
+        var bookings = bookingContext.Bookings.ToList();
 
-        Assert.NotEmpty(bookingContext.Bookings);
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.NotEmpty(bookings);
+        });
     }
 }

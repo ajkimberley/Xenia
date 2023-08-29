@@ -23,7 +23,13 @@ public class BookingContext : DbContext
 
     private class BookingEntityTypeConfiguration : IEntityTypeConfiguration<Booking>
     {
-        public void Configure(EntityTypeBuilder<Booking> builder) => _ = builder.HasKey(e => e.Id);
+        public void Configure(EntityTypeBuilder<Booking> builder)
+        {
+            _ = builder.HasKey(e => e.Id);
+            _ = builder.Property(e => e.RoomId).IsRequired();
+            _ = builder.Property(e => e.From).IsRequired();
+            _ = builder.Property(e => e.To).IsRequired();
+        }
     }
 
     private class HotelEntityTypeConfiguration : IEntityTypeConfiguration<Hotel>
@@ -38,6 +44,7 @@ public class BookingContext : DbContext
                 .IsRequired();
         }
     }
+
     private class RoomEntityTypeConfiguration : IEntityTypeConfiguration<Room>
     {
         public void Configure(EntityTypeBuilder<Room> builder)
@@ -45,6 +52,10 @@ public class BookingContext : DbContext
             _ = builder.HasKey(e => e.Id);
             _ = builder.Property(e => e.Number);
             _ = builder.Property(e => e.Type).HasConversion<int>();
+            _ = builder.HasMany(e => e.Bookings)
+                       .WithOne()
+                       .HasForeignKey("RoomId")
+                       .IsRequired();
         }
     }
 }

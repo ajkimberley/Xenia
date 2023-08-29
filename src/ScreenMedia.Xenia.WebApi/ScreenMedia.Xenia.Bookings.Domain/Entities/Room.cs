@@ -11,6 +11,7 @@ public class Room : Entity
         Id = id;
         Number = number;
         Type = type;
+        Bookings = new List<Booking>();
     }
 
     private Room(Guid id, Hotel hotel, int number, RoomType type)
@@ -19,6 +20,7 @@ public class Room : Entity
         Hotel = hotel;
         Number = number;
         Type = type;
+        Bookings = new List<Booking>();
     }
 
     public Hotel Hotel { get; set; } = null!;
@@ -31,6 +33,7 @@ public class Room : Entity
         RoomType.Deluxe => 2,
         _ => throw new InvalidRoomTypeException($"Room type {Type} is invalid.")
     };
+    public ICollection<Booking> Bookings { get; private set; }
 
     public static Room CreateSingle(Hotel hotel, int number)
     {
