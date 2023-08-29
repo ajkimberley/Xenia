@@ -21,7 +21,7 @@ public class BookingsController : ControllerBase
     public async Task<IActionResult> CreateBooking(BookingDto dto)
     {
         if (dto is null) return BadRequest("Request body was invalid.");
-        var cmd = new BookRoomCommand(dto.HotelId, dto.RoomId, "Joe Bloggs", "j.bloggs@example.com", dto.From, dto.To);
+        var cmd = new BookRoomCommand(dto.HotelId, dto.RoomType, "Joe Bloggs", "j.bloggs@example.com", dto.From, dto.To);
         var resposne = await _mediator.Send(cmd);
 
         // TODO: Get Booking Resource

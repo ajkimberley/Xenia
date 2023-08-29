@@ -1,9 +1,11 @@
-﻿using ScreenMedia.Xenia.Domain.Common;
+﻿using System.Collections.ObjectModel;
+
+using ScreenMedia.Xenia.Domain.Common;
 
 namespace ScreenMedia.Xenia.WebApi.Commands.UnitTests.Fakes;
 internal class FakeGenericRepository<T> : IGenericRepository<T> where T : Entity
 {
-    protected readonly List<T> _list = new();
+    protected readonly Collection<T> _list = new();
 
     public Task AddAsync(T entity)
     {

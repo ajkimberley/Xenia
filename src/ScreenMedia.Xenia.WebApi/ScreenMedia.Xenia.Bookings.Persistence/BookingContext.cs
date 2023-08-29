@@ -13,9 +13,14 @@ public class BookingContext : DbContext
 
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<Booking> Bookings { get; set; }
+    public DbSet<Room> Rooms { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        new BookingEntityTypeConfiguration().Configure(builder.Entity<Booking>());
+        new HotelEntityTypeConfiguration().Configure(builder.Entity<Hotel>());
+        new RoomEntityTypeConfiguration().Configure(builder.Entity<Room>());
+
         _ = builder.ApplyConfiguration(new BookingEntityTypeConfiguration());
         _ = builder.ApplyConfiguration(new HotelEntityTypeConfiguration());
         _ = builder.ApplyConfiguration(new RoomEntityTypeConfiguration());
@@ -26,7 +31,10 @@ public class BookingContext : DbContext
         public void Configure(EntityTypeBuilder<Booking> builder)
         {
             _ = builder.HasKey(e => e.Id);
-            _ = builder.Property(e => e.RoomId).IsRequired();
+            _ = builder.Property(e => e.RoomType).IsRequired();
+            _ = builder.Property(e => e.BookerName).IsRequired();
+            _ = builder.Property(e => e.BookerEmail).IsRequired();
+            _ = builder.Property(e => e.State).IsRequired();
             _ = builder.Property(e => e.From).IsRequired();
             _ = builder.Property(e => e.To).IsRequired();
         }
@@ -54,8 +62,7 @@ public class BookingContext : DbContext
             _ = builder.Property(e => e.Type).HasConversion<int>();
             _ = builder.HasMany(e => e.Bookings)
                        .WithOne()
-                       .HasForeignKey("RoomId")
-                       .IsRequired();
+                       .HasForeignKey("RoomId");
         }
     }
 }

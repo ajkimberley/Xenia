@@ -1,4 +1,6 @@
-﻿using ScreenMedia.Xenia.Bookings.Domain.Enums;
+﻿using System.Collections.ObjectModel;
+
+using ScreenMedia.Xenia.Bookings.Domain.Enums;
 using ScreenMedia.Xenia.Bookings.Domain.Exceptions;
 using ScreenMedia.Xenia.Domain.Common;
 
@@ -6,12 +8,14 @@ namespace ScreenMedia.Xenia.Bookings.Domain.Entities;
 
 public class Room : Entity
 {
+    private Collection<Booking> _bookings;
+
     private Room(Guid id, int number, RoomType type)
     {
         Id = id;
         Number = number;
         Type = type;
-        Bookings = new List<Booking>();
+        _bookings = new Collection<Booking>();
     }
 
     private Room(Guid id, Hotel hotel, int number, RoomType type)
@@ -20,7 +24,7 @@ public class Room : Entity
         Hotel = hotel;
         Number = number;
         Type = type;
-        Bookings = new List<Booking>();
+        _bookings = new Collection<Booking>();
     }
 
     public Hotel Hotel { get; set; } = null!;
@@ -34,7 +38,7 @@ public class Room : Entity
         _ => throw new InvalidRoomTypeException($"Room type {Type} is invalid.")
     };
 
-    public ICollection<Booking> Bookings { get; private set; }
+    public IReadOnlyCollection<Booking> Bookings => _bookings;
 
     internal bool IsAvailable(DateTime from, DateTime to)
     {
@@ -47,6 +51,8 @@ public class Room : Entity
         }
         return true;
     }
+
+    public void AddBooking(Booking booking) => _bookings.Add(booking);
 
     public static Room CreateSingle(Hotel hotel, int number)
     {

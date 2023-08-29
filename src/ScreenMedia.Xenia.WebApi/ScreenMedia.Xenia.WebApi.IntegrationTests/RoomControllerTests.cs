@@ -58,7 +58,7 @@ public sealed class RoomControllerTests
         yield return new object[] { new DateTime(2024, 1, 3), new DateTime(2024, 1, 7), 5 };
         yield return new object[] { new DateTime(2024, 1, 1), new DateTime(2024, 1, 2), 5 };
         yield return new object[] { new DateTime(2023, 1, 1), new DateTime(2023, 1, 7), 6 };
-        yield return new object[] { new DateTime(2024, 1, 31), new DateTime(2024, 1, 8), 6 };
+        yield return new object[] { new DateTime(2024, 1, 7), new DateTime(2024, 1, 8), 6 };
     }
 
     [Theory]
@@ -71,9 +71,9 @@ public sealed class RoomControllerTests
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotel = Hotel.Create("Foo");
+        var booking = Booking.Create(hotel.Id, RoomType.Single, "Joe Bloggs", "j.bloggs@example.com", new DateTime(2024, 01, 01), new DateTime(2024, 01, 07));
+        hotel.Rooms.FirstOrDefault()!.AddBooking(booking);
         _ = context.Add(hotel);
-        var booking = Booking.Create(hotel.Id, hotel.Rooms.First().Id, "Joe Bloggs", "j.bloggs@example.com", new DateTime(2024, 01, 01), new DateTime(2024, 01, 07));
-        _ = context.Add(booking);
         _ = context.SaveChanges();
 
         var response = await client.GetAsync($"api/hotels/{hotel.Id}/Rooms?From={from:u}&To={to:u}");
