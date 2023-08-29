@@ -6,7 +6,7 @@ using ScreenMedia.Xenia.WebApi.Exceptions;
 
 namespace ScreenMedia.Xenia.WebApi.Queries;
 
-public record GetRoomsQuery(Guid HotelId) : IRequest<List<RoomDto>>;
+public record GetRoomsQuery(Guid HotelId, DateTime? From, DateTime? To) : IRequest<List<RoomDto>>;
 
 public class GetRoomsHandler : IRequestHandler<GetRoomsQuery, List<RoomDto>>
 {
@@ -16,10 +16,19 @@ public class GetRoomsHandler : IRequestHandler<GetRoomsQuery, List<RoomDto>>
 
     public async Task<List<RoomDto>> Handle(GetRoomsQuery query, CancellationToken cancellationToken)
     {
-        var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsByIdAsync(query.HotelId)
-                          ?? throw new ResourceNotFoundException($"No hotel found with Id {query.HotelId}."); ;
-        var rooms = hotel.Rooms;
-        var dtos = rooms != null ? rooms.Select(r => new RoomDto(r.Hotel.Id, r.Type, r.Capacity)).ToList() : new List<RoomDto>();
-        return dtos;
+        if (query.From != null && query.To != null)
+        {
+            var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(query.HotelId)
+                ?? throw new ResourceNotFoundException($"No hotel found with Id {query.HotelId}.");
+            var availableRooms = hotel.GetAvailableRooms((DateTime)query.From, (DateTime)query.To).ToList();
+            return availableRooms != null ? availableRooms.Select(r => new RoomDto(r.Hotel.Id, r.Type, r.Capacity)).ToList() : new List<RoomDto>();
+        }
+        else
+        {
+            var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsByIdAsync(query.HotelId)
+                  ?? throw new ResourceNotFoundException($"No hotel found with Id {query.HotelId}.");
+            var dtos = hotel.Rooms != null ? hotel.Rooms.Select(r => new RoomDto(r.Hotel.Id, r.Type, r.Capacity)).ToList() : new List<RoomDto>();
+            return dtos;
+        }
     }
 }

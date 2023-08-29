@@ -33,7 +33,22 @@ public class Room : Entity
         RoomType.Deluxe => 2,
         _ => throw new InvalidRoomTypeException($"Room type {Type} is invalid.")
     };
+
     public ICollection<Booking> Bookings { get; private set; }
+
+    internal bool IsAvailable(DateTime from, DateTime to)
+    {
+        foreach (var booking in Bookings)
+        {
+            if ((from >= booking.From && from <= booking.To)
+                || (to >= booking.From && to <= booking.To)
+                || (from <= booking.From && to >= booking.To))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static Room CreateSingle(Hotel hotel, int number)
     {

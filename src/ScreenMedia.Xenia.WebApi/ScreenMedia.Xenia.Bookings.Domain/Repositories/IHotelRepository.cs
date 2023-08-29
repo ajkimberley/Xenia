@@ -6,4 +6,5 @@ public interface IHotelRepository : IGenericRepository<Hotel>
 {
     Task<IEnumerable<Hotel>> GetAllAsync(string? name);
     Task<Hotel?> GetHotelWithRoomsByIdAsync(Guid id);
+    Task<Hotel?> GetHotelWithRoomsAndBookingsByIdAsync(Guid id);
 }

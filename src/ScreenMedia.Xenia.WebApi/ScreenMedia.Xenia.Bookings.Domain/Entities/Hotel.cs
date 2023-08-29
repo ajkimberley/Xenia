@@ -14,6 +14,9 @@ public class Hotel : Entity
     public string Name { get; private set; }
     public ICollection<Room> Rooms { get; private set; }
 
+    public IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to)
+        => Rooms.Where(r => r.IsAvailable(from, to));
+
     public static Hotel Create(string name)
     {
         var newHotel = new Hotel(Guid.NewGuid(), name);

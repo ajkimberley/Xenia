@@ -17,11 +17,11 @@ public class RoomsController : ControllerBase
 
     [HttpGet(Name = nameof(GetRooms))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RoomDto>))]
-    public async Task<IActionResult> GetRooms([FromRoute] Guid hotelId)
+    public async Task<IActionResult> GetRooms([FromRoute] Guid hotelId, [FromQuery] DateTime? from, [FromQuery] DateTime? to)
     {
         try
         {
-            var qry = new GetRoomsQuery(hotelId);
+            var qry = new GetRoomsQuery(hotelId, from, to);
             var dtos = await _mediator.Send(qry);
 
             return Ok(dtos);
