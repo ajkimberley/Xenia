@@ -43,9 +43,7 @@ public class Room : Entity
             if ((from >= booking.From && from < booking.To)
                 || (to >= booking.From && to < booking.To)
                 || (from <= booking.From && to >= booking.To))
-            {
                 return false;
-            }
         }
         return true;
     }

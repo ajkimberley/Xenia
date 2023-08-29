@@ -45,7 +45,8 @@ public sealed class BookingControllerTests
         var bookingDto = new BookingDto(
             createdHotel.Id,
             createdHotel.Rooms.First().Id,
-            new PersonDto("John", "smith", "jsmith@example.com"),
+            "Joe Bloggs",
+            "j.bloggs@example.com",
             new DateTime(2024, 1, 1),
             new DateTime(2024, 1, 7));
 

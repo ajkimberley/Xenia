@@ -47,8 +47,23 @@ public sealed class RoomControllerTests
         });
     }
 
-    [Fact]
-    public async Task GetRoomsFromAndToReturns200AndAvailableRooms()
+    public static IEnumerable<object[]> QueryData()
+    {
+        yield return new object[] { new DateTime(2024, 1, 1), new DateTime(2024, 1, 7), 5 };
+        yield return new object[] { new DateTime(2024, 1, 2), new DateTime(2024, 1, 7), 5 };
+        yield return new object[] { new DateTime(2024, 1, 3), new DateTime(2024, 1, 7), 5 };
+        yield return new object[] { new DateTime(2024, 1, 4), new DateTime(2024, 1, 7), 5 };
+        yield return new object[] { new DateTime(2024, 1, 5), new DateTime(2024, 1, 7), 5 };
+        yield return new object[] { new DateTime(2024, 1, 6), new DateTime(2024, 1, 7), 5 };
+        yield return new object[] { new DateTime(2024, 1, 3), new DateTime(2024, 1, 7), 5 };
+        yield return new object[] { new DateTime(2024, 1, 1), new DateTime(2024, 1, 2), 5 };
+        yield return new object[] { new DateTime(2023, 1, 1), new DateTime(2023, 1, 7), 6 };
+        yield return new object[] { new DateTime(2024, 1, 31), new DateTime(2024, 1, 8), 6 };
+    }
+
+    [Theory]
+    [MemberData(nameof(QueryData))]
+    public async Task GetRoomsFromAndToReturns200AndAvailableRooms(DateTime from, DateTime to, int expected)
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
@@ -57,18 +72,18 @@ public sealed class RoomControllerTests
 
         var hotel = Hotel.Create("Foo");
         _ = context.Add(hotel);
-        var booking = Booking.Create(hotel.Id, hotel.Rooms.First().Id, new DateTime(2024, 01, 01), new DateTime(2024, 01, 07));
+        var booking = Booking.Create(hotel.Id, hotel.Rooms.First().Id, "Joe Bloggs", "j.bloggs@example.com", new DateTime(2024, 01, 01), new DateTime(2024, 01, 07));
         _ = context.Add(booking);
         _ = context.SaveChanges();
 
-        var response = await client.GetAsync($"api/hotels/{hotel.Id}/Rooms?From=2024-01-01&To=2024-01-07");
+        var response = await client.GetAsync($"api/hotels/{hotel.Id}/Rooms?From={from:u}&To={to:u}");
         var actual = await response.Content.ReadFromJsonAsync<List<RoomDto>>();
 
         Assert.Multiple(() =>
         {
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.NotNull(actual);
-            Assert.Equivalent(5, actual.Count);
+            Assert.Equivalent(expected, actual.Count);
         });
     }
 

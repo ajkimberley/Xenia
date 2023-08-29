@@ -7,6 +7,7 @@ using ScreenMedia.Xenia.WebApi.Exceptions;
 using ScreenMedia.Xenia.WebApi.Queries;
 
 namespace ScreenMedia.Xenia.WebApi.Controllers;
+
 [Route("api/hotels/{hotelId:Guid}/[controller]")]
 [ApiController]
 public class RoomsController : ControllerBase
@@ -17,11 +18,11 @@ public class RoomsController : ControllerBase
 
     [HttpGet(Name = nameof(GetRooms))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RoomDto>))]
-    public async Task<IActionResult> GetRooms([FromRoute] Guid hotelId, [FromQuery] DateTime? from, [FromQuery] DateTime? to)
+    public async Task<IActionResult> GetRooms([FromRoute] Guid hotelId, [FromQuery] DateTime? from, DateTime? to)
     {
         try
         {
-            var qry = new GetRoomsQuery(hotelId, from, to);
+            var qry = new GetAvailableRoomsQuery(hotelId, from, to);
             var dtos = await _mediator.Send(qry);
 
             return Ok(dtos);

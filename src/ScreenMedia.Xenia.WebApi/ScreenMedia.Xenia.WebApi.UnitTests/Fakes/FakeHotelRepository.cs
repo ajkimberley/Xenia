@@ -10,4 +10,6 @@ internal class FakeHotelRepository : FakeGenericRepository<Hotel>, IHotelReposit
         Task.FromResult(_list.Where(h => h.Id == id).SingleOrDefault());
     public Task<Hotel?> GetHotelWithRoomsByIdAsync(Guid id) =>
         Task.FromResult(_list.Where(h => h.Id == id).SingleOrDefault());
+    public Task<Hotel?> GetHotelWithAvailableRooms(Guid id, DateTime? start, DateTime? to) =>
+        throw new NotImplementedException();
 }
