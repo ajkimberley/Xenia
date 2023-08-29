@@ -40,8 +40,8 @@ public class Room : Entity
     {
         foreach (var booking in Bookings)
         {
-            if ((from >= booking.From && from <= booking.To)
-                || (to >= booking.From && to <= booking.To)
+            if ((from >= booking.From && from < booking.To)
+                || (to >= booking.From && to < booking.To)
                 || (from <= booking.From && to >= booking.To))
             {
                 return false;
