@@ -56,12 +56,12 @@ public sealed class BookingControllerTests
         var response = await client.PostAsync("api/Bookings", requestContent);
         _ = response.EnsureSuccessStatusCode();
 
-        //var bookings = bookingContext.Bookings.ToList();
+        var bookings = bookingContext.Bookings.ToList();
 
         Assert.Multiple(() =>
         {
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-            Assert.True(true);
+            Assert.NotEmpty(bookings);
         });
     }
 }

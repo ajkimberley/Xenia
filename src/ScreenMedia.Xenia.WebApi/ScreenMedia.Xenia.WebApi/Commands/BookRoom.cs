@@ -26,19 +26,10 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, BookingResponseD
         var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(request.HotelId)
             ?? throw new ResourceNotFoundException($"Unable to find hotel with Id {request.HotelId}.");
 
-        try
-        {
-            var newBooking = Booking.Create(request.HotelId, request.RoomType, request.BookerName, request.BookerEmail, request.From, request.To);
-            hotel.BookRoom(newBooking);
-            await _unitOfWork.Bookings.AddAsync(newBooking);
-            _ = await _unitOfWork.CompleteAsync();
-        }
-        catch (Exception ex)
-        {
-#pragma warning disable CA2200 // Rethrow to preserve stack details
-            throw ex;
-#pragma warning restore CA2200 // Rethrow to preserve stack details
-        }
+        var newBooking = Booking.Create(request.HotelId, request.RoomType, request.BookerName, request.BookerEmail, request.From, request.To);
+        hotel.BookRoom(newBooking);
+        await _unitOfWork.Bookings.AddAsync(newBooking);
+        _ = await _unitOfWork.CompleteAsync();
         return new BookingResponseDto();
     }
 }

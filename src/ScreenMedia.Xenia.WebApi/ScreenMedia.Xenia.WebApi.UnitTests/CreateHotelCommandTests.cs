@@ -1,7 +1,6 @@
-using ScreenMedia.Xenia.WebApi.Commands;
 using ScreenMedia.Xenia.WebApi.Commands.UnitTests.Fakes;
 
-namespace ScreenMedia.Xenia.WebApi.UnitTests;
+namespace ScreenMedia.Xenia.WebApi.Commands.UnitTests;
 
 public class CreateHotelCommandTests
 {
@@ -18,7 +17,7 @@ public class CreateHotelCommandTests
     [InlineData("Travel Bodge")]
     [InlineData("Mediocre Inn")]
     [InlineData("Holiday Bin")]
-    public async Task Given_ValidCommand_Should_AddHotelToRepo(string hotelName)
+    public async Task Given_ValidCommand_Should_AddHotelToRepoWithSixRooms(string hotelName)
     {
         var cmd = new CreateHotelCommand(hotelName);
 
@@ -29,6 +28,7 @@ public class CreateHotelCommandTests
         {
             Assert.NotNull(actual);
             Assert.Equal(hotelName, actual.Name);
+            Assert.Equal(6, actual.Rooms.Count);
         });
     }
 }

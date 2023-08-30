@@ -5,6 +5,7 @@ using ScreenMedia.Xenia.WebApi.Commands.UnitTests.Fakes;
 using ScreenMedia.Xenia.WebApi.Exceptions;
 
 namespace ScreenMedia.Xenia.WebApi.Commands.UnitTests;
+
 public class BookRoomCommandTests
 {
     private readonly BookRoomHandler _sut;
