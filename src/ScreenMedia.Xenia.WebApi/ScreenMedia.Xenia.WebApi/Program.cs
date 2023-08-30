@@ -24,12 +24,14 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
+// NOTE: Ordinarily I wouldn't expose Swagger in a non-dev enviornment
+//       I'm doing it here for simply for testing purposes.
+_ = app.UseSwagger();
+_ = app.UseSwaggerUI();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    _ = app.UseSwagger();
-    _ = app.UseSwaggerUI();
-
     // For initial dev purposes only
     // TODO: Replace with migrations
     using var scope = app.Services.CreateScope();
