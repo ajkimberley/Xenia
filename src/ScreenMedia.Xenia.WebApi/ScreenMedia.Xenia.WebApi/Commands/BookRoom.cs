@@ -30,7 +30,7 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, BookingDto>
         hotel.BookRoom(newBooking);
         await _unitOfWork.Bookings.AddAsync(newBooking);
         _ = await _unitOfWork.CompleteAsync();
-        var bookingDto = new BookingDto(hotel.Id, newBooking.RoomType, newBooking.BookerName, newBooking.BookerEmail, newBooking.From, newBooking.To, newBooking.State, newBooking.Id);
+        var bookingDto = new BookingDto(hotel.Id, newBooking.RoomType, newBooking.BookerName, newBooking.BookerEmail, newBooking.From, newBooking.To, newBooking.State, newBooking.Id, newBooking.Reference);
         return bookingDto;
     }
 }

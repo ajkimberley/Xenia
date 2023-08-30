@@ -37,6 +37,7 @@ public class BookingContext : DbContext
             _ = builder.Property(e => e.State).IsRequired();
             _ = builder.Property(e => e.From).IsRequired();
             _ = builder.Property(e => e.To).IsRequired();
+            _ = builder.HasIndex(e => e.Reference).IsUnique();
         }
     }
 

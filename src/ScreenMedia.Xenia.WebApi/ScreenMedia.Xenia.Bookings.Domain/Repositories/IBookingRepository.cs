@@ -4,4 +4,5 @@ using ScreenMedia.Xenia.Domain.Common;
 namespace ScreenMedia.Xenia.Bookings.Domain.Repositories;
 public interface IBookingRepository : IGenericRepository<Booking>
 {
+    Task<IEnumerable<Booking>> GetAllAsync(string? bookingRef);
 }

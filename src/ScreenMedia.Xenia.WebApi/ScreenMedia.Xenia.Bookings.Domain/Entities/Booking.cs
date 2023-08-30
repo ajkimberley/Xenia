@@ -1,5 +1,6 @@
 ﻿using ScreenMedia.Xenia.Bookings.Domain.Enums;
 using ScreenMedia.Xenia.Domain.Common;
+using ScreenMedia.Xenia.Domain.Common.Utilities;
 
 namespace ScreenMedia.Xenia.Bookings.Domain.Entities;
 
@@ -8,6 +9,7 @@ public class Booking : Entity
     private Booking(Guid id, Guid hotelId, RoomType roomType, string bookerName, string bookerEmail, BookingState state, DateTime from, DateTime to)
     {
         Id = id;
+        Reference = Crockbase32.EncodeByteString(id.ToString());
         HotelId = hotelId;
         RoomType = roomType;
         BookerName = bookerName;
@@ -25,6 +27,7 @@ public class Booking : Entity
     public BookingState State { get; private set; }
     public DateTime From { get; private set; }
     public DateTime To { get; private set; }
+    public string Reference { get; private set; }
 
     public void UpdateState(BookingState state) => State = state;
 
