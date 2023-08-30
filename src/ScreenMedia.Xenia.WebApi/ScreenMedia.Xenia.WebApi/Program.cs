@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 
 // Db Context
 builder.Services.AddDbContext<BookingContext>((container, options) =>
-    _ = options.UseSqlServer("Server=localhost;Database=Xenia;Trusted_Connection=True;TrustServerCertificate=True"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
 
