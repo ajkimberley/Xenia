@@ -21,7 +21,7 @@ public class CreateHotelHandler : IRequestHandler<CreateHotelCommand, HotelDto>
         await _unitOfWork.Hotels.AddAsync(hotel);
         _ = await _unitOfWork.CompleteAsync();
 
-        var createdHotel = new HotelDto(hotel.Name, hotel.Id);
-        return createdHotel;
+        var bookingDto = new HotelDto(hotel.Name, hotel.Id);
+        return bookingDto;
     }
 }

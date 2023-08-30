@@ -33,7 +33,7 @@ public class GetHotelQueryTests
         var qry = new GetHotelQuery(newHotel.Id);
         var actual = await _sut.Handle(qry, CancellationToken.None);
 
-        var expected = new HotelDto { Name = dto.Name, Id = newHotel.Id };
+        var expected = new HotelDto(dto.Name, newHotel.Id);
         Assert.Equivalent(expected, actual);
     }
 

@@ -26,6 +26,8 @@ public class Booking : Entity
     public DateTime From { get; private set; }
     public DateTime To { get; private set; }
 
+    public void UpdateState(BookingState state) => State = state;
+
     public static Booking Create(Guid hotelId, RoomType roomType, string bookerName, string bookerEmail, DateTime from, DateTime to)
         => new(Guid.NewGuid(), hotelId, roomType, bookerName, bookerEmail, BookingState.Requested, from, to);
 }

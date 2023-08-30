@@ -13,15 +13,15 @@ public record BookRoomCommand(Guid HotelId,
                               string BookerName,
                               string BookerEmail,
                               DateTime From,
-                              DateTime To) : IRequest<BookingResponseDto>;
+                              DateTime To) : IRequest<BookingDto>;
 
-public class BookRoomHandler : IRequestHandler<BookRoomCommand, BookingResponseDto>
+public class BookRoomHandler : IRequestHandler<BookRoomCommand, BookingDto>
 {
     private readonly IUnitOfWork _unitOfWork;
 
     public BookRoomHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
-    public async Task<BookingResponseDto> Handle(BookRoomCommand request, CancellationToken cancellationToken)
+    public async Task<BookingDto> Handle(BookRoomCommand request, CancellationToken cancellationToken)
     {
         var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(request.HotelId)
             ?? throw new ResourceNotFoundException($"Unable to find hotel with Id {request.HotelId}.");
@@ -30,6 +30,7 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, BookingResponseD
         hotel.BookRoom(newBooking);
         await _unitOfWork.Bookings.AddAsync(newBooking);
         _ = await _unitOfWork.CompleteAsync();
-        return new BookingResponseDto();
+        var bookingDto = new BookingDto(hotel.Id, newBooking.RoomType, newBooking.BookerName, newBooking.BookerEmail, newBooking.From, newBooking.To, newBooking.State, newBooking.Id);
+        return bookingDto;
     }
 }

@@ -1,3 +1,3 @@
 ﻿namespace ScreenMedia.Xenia.WebApi.Dtos;
 
-public readonly record struct HotelDto(string Name, Guid? Id = null);
+public record HotelDto(string Name, Guid? Id = null);

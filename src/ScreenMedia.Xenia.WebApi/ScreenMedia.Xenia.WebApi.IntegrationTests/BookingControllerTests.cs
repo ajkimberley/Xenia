@@ -18,6 +18,54 @@ public sealed class BookingControllerTests
         _applicationFactory = applicationFactory;
 
     [Fact]
+    public async Task GetBookingReturns200WhenBookingIsInDatabase()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<BookingContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+
+        var hotels = context.Hotels.ToList();
+        context.Hotels.RemoveRange(hotels);
+        _ = context.SaveChanges();
+
+        var hotel = Hotel.Create("Travel Bodge");
+        var room = hotel.Rooms.First();
+        var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1), new DateTime(2024, 1, 7));
+        room.AddBooking(booking);
+        _ = context.Add(hotel);
+        _ = context.SaveChanges();
+
+        var expected = new BookingDto(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail, booking.From, booking.To, booking.State, booking.Id);
+
+        var response = await client.GetAsync($"api/Bookings/{booking.Id}");
+        var actual = await response.Content.ReadFromJsonAsync<BookingDto>();
+
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected, actual);
+        });
+    }
+
+    [Fact]
+    public async Task GetBookingReturns404WhenBookingIsNotInDatabase()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        using var context = scope.ServiceProvider.GetService<BookingContext>()
+            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+
+        var hotels = context.Hotels.ToList();
+        context.Hotels.RemoveRange(hotels);
+        _ = context.SaveChanges();
+
+        var response = await client.GetAsync($"api/Bookings/{Guid.NewGuid}");
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
     public async Task PostBookingReturns400WhenBookingDtoIsInvalid()
     {
         var client = _applicationFactory.CreateClient();

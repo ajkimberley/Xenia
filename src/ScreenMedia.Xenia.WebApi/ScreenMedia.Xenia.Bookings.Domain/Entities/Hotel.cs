@@ -25,7 +25,11 @@ public class Hotel : Entity
     public void BookRoom(Booking booking)
     {
         var availableRooms = GetAvailableRooms(booking.From, booking.To, booking.RoomType);
-        if (availableRooms.Any()) availableRooms.First().AddBooking(booking);
+        if (availableRooms.Any())
+        {
+            booking.UpdateState(BookingState.Confirmed);
+            availableRooms.First().AddBooking(booking);
+        }
         else throw new NoVacanciesAvailableException($"There are no vaccencies for a {booking.RoomType} room between dates {booking.From:u} and {booking.To:u}.");
     }
 

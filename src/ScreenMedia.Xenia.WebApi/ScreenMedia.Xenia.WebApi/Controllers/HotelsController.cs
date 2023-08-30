@@ -50,7 +50,7 @@ public class HotelsController : ControllerBase
     }
 
     [HttpPost(Name = nameof(CreateHotel))]
-    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(HotelResponse))]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(HotelResponseDto))]
     public async Task<IActionResult> CreateHotel(HotelDto dto)
     {
         var cmd = new CreateHotelCommand(dto.Name);
@@ -63,8 +63,7 @@ public class HotelsController : ControllerBase
             new LinkDto(selfLink!, "self", "GET")
         };
 
-        var hotelCreatedResponse = new HotelResponse(createdHotel, hotelLinks);
-
+        var hotelCreatedResponse = new HotelResponseDto(createdHotel, hotelLinks);
         return Created(selfLink!, hotelCreatedResponse);
     }
 }

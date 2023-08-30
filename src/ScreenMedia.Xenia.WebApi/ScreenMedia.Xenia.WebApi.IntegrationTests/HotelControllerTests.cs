@@ -57,7 +57,7 @@ public sealed class HotelControllerTests
         var response = await client.PostAsync("api/Hotels", requestContent);
         _ = response.EnsureSuccessStatusCode();
 
-        var actual = await response.Content.ReadFromJsonAsync<HotelResponse>();
+        var actual = await response.Content.ReadFromJsonAsync<HotelResponseDto>();
 
         Assert.NotEmpty(context.Hotels.Where(h => h.Name == hotelName));
     }
