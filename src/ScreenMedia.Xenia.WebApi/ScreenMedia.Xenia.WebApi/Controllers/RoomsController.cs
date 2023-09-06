@@ -23,9 +23,8 @@ public class RoomsController : ControllerBase
         try
         {
             var qry = new GetAvailableRoomsQuery(hotelId, from, to);
-            var dtos = await _mediator.Send(qry);
-
-            return Ok(dtos);
+            var result = await _mediator.Send(qry);
+            return result.Match<IActionResult>(Ok, BadRequest);
         }
         catch (ResourceNotFoundException ex)
         {

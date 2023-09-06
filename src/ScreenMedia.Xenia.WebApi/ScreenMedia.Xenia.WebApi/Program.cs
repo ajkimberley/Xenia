@@ -1,8 +1,13 @@
+using FluentValidation;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 using ScreenMedia.Xenia.Bookings.Domain;
 using ScreenMedia.Xenia.Bookings.Persistence;
+using ScreenMedia.Xenia.WebApi.Dtos;
+using ScreenMedia.Xenia.WebApi.Queries;
+using ScreenMedia.Xenia.WebApi.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +22,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BookingContext>((container, options) =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
-
 // Composition Root
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IValidator<GetAvailableRoomsQuery>, GetAvailableRoomsQueryValidator>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Singleton);
+
+builder.Services.AddMediatR(c =>
+    c.RegisterServicesFromAssemblyContaining<Program>()
+    .AddValidation<GetAvailableRoomsQuery, List<RoomDto>>());
 
 var app = builder.Build();
 
@@ -36,7 +46,6 @@ if (app.Environment.IsDevelopment())
     // TODO: Replace with migrations
     using var scope = app.Services.CreateScope();
     using var hotelContext = scope.ServiceProvider.GetService<BookingContext>();
-    _ = hotelContext?.Database.EnsureDeleted();
     _ = hotelContext?.Database.EnsureCreated();
 }
 
