@@ -1,17 +1,42 @@
-param name string
+param appServiceName string
 param location string
 param hostingPlanName string
 param alwaysOn bool
 param ftpsState string
-param sku string
-param skuCode string
-param workerSize string
-param workerSizeId string
-param numberOfWorkers string
+param hostPlanSku string
+param hostPlanSkuCode string
 param linuxFxVersion string
+param sqlServerName string
+param sqlServerAdminType string
+param sqlServerAdminLogin string
+param sqlServerAdminSid string
+param sqlDbSkuName string
+param sqlDbMaxSizeBytes int
+param sqlDbZoneRedundant bool
+param sqlDbAutoPauseDelay int
+param sqlDbRequestedBackupStorageRedundancy string
+param sqlDbMinCapacity string
+param sqlDbIsLedgerOn bool
+param sqlDbAvailabilityZone string
+
+resource xeniaApiHostingPlan 'Microsoft.Web/serverfarms@2022-09-01' = {
+  name: hostingPlanName
+  location: location
+  kind: 'linux'
+  properties: {
+    targetWorkerSizeId: 0
+    reserved: true
+    zoneRedundant: false
+  }
+  sku: {
+    tier: hostPlanSku
+    name: hostPlanSkuCode
+  }
+  dependsOn: []
+}
 
 resource xeniaApiAppService 'Microsoft.Web/sites@2018-11-01' = {
-  name: name
+  name: appServiceName
   location: location
   tags: {}
   properties: {
@@ -27,23 +52,35 @@ resource xeniaApiAppService 'Microsoft.Web/sites@2018-11-01' = {
   }
 }
 
-#disable-next-line BCP081
-resource xeniaApiHostingPlan 'Microsoft.Web/serverfarms@2018-11-01' = {
-  name: hostingPlanName
+resource xeniaSqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
+  name: sqlServerName
   location: location
-  kind: 'linux'
-  tags: {}
+}
+
+resource xeniaSqlServerAdministrator 'Microsoft.Sql/servers/administrators@2023-02-01-preview' = {
+  parent: xeniaSqlServer
+  name: 'SqlServerAdmin'
   properties: {
-    name: hostingPlanName
-    workerSize: workerSize
-    workerSizeId: workerSizeId
-    numberOfWorkers: numberOfWorkers
-    reserved: true
-    zoneRedundant: false
+    administratorType: sqlServerAdminType
+    login: sqlServerAdminLogin
+    sid: sqlServerAdminSid
   }
+}
+
+resource servers_screen_media_xenia_dev_name_Xenia 'Microsoft.Sql/servers/databases@2023-02-01-preview' = {
+  parent: xeniaSqlServer
+  name: 'Xenia'
+  location: location
   sku: {
-    tier: sku
-    name: skuCode
+    name: sqlDbSkuName
   }
-  dependsOn: []
+  properties: {
+    maxSizeBytes: sqlDbMaxSizeBytes
+    zoneRedundant: sqlDbZoneRedundant
+    autoPauseDelay: sqlDbAutoPauseDelay
+    requestedBackupStorageRedundancy: sqlDbRequestedBackupStorageRedundancy
+    minCapacity: sqlDbMinCapacity
+    isLedgerOn: sqlDbIsLedgerOn
+    availabilityZone: sqlDbAvailabilityZone
+  }
 }

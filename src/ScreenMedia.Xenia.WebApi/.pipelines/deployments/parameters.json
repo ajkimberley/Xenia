@@ -2,11 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "name": {
-            "value": "xenia-web-api"
-        },
         "location": {
-            "value": "UK South"
+            "value": "East US"
         },
         "hostingPlanName": {
             "value": "ASP-ScreenMediaXenia-b0f0"
@@ -17,23 +14,53 @@
         "ftpsState": {
             "value": "FtpsOnly"
         },
-        "sku": {
+        "hostPlanSku": {
             "value": "Free"
         },
-        "skuCode": {
+        "hostPlanSkuCode": {
             "value": "F1"
         },
-        "numberOfWorkers": {
-            "value": "1"
-        },
-        "workerSize": {
-            "value": "0"
-        },
-        "workerSizeId": {
-            "value": "0"
+        "appServiceName": {
+            "value": "screen-media-xenia-dev-app-service"
         },
         "linuxFxVersion": {
             "value": "DOTNETCORE|7.0"
+        },
+        "sqlServerName": {
+            "value": "screen-media-xenia-dev-db"
+        },
+        "sqlServerAdminType": {
+            "value": "ActiveDirectory"
+        },
+        "sqlServerAdminLogin": {
+            "value": "xenia@adamjkimberleyoutlook.onmicrosoft.com"
+        },
+        "sqlServerAdminSid": {
+            "value": "17abba7e-d75b-4ef4-b593-bfc2fc9a17a6"
+        },
+        "sqlDbSkuName": {
+            "value": "GP_S_Gen5"
+        },
+        "sqlDbMaxSizeBytes": {
+            "value": 34359738368
+        },
+        "sqlDbZoneRedundant": {
+            "value": false
+        },
+        "sqlDbAutoPauseDelay": {
+            "value": 60
+        },
+        "sqlDbRequestedBackupStorageRedundancy": {
+            "value": "Local"
+        },
+        "sqlDbMinCapacity": {
+            "value": "0.5"
+        },
+        "sqlDbIsLedgerOn": {
+            "value": false
+        },
+        "sqlDbAvailabilityZone": {
+            "value": "NoPreference"
         }
     }
 }
