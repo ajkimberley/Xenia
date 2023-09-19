@@ -20,7 +20,7 @@ param sqlDbIsLedgerOn bool
 param sqlDbAvailabilityZone string
 
 resource xeniaApiHostingPlan 'Microsoft.Web/serverfarms@2022-09-01' = {
-  name: hostingPlanName
+  name: '${hostingPlanName}_${uniqueString(resourceGroup().id)}'
   location: location
   kind: 'linux'
   properties: {
