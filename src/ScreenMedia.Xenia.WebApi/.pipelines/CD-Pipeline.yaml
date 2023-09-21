@@ -47,6 +47,7 @@ steps:
   displayName: Publish Xenia WebApi to App Service
   inputs:
     azureSubscription: '$(azureServiceConnection)'
+    ResourceGroupName: '$(resourceGroupName)'
     appType: 'webAppLinux'
-    appName: 'xenia-web-api'
+    appName: 'screen-media-xenia-web-api'
     package: '$(Pipeline.Workspace)/CI-Pipeline/WebApi/ScreenMedia.Xenia.WebApi.zip'
