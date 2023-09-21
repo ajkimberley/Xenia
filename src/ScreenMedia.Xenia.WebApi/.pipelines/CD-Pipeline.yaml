@@ -49,5 +49,5 @@ steps:
     azureSubscription: '$(azureServiceConnection)'
     ResourceGroupName: '$(resourceGroupName)'
     appType: 'webAppLinux'
-    appName: 'screen-media-xenia-web-api'
+    appName: 'screen-media-xenia-dev-app-service'
     package: '$(Pipeline.Workspace)/CI-Pipeline/WebApi/ScreenMedia.Xenia.WebApi.zip'
