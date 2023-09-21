@@ -10,7 +10,7 @@ param sqlServerName string
 param sqlServerAdminType string
 param sqlServerAdminLogin string
 param sqlServerAdminSid string
-param sqlDbSkuName string
+param sqlDbSku object
 param sqlDbMaxSizeBytes int
 param sqlDbZoneRedundant bool
 param sqlDbAutoPauseDelay int
@@ -20,7 +20,7 @@ param sqlDbIsLedgerOn bool
 param sqlDbAvailabilityZone string
 
 resource xeniaApiHostingPlan 'Microsoft.Web/serverfarms@2022-09-01' = {
-  name: '${hostingPlanName}_${uniqueString(resourceGroup().id)}'
+  name: '${hostingPlanName}${uniqueString(resourceGroup().id)}'
   location: location
   kind: 'linux'
   properties: {
@@ -55,11 +55,15 @@ resource xeniaApiAppService 'Microsoft.Web/sites@2018-11-01' = {
 resource xeniaSqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
   name: sqlServerName
   location: location
+  properties: {
+    administratorLogin: 'superduperlogin'
+    administratorLoginPassword: 'zpgxoqp_42'
+  }
 }
 
 resource xeniaSqlServerAdministrator 'Microsoft.Sql/servers/administrators@2023-02-01-preview' = {
   parent: xeniaSqlServer
-  name: 'SqlServerAdmin'
+  name: 'ActiveDirectory'
   properties: {
     administratorType: sqlServerAdminType
     login: sqlServerAdminLogin
@@ -71,9 +75,7 @@ resource servers_screen_media_xenia_dev_name_Xenia 'Microsoft.Sql/servers/databa
   parent: xeniaSqlServer
   name: 'Xenia'
   location: location
-  sku: {
-    name: sqlDbSkuName
-  }
+  sku: sqlDbSku
   properties: {
     maxSizeBytes: sqlDbMaxSizeBytes
     zoneRedundant: sqlDbZoneRedundant

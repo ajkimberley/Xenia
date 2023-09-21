@@ -38,8 +38,12 @@
         "sqlServerAdminSid": {
             "value": "17abba7e-d75b-4ef4-b593-bfc2fc9a17a6"
         },
-        "sqlDbSkuName": {
-            "value": "GP_S_Gen5"
+        "sqlDbSku": {
+            "value": {
+                "name": "GP_S_Gen5_1",
+                "tier": "GeneralPurpose",
+                "family": "Gen5"
+            }
         },
         "sqlDbMaxSizeBytes": {
             "value": 34359738368

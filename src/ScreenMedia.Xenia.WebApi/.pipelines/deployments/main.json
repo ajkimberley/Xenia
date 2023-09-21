@@ -1,0 +1,153 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.21.1.54444",
+      "templateHash": "1561922905788801931"
+    }
+  },
+  "parameters": {
+    "appServiceName": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "hostingPlanName": {
+      "type": "string"
+    },
+    "alwaysOn": {
+      "type": "bool"
+    },
+    "ftpsState": {
+      "type": "string"
+    },
+    "hostPlanSku": {
+      "type": "string"
+    },
+    "hostPlanSkuCode": {
+      "type": "string"
+    },
+    "linuxFxVersion": {
+      "type": "string"
+    },
+    "sqlServerName": {
+      "type": "string"
+    },
+    "sqlServerAdminType": {
+      "type": "string"
+    },
+    "sqlServerAdminLogin": {
+      "type": "string"
+    },
+    "sqlServerAdminSid": {
+      "type": "string"
+    },
+    "sqlDbSkuName": {
+      "type": "string"
+    },
+    "sqlDbMaxSizeBytes": {
+      "type": "int"
+    },
+    "sqlDbZoneRedundant": {
+      "type": "bool"
+    },
+    "sqlDbAutoPauseDelay": {
+      "type": "int"
+    },
+    "sqlDbRequestedBackupStorageRedundancy": {
+      "type": "string"
+    },
+    "sqlDbMinCapacity": {
+      "type": "string"
+    },
+    "sqlDbIsLedgerOn": {
+      "type": "bool"
+    },
+    "sqlDbAvailabilityZone": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2022-09-01",
+      "name": "[format('{0}{1}', parameters('hostingPlanName'), uniqueString(resourceGroup().id))]",
+      "location": "[parameters('location')]",
+      "kind": "linux",
+      "properties": {
+        "targetWorkerSizeId": 0,
+        "reserved": true,
+        "zoneRedundant": false
+      },
+      "sku": {
+        "tier": "[parameters('hostPlanSku')]",
+        "name": "[parameters('hostPlanSkuCode')]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-11-01",
+      "name": "[parameters('appServiceName')]",
+      "location": "[parameters('location')]",
+      "tags": {},
+      "properties": {
+        "siteConfig": {
+          "appSettings": [],
+          "linuxFxVersion": "[parameters('linuxFxVersion')]",
+          "alwaysOn": "[parameters('alwaysOn')]",
+          "ftpsState": "[parameters('ftpsState')]"
+        },
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', format('{0}{1}', parameters('hostingPlanName'), uniqueString(resourceGroup().id)))]",
+        "clientAffinityEnabled": false,
+        "httpsOnly": true
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', format('{0}{1}', parameters('hostingPlanName'), uniqueString(resourceGroup().id)))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2022-05-01-preview",
+      "name": "[parameters('sqlServerName')]",
+      "location": "[parameters('location')]",
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Sql/servers/administrators",
+      "apiVersion": "2023-02-01-preview",
+      "name": "[format('{0}/{1}', parameters('sqlServerName'), 'SqlServerAdmin')]",
+      "properties": {
+        "administratorType": "[parameters('sqlServerAdminType')]",
+        "login": "xenia@adamjkimberleyoutlook.onmicrosoft.com",
+        "sid": "[parameters('sqlServerAdminSid')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Sql/servers/databases",
+      "apiVersion": "2023-02-01-preview",
+      "name": "[format('{0}/{1}', parameters('sqlServerName'), 'Xenia')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('sqlDbSkuName')]"
+      },
+      "properties": {
+        "maxSizeBytes": "[parameters('sqlDbMaxSizeBytes')]",
+        "zoneRedundant": "[parameters('sqlDbZoneRedundant')]",
+        "autoPauseDelay": "[parameters('sqlDbAutoPauseDelay')]",
+        "requestedBackupStorageRedundancy": "[parameters('sqlDbRequestedBackupStorageRedundancy')]",
+        "minCapacity": "[parameters('sqlDbMinCapacity')]",
+        "isLedgerOn": "[parameters('sqlDbIsLedgerOn')]",
+        "availabilityZone": "[parameters('sqlDbAvailabilityZone')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
+      ]
+    }
+  ]
+}
