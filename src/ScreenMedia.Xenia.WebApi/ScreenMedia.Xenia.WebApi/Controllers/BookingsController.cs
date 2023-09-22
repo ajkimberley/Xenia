@@ -57,7 +57,7 @@ public class BookingsController : ControllerBase
     {
         try
         {
-            var cmd = new BookRoomCommand(dto.HotelId, dto.RoomType, "Joe Bloggs", "j.bloggs@example.com", dto.From, dto.To);
+            var cmd = new BookRoomCommand(dto.HotelId, dto.RoomType, dto.BookerName, dto.BookerEmail, dto.From, dto.To);
             var createdBooking = await _mediator.Send(cmd);
 
             // TODO: Validate Host header
