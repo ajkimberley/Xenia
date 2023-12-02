@@ -40,17 +40,8 @@ public class Room : Entity
 
     public IReadOnlyCollection<Booking> Bookings => _bookings;
 
-    internal bool IsAvailable(DateTime from, DateTime to)
-    {
-        foreach (var booking in Bookings)
-        {
-            if ((from >= booking.From && from < booking.To)
-                || (to >= booking.From && to < booking.To)
-                || (from <= booking.From && to >= booking.To))
-                return false;
-        }
-        return true;
-    }
+    internal bool IsAvailable(DateTime from, DateTime to) 
+        => Bookings.All(booking => (from >= booking.To || to <= booking.From));
 
     public void AddBooking(Booking booking) => _bookings.Add(booking);
 
