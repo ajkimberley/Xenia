@@ -15,10 +15,11 @@ public class Hotel : Entity
 
     public string Name { get; private set; }
     public ICollection<Room> Rooms { get; private set; }
-    public IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to)
+
+    private IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to)
         => Rooms.Where(r => r.IsAvailable(from, to));
 
-    public IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to, RoomType roomType) =>
+    private IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to, RoomType roomType) =>
         GetAvailableRooms(from, to).Where(r => r.Type == roomType);
 
     // TODO: Return more informative result
@@ -31,7 +32,7 @@ public class Hotel : Entity
         }
         else
             throw new NoVacanciesAvailableException(
-                $"There are no vaccencies for a {booking.RoomType} room between dates {booking.From:u} and {booking.To:u}.");
+                $"There are no vacancies for a {booking.RoomType} room between dates {booking.From:u} and {booking.To:u}.");
     }
 
     public static Hotel Create(string name)

@@ -6,7 +6,8 @@ namespace ScreenMedia.Xenia.Bookings.Domain.Entities;
 
 public class Booking : Entity
 {
-    private Booking(Guid id, Guid hotelId, RoomType roomType, string bookerName, string bookerEmail, BookingState state, DateTime from, DateTime to)
+    private Booking(Guid id, Guid hotelId, RoomType roomType, string bookerName, string bookerEmail, BookingState state,
+        DateTime from, DateTime to)
     {
         Id = id;
         Reference = Crockbase32.EncodeByteString(id.ToString());
@@ -20,7 +21,6 @@ public class Booking : Entity
     }
 
     public Guid HotelId { get; private set; }
-    public Guid RoomId { get; private set; }
     public Room? Room { get; private set; }
     public RoomType RoomType { get; private set; }
     public string BookerName { get; set; }

@@ -64,7 +64,8 @@ public class BookingContext : DbContext
             _ = builder.Property<DateTime>("RowVersion").IsConcurrencyToken();
             _ = builder.HasMany(r => r.Bookings)
                        .WithOne(b => b.Room)
-                       .HasForeignKey("RoomId");
+                       .HasForeignKey("RoomId")
+                       .IsRequired();
         }
     }
 }
