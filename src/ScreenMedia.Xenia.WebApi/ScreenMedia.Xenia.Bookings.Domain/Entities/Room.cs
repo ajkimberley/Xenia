@@ -9,7 +9,7 @@ namespace ScreenMedia.Xenia.Bookings.Domain.Entities;
 
 public class Room : Entity
 {
-    private Collection<Booking> _bookings;
+    private readonly Collection<Booking> _bookings;
 
     private Room(Guid id, int number, RoomType type)
     {

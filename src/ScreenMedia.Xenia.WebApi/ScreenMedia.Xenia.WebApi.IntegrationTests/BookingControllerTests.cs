@@ -146,7 +146,7 @@ public sealed class BookingControllerTests
     }
 
     [Fact]
-    public async Task PostConcurrenctOverlappingBookingsResultsInConflictErrorsWhenRoomOverbooked()
+    public async Task PostBookingReturns409ConflictWhenConcurrentOverlappingBookings()
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
