@@ -14,7 +14,7 @@ internal class FakeUow : IUnitOfWork
 
     public IBookingRepository Bookings { get; private set; }
 
-    public Task<int> CompleteAsync() => Task.FromResult(1);
+    public Task<int> CompleteAsync(CancellationToken cancellationToken) => Task.FromResult(1);
 
     public void Dispose() { }
 }

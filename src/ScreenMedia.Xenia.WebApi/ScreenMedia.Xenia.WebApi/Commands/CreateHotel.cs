@@ -20,7 +20,7 @@ public class CreateHotelHandler : IRequestHandler<CreateHotelCommand, HotelDto>
         var hotel = Hotel.Create(cmd.Name);
 
         await _unitOfWork.Hotels.AddAsync(hotel);
-        _ = await _unitOfWork.CompleteAsync();
+        _ = await _unitOfWork.CompleteAsync(cancellation);
 
         var bookingDto = new HotelDto(hotel.Name, hotel.Id);
         return bookingDto;

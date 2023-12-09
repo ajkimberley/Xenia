@@ -18,6 +18,6 @@ public class UnseedDataHandler : IRequestHandler<UnseedDataCommand>
 
         _uow.Hotels.DeleteRange(hotels);
         _uow.Bookings.DeleteRange(bookings);
-        _ = await _uow.CompleteAsync();
+        _ = await _uow.CompleteAsync(cancellation);
     }
 }

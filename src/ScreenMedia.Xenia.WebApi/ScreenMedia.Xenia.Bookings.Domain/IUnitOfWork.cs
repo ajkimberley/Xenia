@@ -5,5 +5,5 @@ public interface IUnitOfWork
 {
     IHotelRepository Hotels { get; }
     IBookingRepository Bookings { get; }
-    Task<int> CompleteAsync();
+    Task<int> CompleteAsync(CancellationToken cancellationToken);
 }

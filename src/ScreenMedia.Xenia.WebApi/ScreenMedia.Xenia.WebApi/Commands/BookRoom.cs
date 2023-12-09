@@ -1,11 +1,10 @@
 ﻿using MediatR;
 
-using Microsoft.EntityFrameworkCore;
-
 using ScreenMedia.Xenia.Bookings.Domain;
 using ScreenMedia.Xenia.Bookings.Domain.Entities;
 using ScreenMedia.Xenia.Bookings.Domain.Enums;
 using ScreenMedia.Xenia.Bookings.Domain.Exceptions;
+using ScreenMedia.Xenia.Domain.Common;
 using ScreenMedia.Xenia.WebApi.Dtos;
 using ScreenMedia.Xenia.WebApi.Errors;
 using ScreenMedia.Xenia.WebApi.Utilities;
@@ -32,11 +31,10 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, Result<BookingDt
         do
             try
             {
-                return await TryBook(cmd);
+                return await TryBook(cmd, cancellationToken);
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (ConcurrencyException)
             {
-                foreach (var entry in ex.Entries) await entry.ReloadAsync(cancellationToken);
                 currentTry++;
             }
             catch (NoVacanciesAvailableException ex)
@@ -48,7 +46,7 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, Result<BookingDt
         return new MaximumRetryError("Unable to book hotel room after maximum number of retries.");
     }
 
-    private async Task<Result<BookingDto, Error>> TryBook(BookRoomCommand cmd)
+    private async Task<Result<BookingDto, Error>> TryBook(BookRoomCommand cmd, CancellationToken cancellationToken)
     {
         var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(cmd.HotelId);
         if (hotel is null) return new ResourceNotFoundError($"Unable to find hotel with Id {cmd.HotelId}.");
@@ -57,7 +55,7 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, Result<BookingDt
         hotel.BookRoom(booking);
                 
         await _unitOfWork.Bookings.AddAsync(booking);
-        _ = await _unitOfWork.CompleteAsync();
+        _ = await _unitOfWork.CompleteAsync(cancellationToken);
 
         var bookingDto = CreateBookingDto(booking);
         return bookingDto;
