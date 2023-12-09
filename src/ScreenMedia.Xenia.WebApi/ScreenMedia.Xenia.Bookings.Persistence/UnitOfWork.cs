@@ -17,8 +17,8 @@ public sealed class UnitOfWork : IUnitOfWork, IDisposable
         Bookings = new BookingRepository(_context);
     }
 
-    public IHotelRepository Hotels { get; private set; }
-    public IBookingRepository Bookings { get; private set; }
+    public IHotelRepository Hotels { get; }
+    public IBookingRepository Bookings { get; }
 
     public async Task<int> CompleteAsync(CancellationToken cancellationToken)
     {
