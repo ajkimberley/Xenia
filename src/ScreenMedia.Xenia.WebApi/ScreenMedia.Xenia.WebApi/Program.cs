@@ -1,5 +1,7 @@
 using FluentValidation;
 
+using MassTransit;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -31,6 +33,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Si
 builder.Services.AddMediatR(c =>
     c.RegisterServicesFromAssemblyContaining<Program>()
     .AddValidation<GetAvailableRoomsQuery, List<RoomDto>>());
+
+builder.Services.AddMassTransit(x => x.UsingInMemory((context, cfg) => { }));
 
 var app = builder.Build();
 

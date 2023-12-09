@@ -24,13 +24,14 @@ public class Hotel : Entity
     // TODO: Return more informative result
     public void BookRoom(Booking booking)
     {
-        var availableRooms = GetAvailableRooms(booking.From, booking.To, booking.RoomType);
+        var availableRooms = GetAvailableRooms(booking.From, booking.To, booking.RoomType).ToArray();
         if (availableRooms.Any())
         {
-            booking.UpdateState(BookingState.Confirmed);
-            availableRooms.First().AddBooking(booking);
+            booking.Confirm(availableRooms.First());
         }
-        else throw new NoVacanciesAvailableException($"There are no vaccencies for a {booking.RoomType} room between dates {booking.From:u} and {booking.To:u}.");
+        else
+            throw new NoVacanciesAvailableException(
+                $"There are no vaccencies for a {booking.RoomType} room between dates {booking.From:u} and {booking.To:u}.");
     }
 
     public static Hotel Create(string name)

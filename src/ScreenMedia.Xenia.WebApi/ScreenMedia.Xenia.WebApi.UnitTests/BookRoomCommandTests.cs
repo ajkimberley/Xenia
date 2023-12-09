@@ -1,8 +1,6 @@
 ﻿using ScreenMedia.Xenia.Bookings.Domain.Entities;
 using ScreenMedia.Xenia.Bookings.Domain.Enums;
-using ScreenMedia.Xenia.Bookings.Domain.Exceptions;
 using ScreenMedia.Xenia.WebApi.Commands.UnitTests.Fakes;
-using ScreenMedia.Xenia.WebApi.Exceptions;
 
 namespace ScreenMedia.Xenia.WebApi.Commands.UnitTests;
 
@@ -18,13 +16,15 @@ public class BookRoomCommandTests
     }
 
     [Fact]
-    public async Task Given_NoHotelsInDb_ShouldThrowException()
+    public async Task Given_NoHotelsInDb_ShouldResultInError()
     {
         var from = new DateTime(2024, 1, 1);
         var to = new DateTime(2024, 1, 7);
         var cmd = new BookRoomCommand(Guid.NewGuid(), RoomType.Single, "Joe", "Bloggs", from, to);
 
-        _ = await Assert.ThrowsAsync<ResourceNotFoundException>(() => _sut.Handle(cmd, CancellationToken.None));
+        var result = await _sut.Handle(cmd, CancellationToken.None);
+
+        Assert.True(result.IsError);
     }
 
     [Theory]
@@ -42,14 +42,14 @@ public class BookRoomCommandTests
 
         var response = await _sut.Handle(cmd, CancellationToken.None);
 
-        Assert.NotNull(response);
+        Assert.True(response.IsSuccess);
     }
 
     [Theory]
     [InlineData(RoomType.Single)]
     [InlineData(RoomType.Double)]
     [InlineData(RoomType.Deluxe)]
-    public async Task Given_RoomTypeFullyBooked_Exception(RoomType roomType)
+    public async Task Given_RoomTypeFullyBooked_ResultIsError(RoomType roomType)
     {
         var hotel = Hotel.Create("Holiday Bin");
         await _uow.Hotels.AddAsync(hotel);
@@ -58,9 +58,15 @@ public class BookRoomCommandTests
         var to = new DateTime(2024, 1, 7);
         var cmd = new BookRoomCommand(hotel.Id, roomType, "Joe", "Bloggs", from, to);
 
-        _ = await _sut.Handle(cmd, CancellationToken.None);
-        _ = await _sut.Handle(cmd, CancellationToken.None);
+        var result1 = await _sut.Handle(cmd, CancellationToken.None);
+        var result2 = await _sut.Handle(cmd, CancellationToken.None);
+        var result3 = await _sut.Handle(cmd, CancellationToken.None);
 
-        _ = await Assert.ThrowsAsync<NoVacanciesAvailableException>(async () => await _sut.Handle(cmd, CancellationToken.None));
+        Assert.Multiple(() =>
+        {
+            Assert.True(result1.IsSuccess);
+            Assert.True(result2.IsSuccess);
+            Assert.True(result3.IsError);
+        });
     }
 }

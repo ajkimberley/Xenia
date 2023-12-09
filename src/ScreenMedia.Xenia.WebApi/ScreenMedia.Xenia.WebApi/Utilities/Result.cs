@@ -8,14 +8,14 @@ public readonly struct Result<TValue, TError>
     private readonly TValue? _value;
     private readonly TError? _error;
 
-    public Result(TValue value)
+    private Result(TValue value)
     {
         IsError = false;
         _value = value;
         _error = default;
     }
 
-    public Result(TError error)
+    private Result(TError error)
     {
         IsError = true;
         _error = error;

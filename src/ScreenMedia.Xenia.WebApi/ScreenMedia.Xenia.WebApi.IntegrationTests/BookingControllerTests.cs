@@ -22,19 +22,19 @@ public sealed class BookingControllerTests
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotels = context.Hotels.ToList();
         context.Hotels.RemoveRange(hotels);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var hotel = Hotel.Create("Travel Bodge");
         var room = hotel.Rooms.First();
         var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1), new DateTime(2024, 1, 7));
         room.AddBooking(booking);
         _ = context.Add(hotel);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var expected = new List<BookingDto>()
         {
@@ -56,19 +56,19 @@ public sealed class BookingControllerTests
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotels = context.Hotels.ToList();
         context.Hotels.RemoveRange(hotels);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var hotel = Hotel.Create("Travel Bodge");
         var room = hotel.Rooms.First();
         var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1), new DateTime(2024, 1, 7));
         room.AddBooking(booking);
         _ = context.Add(hotel);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var expected = new BookingDto(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail, booking.From, booking.To, booking.State, booking.Id);
 
@@ -87,12 +87,12 @@ public sealed class BookingControllerTests
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotels = context.Hotels.ToList();
         context.Hotels.RemoveRange(hotels);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var response = await client.GetAsync($"api/Bookings/{Guid.NewGuid}");
 
@@ -116,15 +116,13 @@ public sealed class BookingControllerTests
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
 
-        using var bookingContext = scope.ServiceProvider.GetService<BookingContext>()
+        await using var bookingContext = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotel = Hotel.Create("Holiday Bin");
-
-        var entityEntry = bookingContext.Add(hotel);
+        bookingContext.Add(hotel);
+        
         _ = await bookingContext.SaveChangesAsync();
-
-        var expected = new HotelDto(hotel.Name, hotel.Id);
 
         var bookingDto = new BookingDto(
             hotel.Id,
@@ -134,7 +132,7 @@ public sealed class BookingControllerTests
             new DateTime(2024, 1, 1),
             new DateTime(2024, 1, 7));
 
-        var requestContent = JsonContent.Create(bookingDto, new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
+        var requestContent = JsonContent.Create(bookingDto);
         var response = await client.PostAsync("api/Bookings", requestContent);
         _ = response.EnsureSuccessStatusCode();
 
@@ -144,6 +142,68 @@ public sealed class BookingControllerTests
         {
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
             Assert.NotEmpty(bookings);
+        });
+    }
+
+    [Fact]
+    public async Task PostConcurrenctOverlappingBookingsResultsInConflictErrorsWhenRoomOverbooked()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+
+        var bookingContext = scope.ServiceProvider.GetService<BookingContext>()
+                             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+
+        var hotel = Hotel.Create("Holiday Bin");
+        bookingContext.Add(hotel);
+        await bookingContext.SaveChangesAsync();
+
+        var bookingDto1 = new BookingDto(
+            hotel.Id,
+            RoomType.Single,
+            "Joe Bloggs",
+            "j.bloggs@example.com",
+            new DateTime(2024, 1, 1),
+            new DateTime(2024, 1, 7));
+
+        var bookingDto2 = new BookingDto(
+            hotel.Id,
+            RoomType.Single,
+            "Jill Doe",
+            "j.doe@example.com",
+            new DateTime(2024, 1, 1),
+            new DateTime(2024, 1, 7));
+        
+        var bookingDto3 = new BookingDto(
+            hotel.Id,
+            RoomType.Single,
+            "John Smith",
+            "j.smith@example.com",
+            new DateTime(2024, 1, 1),
+            new DateTime(2024, 1, 7));
+
+        var requestContent1 = JsonContent.Create(bookingDto1);
+        var requestContent2 = JsonContent.Create(bookingDto2);
+        var requestContent3 = JsonContent.Create(bookingDto3);
+
+        var request1 = client.PostAsync("api/Bookings", requestContent1);
+        var request2 = client.PostAsync("api/Bookings", requestContent2);
+        var request3 = client.PostAsync("api/Bookings", requestContent3);
+
+        await Task.WhenAll(request1, request2, request3);
+
+        var statusCodes = new List<HttpStatusCode>
+        {
+            (await request1).StatusCode,
+            (await request2).StatusCode,
+            (await request3).StatusCode
+        };
+
+        Assert.Multiple(() =>
+        {
+            Assert.NotEmpty(bookingContext.Bookings.ToList());
+            Assert.Equal(1, statusCodes.Count(s => s == HttpStatusCode.Conflict));
+            Assert.Equal(2, statusCodes.Count(s => s == HttpStatusCode.Created));
         });
     }
 }

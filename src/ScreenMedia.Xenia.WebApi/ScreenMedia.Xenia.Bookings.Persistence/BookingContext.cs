@@ -11,9 +11,9 @@ public class BookingContext : DbContext
     {
     }
 
-    public DbSet<Hotel> Hotels { get; set; }
-    public DbSet<Booking> Bookings { get; set; }
-    public DbSet<Room> Rooms { get; set; }
+    public required DbSet<Hotel> Hotels { get; set; }
+    public required DbSet<Booking> Bookings { get; set; }
+    public required DbSet<Room> Rooms { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -61,8 +61,9 @@ public class BookingContext : DbContext
             _ = builder.HasKey(e => e.Id);
             _ = builder.Property(e => e.Number);
             _ = builder.Property(e => e.Type).HasConversion<int>();
-            _ = builder.HasMany(e => e.Bookings)
-                       .WithOne()
+            _ = builder.Property<DateTime>("RowVersion").IsConcurrencyToken();
+            _ = builder.HasMany(r => r.Bookings)
+                       .WithOne(b => b.Room)
                        .HasForeignKey("RoomId");
         }
     }
