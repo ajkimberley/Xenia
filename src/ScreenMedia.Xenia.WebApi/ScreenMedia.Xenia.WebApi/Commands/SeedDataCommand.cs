@@ -15,15 +15,15 @@ public class SeedDataHandler : IRequestHandler<SeedDataCommand, SeedDataDto>
     {
         var createHotelCommands = new List<CreateHotelCommand>()
         {
-            new CreateHotelCommand("Travel Bodge"),
-            new CreateHotelCommand("Mediocre Inn"),
-            new CreateHotelCommand("Holiday Bin")
+            new("Travel Bodge"),
+            new("Mediocre Inn"),
+            new("Holiday Bin")
         };
 
         var createdHotels = new List<HotelDto>();
         foreach (var c in createHotelCommands)
         {
-            var createdHotel = await _mediator.Send(c);
+            var createdHotel = await _mediator.Send(c, cancellation);
             createdHotels.Add(createdHotel);
         }
 
