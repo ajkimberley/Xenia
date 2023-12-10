@@ -36,7 +36,7 @@ public class GetHotelsQueryTests
     [Fact]
     public async Task Given_ThreeHotelsInHotelRepo_Should_ReturnThreeHotels()
     {
-        SeedDatabase();
+        await SeedDatabase();
         var qry = new GetHotelsQuery();
 
         var actual = await _sut.Handle(qry, CancellationToken.None);
@@ -49,5 +49,5 @@ public class GetHotelsQueryTests
         });
     }
 
-    private void SeedDatabase() => _seedData.ForEach(async h => await _uow.Hotels.AddAsync(h));
+    private Task SeedDatabase() => Task.WhenAll(_seedData.Select(async h => await _uow.Hotels.AddAsync(h)));
 }

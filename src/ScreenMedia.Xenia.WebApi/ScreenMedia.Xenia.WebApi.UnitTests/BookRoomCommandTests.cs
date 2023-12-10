@@ -31,7 +31,7 @@ public class BookRoomCommandTests
     [InlineData(RoomType.Single)]
     [InlineData(RoomType.Double)]
     [InlineData(RoomType.Deluxe)]
-    public async Task Given_NoBookingsForRoomType_ShouldSuccesfullyBook(RoomType roomType)
+    public async Task Given_NoBookingsForRoomType_ShouldSuccessfullyBook(RoomType roomType)
     {
         var hotel = Hotel.Create("Holiday Bin");
         await _uow.Hotels.AddAsync(hotel);
