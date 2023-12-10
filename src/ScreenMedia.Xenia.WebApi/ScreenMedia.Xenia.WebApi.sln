@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.WebApi.Commands.UnitTests", "ScreenMedia.Xenia.WebApi.UnitTests\ScreenMedia.Xenia.WebApi.Commands.UnitTests.csproj", "{92A83A8D-1BDC-421B-B433-BADDED792150}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.WebApi.UnitTests", "ScreenMedia.Xenia.WebApi.UnitTests\ScreenMedia.Xenia.WebApi.UnitTests.csproj", "{92A83A8D-1BDC-421B-B433-BADDED792150}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.Bookings.Persistence", "ScreenMedia.Xenia.Bookings.Persistence\ScreenMedia.Xenia.Bookings.Persistence.csproj", "{85DEA5C2-93C3-4AD2-98A9-646EFC15508C}"
 EndProject
