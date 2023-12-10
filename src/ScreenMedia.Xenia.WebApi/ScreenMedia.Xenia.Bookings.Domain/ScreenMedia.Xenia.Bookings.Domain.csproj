@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScreenMedia.Xenia.Domain.Common\ScreenMedia.Xenia.Domain.Common.csproj" />
+    <ProjectReference Include="..\ScreenMedia.Xenia.Common\ScreenMedia.Xenia.Common.csproj" />
   </ItemGroup>
 
 </Project>

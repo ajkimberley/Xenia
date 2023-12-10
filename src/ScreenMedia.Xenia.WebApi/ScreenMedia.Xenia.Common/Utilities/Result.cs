@@ -1,4 +1,4 @@
-﻿namespace ScreenMedia.Xenia.WebApi.Utilities;
+﻿namespace ScreenMedia.Xenia.Common.Utilities;
 
 public readonly struct Result<TValue, TError>
 {

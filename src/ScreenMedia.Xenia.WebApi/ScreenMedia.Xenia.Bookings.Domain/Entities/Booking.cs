@@ -1,6 +1,6 @@
 ﻿using ScreenMedia.Xenia.Bookings.Domain.Enums;
-using ScreenMedia.Xenia.Domain.Common;
-using ScreenMedia.Xenia.Domain.Common.Utilities;
+using ScreenMedia.Xenia.Common;
+using ScreenMedia.Xenia.Common.Utilities;
 
 namespace ScreenMedia.Xenia.Bookings.Domain.Entities;
 

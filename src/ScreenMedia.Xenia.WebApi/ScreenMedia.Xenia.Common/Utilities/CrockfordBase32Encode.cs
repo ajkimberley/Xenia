@@ -34,7 +34,7 @@ using System.Text;
 /// otherwise defined for the purpose of detecting wrong-symbol and
 /// transposed-symbol errors.
 /// </remarks>
-namespace ScreenMedia.Xenia.Domain.Common.Utilities;
+namespace ScreenMedia.Xenia.Common.Utilities;
 
 public static partial class Crockbase32
 {

@@ -1,9 +1,9 @@
 ﻿using MediatR;
 
 using ScreenMedia.Xenia.Bookings.Domain;
+using ScreenMedia.Xenia.Common.Utilities;
 using ScreenMedia.Xenia.WebApi.Dtos;
 using ScreenMedia.Xenia.WebApi.Exceptions;
-using ScreenMedia.Xenia.WebApi.Utilities;
 using ScreenMedia.Xenia.WebApi.Validation;
 
 namespace ScreenMedia.Xenia.WebApi.Queries;

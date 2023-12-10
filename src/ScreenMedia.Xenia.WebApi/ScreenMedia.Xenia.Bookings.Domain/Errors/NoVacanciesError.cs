@@ -1,4 +1,6 @@
-﻿namespace ScreenMedia.Xenia.WebApi.Errors;
+﻿using ScreenMedia.Xenia.Common.Utilities;
+
+namespace ScreenMedia.Xenia.Bookings.Domain.Errors;
 
 public class NoVacanciesError : Error
 {

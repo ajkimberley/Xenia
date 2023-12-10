@@ -3,7 +3,6 @@
 using ScreenMedia.Xenia.Bookings.Domain;
 using ScreenMedia.Xenia.Bookings.Domain.Entities;
 using ScreenMedia.Xenia.WebApi.Dtos;
-using ScreenMedia.Xenia.WebApi.Utilities;
 
 namespace ScreenMedia.Xenia.WebApi.Commands;
 

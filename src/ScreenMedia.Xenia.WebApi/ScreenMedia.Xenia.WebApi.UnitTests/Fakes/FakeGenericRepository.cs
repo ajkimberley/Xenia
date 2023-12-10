@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-using ScreenMedia.Xenia.Domain.Common;
+using ScreenMedia.Xenia.Common;
 
 namespace ScreenMedia.Xenia.WebApi.Commands.UnitTests.Fakes;
 internal class FakeGenericRepository<T> : IGenericRepository<T> where T : Entity

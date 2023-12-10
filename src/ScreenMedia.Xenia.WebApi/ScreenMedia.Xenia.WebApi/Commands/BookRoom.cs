@@ -3,11 +3,12 @@
 using ScreenMedia.Xenia.Bookings.Domain;
 using ScreenMedia.Xenia.Bookings.Domain.Entities;
 using ScreenMedia.Xenia.Bookings.Domain.Enums;
+using ScreenMedia.Xenia.Bookings.Domain.Errors;
 using ScreenMedia.Xenia.Bookings.Domain.Exceptions;
-using ScreenMedia.Xenia.Domain.Common;
+using ScreenMedia.Xenia.Common;
+using ScreenMedia.Xenia.Common.Utilities;
 using ScreenMedia.Xenia.WebApi.Dtos;
 using ScreenMedia.Xenia.WebApi.Errors;
-using ScreenMedia.Xenia.WebApi.Utilities;
 
 namespace ScreenMedia.Xenia.WebApi.Commands;
 

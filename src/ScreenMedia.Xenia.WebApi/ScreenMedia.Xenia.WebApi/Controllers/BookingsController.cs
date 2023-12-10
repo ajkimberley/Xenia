@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
+using ScreenMedia.Xenia.Bookings.Domain.Errors;
 using ScreenMedia.Xenia.WebApi.Commands;
 using ScreenMedia.Xenia.WebApi.Dtos;
 using ScreenMedia.Xenia.WebApi.Errors;

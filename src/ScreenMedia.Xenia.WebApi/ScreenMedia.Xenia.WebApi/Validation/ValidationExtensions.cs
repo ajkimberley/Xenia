@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-using ScreenMedia.Xenia.WebApi.Utilities;
+using ScreenMedia.Xenia.Common.Utilities;
 
 namespace ScreenMedia.Xenia.WebApi.Validation;
 

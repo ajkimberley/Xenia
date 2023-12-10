@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.Bookings.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.Bookings.Domain", "ScreenMedia.Xenia.Bookings.Domain\ScreenMedia.Xenia.Bookings.Domain.csproj", "{327070C3-108E-49DC-9E54-D8ADAA6C78B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.Domain.Common", "ScreenMedia.Xenia.Domain.Common\ScreenMedia.Xenia.Domain.Common.csproj", "{39DE39D1-D943-4908-957C-17E1BE047943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScreenMedia.Xenia.Common", "ScreenMedia.Xenia.Common\ScreenMedia.Xenia.Common.csproj", "{39DE39D1-D943-4908-957C-17E1BE047943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

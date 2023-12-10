@@ -1,4 +1,4 @@
-﻿namespace ScreenMedia.Xenia.Domain.Common;
+﻿namespace ScreenMedia.Xenia.Common;
 
 public class ConcurrencyException : Exception
 {

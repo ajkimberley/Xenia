@@ -1,4 +1,6 @@
-﻿namespace ScreenMedia.Xenia.WebApi.Errors;
+﻿using ScreenMedia.Xenia.Common.Utilities;
+
+namespace ScreenMedia.Xenia.WebApi.Errors;
 
 public class ResourceNotFoundError : Error
 {

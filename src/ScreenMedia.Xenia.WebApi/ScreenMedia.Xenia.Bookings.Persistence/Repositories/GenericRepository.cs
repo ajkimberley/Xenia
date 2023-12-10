@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using ScreenMedia.Xenia.Domain.Common;
+using ScreenMedia.Xenia.Common;
 
 namespace ScreenMedia.Xenia.Bookings.Persistence.Repositories;
 

@@ -3,7 +3,7 @@
 using ScreenMedia.Xenia.Bookings.Domain;
 using ScreenMedia.Xenia.Bookings.Domain.Repositories;
 using ScreenMedia.Xenia.Bookings.Persistence.Repositories;
-using ScreenMedia.Xenia.Domain.Common;
+using ScreenMedia.Xenia.Common;
 
 namespace ScreenMedia.Xenia.Bookings.Persistence;
 public sealed class UnitOfWork : IUnitOfWork, IDisposable
