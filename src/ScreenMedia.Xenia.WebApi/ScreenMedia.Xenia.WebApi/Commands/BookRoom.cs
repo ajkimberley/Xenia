@@ -3,8 +3,6 @@
 using ScreenMedia.Xenia.Bookings.Domain;
 using ScreenMedia.Xenia.Bookings.Domain.Entities;
 using ScreenMedia.Xenia.Bookings.Domain.Enums;
-using ScreenMedia.Xenia.Bookings.Domain.Errors;
-using ScreenMedia.Xenia.Bookings.Domain.Exceptions;
 using ScreenMedia.Xenia.Common;
 using ScreenMedia.Xenia.Common.Utilities;
 using ScreenMedia.Xenia.WebApi.Dtos;
@@ -38,10 +36,6 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, Result<BookingDt
             {
                 currentTry++;
             }
-            catch (NoVacanciesAvailableException ex)
-            {
-                return new NoVacanciesError(ex.Message);
-            }
         while (currentTry <= maxRetires);
 
         return new MaximumRetryError("Unable to book hotel room after maximum number of retries.");
@@ -51,23 +45,19 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, Result<BookingDt
     {
         var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(cmd.HotelId);
         if (hotel is null) return new ResourceNotFoundError($"Unable to find hotel with Id {cmd.HotelId}.");
-                
-        var booking = CreateBooking(cmd);
-        hotel.BookRoom(booking);
-                
+        
+        return await
+            hotel.BookRoom(cmd.BookerName, cmd.BookerEmail, cmd.From, cmd.To, cmd.RoomType)
+            .Map2(OnSuccess, cancellationToken);
+    }
+
+    private async Task<BookingDto> OnSuccess(Booking booking, CancellationToken cancellationToken)
+    {
         await _unitOfWork.Bookings.AddAsync(booking);
         _ = await _unitOfWork.CompleteAsync(cancellationToken);
-
         var bookingDto = CreateBookingDto(booking);
         return bookingDto;
     }
-
-    private static Booking CreateBooking(BookRoomCommand cmd) =>
-        Booking.Create(cmd.HotelId, 
-            cmd.RoomType, 
-            cmd.BookerName,
-            cmd.BookerEmail,
-            cmd.From, cmd.To);
     
     private static BookingDto CreateBookingDto(Booking booking) =>
         new(booking.HotelId,

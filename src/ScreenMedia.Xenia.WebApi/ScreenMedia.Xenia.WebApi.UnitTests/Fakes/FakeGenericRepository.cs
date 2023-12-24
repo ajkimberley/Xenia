@@ -7,7 +7,7 @@ internal class FakeGenericRepository<T> : IGenericRepository<T> where T : Entity
 {
     protected readonly Collection<T> _list = new();
 
-    public Task AddAsync(T entity)
+    public virtual Task AddAsync(T entity)
     {
         _list.Add(entity);
         return Task.CompletedTask;

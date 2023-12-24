@@ -21,24 +21,18 @@ public class Booking : Entity
     }
 
     public Guid HotelId { get; private set; }
-    public Room? Room { get; private set; }
-    public RoomType RoomType { get; private set; }
+    
+    public string Reference { get; private set; }
     public string BookerName { get; set; }
     public string BookerEmail { get; set; }
-    public BookingState State { get; private set; }
+    public RoomType RoomType { get; private set; }
     public DateTime From { get; private set; }
     public DateTime To { get; private set; }
-    public string Reference { get; private set; }
+    
+    public BookingState State { get; private set; }
+    
+    public Room? Room { get; private set; }
 
-    public void Confirm(Room room)
-    {
-        if (State != BookingState.Requested)
-            throw new InvalidOperationException($"Booking cannot be confirmed as its status is ${State.ToString()}");
-        State = BookingState.Confirmed;
-        Room = room;
-        room.AddBooking(this);
-    }
-
-    public static Booking Create(Guid hotelId, RoomType roomType, string bookerName, string bookerEmail, DateTime from, DateTime to)
-        => new(Guid.NewGuid(), hotelId, roomType, bookerName, bookerEmail, BookingState.Requested, from, to);
+    public static Booking Create(Guid hotelId, RoomType roomType, string bookerName, string bookerEmail, DateTime from, DateTime to, Room room)
+        => new(Guid.NewGuid(), hotelId, roomType, bookerName, bookerEmail, BookingState.Reserved, from, to) { Room = room };
 }

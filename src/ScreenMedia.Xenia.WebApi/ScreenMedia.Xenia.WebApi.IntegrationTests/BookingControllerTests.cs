@@ -31,7 +31,8 @@ public sealed class BookingControllerTests
 
         var hotel = Hotel.Create("Travel Bodge");
         var room = hotel.Rooms.First();
-        var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1), new DateTime(2024, 1, 7));
+        var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1),
+            new DateTime(2024, 1, 7), room);
         room.AddBooking(booking);
         _ = context.Add(hotel);
         _ = await context.SaveChangesAsync();
@@ -65,7 +66,7 @@ public sealed class BookingControllerTests
 
         var hotel = Hotel.Create("Travel Bodge");
         var room = hotel.Rooms.First();
-        var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1), new DateTime(2024, 1, 7));
+        var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1), new DateTime(2024, 1, 7), room);
         room.AddBooking(booking);
         _ = context.Add(hotel);
         _ = await context.SaveChangesAsync();

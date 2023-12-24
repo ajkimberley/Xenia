@@ -20,12 +20,12 @@ public sealed class RoomControllerTests
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotel = Hotel.Create("Foo");
         _ = context.Add(hotel);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var expected = new List<RoomDto>
         {
@@ -67,14 +67,16 @@ public sealed class RoomControllerTests
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotel = Hotel.Create("Foo");
-        var booking = Booking.Create(hotel.Id, RoomType.Single, "Joe Bloggs", "j.bloggs@example.com", new DateTime(2024, 01, 01), new DateTime(2024, 01, 07));
+        var room = hotel.Rooms.First();
+        var booking = Booking.Create(hotel.Id, RoomType.Single, "Joe Bloggs", "j.bloggs@example.com",
+            new DateTime(2024, 01, 01), new DateTime(2024, 01, 07), room);
         hotel.Rooms.FirstOrDefault()!.AddBooking(booking);
         _ = context.Add(hotel);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var response = await client.GetAsync($"api/hotels/{hotel.Id}/Rooms?From={from:u}&To={to:u}");
         var actual = await response.Content.ReadFromJsonAsync<List<RoomDto>>();
@@ -92,8 +94,8 @@ public sealed class RoomControllerTests
     {
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var response = await client.GetAsync($"api/hotels/{Guid.NewGuid()}/Rooms");
 

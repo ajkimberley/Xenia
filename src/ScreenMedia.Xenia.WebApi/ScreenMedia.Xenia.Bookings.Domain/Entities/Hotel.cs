@@ -1,6 +1,8 @@
 ﻿using ScreenMedia.Xenia.Bookings.Domain.Enums;
+using ScreenMedia.Xenia.Bookings.Domain.Errors;
 using ScreenMedia.Xenia.Bookings.Domain.Exceptions;
 using ScreenMedia.Xenia.Common;
+using ScreenMedia.Xenia.Common.Utilities;
 
 namespace ScreenMedia.Xenia.Bookings.Domain.Entities;
 
@@ -14,6 +16,7 @@ public class Hotel : Entity
     }
 
     public string Name { get; private set; }
+    
     public ICollection<Room> Rooms { get; private set; }
 
     private IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to)
@@ -21,18 +24,13 @@ public class Hotel : Entity
 
     private IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to, RoomType roomType) =>
         GetAvailableRooms(from, to).Where(r => r.Type == roomType);
-
-    // TODO: Return more informative result
-    public void BookRoom(Booking booking)
+    
+    public Result<Booking, Error> BookRoom(string name, string email, DateTime from, DateTime to, RoomType roomType)
     {
-        var availableRooms = GetAvailableRooms(booking.From, booking.To, booking.RoomType).ToArray();
-        if (availableRooms.Any())
-        {
-            booking.Confirm(availableRooms.First());
-        }
-        else
-            throw new NoVacanciesAvailableException(
-                $"There are no vacancies for a {booking.RoomType} room between dates {booking.From:u} and {booking.To:u}.");
+        var availableRooms = GetAvailableRooms(from, to, roomType).ToArray();
+        if (availableRooms.Any()) return Booking.Create(Id, roomType, name, email, from, to, availableRooms.First());
+        return new NoVacanciesError(
+            $"There are no vacancies for a {roomType} room between dates {from:u} and {to:u}.");
     }
 
     public static Hotel Create(string name)

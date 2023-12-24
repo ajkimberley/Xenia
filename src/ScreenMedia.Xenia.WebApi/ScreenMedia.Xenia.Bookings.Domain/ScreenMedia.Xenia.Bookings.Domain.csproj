@@ -10,4 +10,8 @@
     <ProjectReference Include="..\ScreenMedia.Xenia.Common\ScreenMedia.Xenia.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LanguageExt.Core" Version="4.4.6" />
+  </ItemGroup>
+
 </Project>

@@ -35,6 +35,7 @@ public class BookRoomCommandTests
     {
         var hotel = Hotel.Create("Holiday Bin");
         await _uow.Hotels.AddAsync(hotel);
+        await _uow.CompleteAsync(new CancellationToken());
 
         var from = new DateTime(2024, 1, 1);
         var to = new DateTime(2024, 1, 7);
@@ -53,6 +54,7 @@ public class BookRoomCommandTests
     {
         var hotel = Hotel.Create("Holiday Bin");
         await _uow.Hotels.AddAsync(hotel);
+        await _uow.CompleteAsync(new CancellationToken());
 
         var from = new DateTime(2024, 1, 1);
         var to = new DateTime(2024, 1, 7);
@@ -61,6 +63,7 @@ public class BookRoomCommandTests
         var result1 = await _sut.Handle(cmd, CancellationToken.None);
         var result2 = await _sut.Handle(cmd, CancellationToken.None);
         var result3 = await _sut.Handle(cmd, CancellationToken.None);
+        var result4 = await _sut.Handle(cmd, CancellationToken.None);
 
         Assert.Multiple(() =>
         {
