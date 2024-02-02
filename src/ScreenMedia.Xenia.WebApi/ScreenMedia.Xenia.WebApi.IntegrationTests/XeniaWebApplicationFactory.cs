@@ -13,6 +13,7 @@ public class WebApiCollection : ICollectionFixture<XeniaWebApplicationFactory<Pr
     // ICollectionFixture<> interfaces.
 }
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class XeniaWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)

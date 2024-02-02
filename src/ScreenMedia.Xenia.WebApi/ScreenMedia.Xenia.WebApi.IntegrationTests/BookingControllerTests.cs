@@ -39,7 +39,8 @@ public sealed class BookingControllerTests
 
         var expected = new List<BookingDto>()
         {
-            new BookingDto(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail, booking.From, booking.To, booking.State, booking.Id, booking.Reference)
+            new(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail, booking.From, booking.To,
+                booking.State, booking.Id, booking.Reference)
         };
 
         var response = await client.GetAsync($"api/Bookings?bookingReference={booking.Reference}");
@@ -66,12 +67,14 @@ public sealed class BookingControllerTests
 
         var hotel = Hotel.Create("Travel Bodge");
         var room = hotel.Rooms.First();
-        var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1), new DateTime(2024, 1, 7), room);
+        var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1),
+            new DateTime(2024, 1, 7), room);
         room.AddBooking(booking);
         _ = context.Add(hotel);
         _ = await context.SaveChangesAsync();
 
-        var expected = new BookingDto(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail, booking.From, booking.To, booking.State, booking.Id);
+        var expected = new BookingDto(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail,
+            booking.From, booking.To, booking.State, booking.Id);
 
         var response = await client.GetAsync($"api/Bookings/{booking.Id}");
         var actual = await response.Content.ReadFromJsonAsync<BookingDto>();
