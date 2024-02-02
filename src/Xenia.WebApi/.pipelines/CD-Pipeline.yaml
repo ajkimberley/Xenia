@@ -1,0 +1,53 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  pipelines:
+  - pipeline: CI-Pipeline
+    source: Xenia-CI
+    trigger:
+      branches:
+        include:
+        - main
+
+variables:
+  azureServiceConnection: MyServiceConnection
+  resourceGroupName: Xenia.Dev
+  location: 'East US'
+  templateFile: '$(Pipeline.Workspace)/CI-Pipeline/ResourceTemplates/main.bicep'
+  templateParametersFile: '$(Pipeline.Workspace)/CI-Pipeline/ResourceTemplates/parameters.json'
+
+steps:
+
+- download: CI-Pipeline
+  displayName: Download WebApi Artifact
+  artifact: WebApi
+
+- download: CI-Pipeline
+  displayName: Download Azure Resource Tempaltes Artifact
+  artifact: ResourceTemplates
+
+- task: AzureResourceManagerTemplateDeployment@3
+  displayName: Deploy Azure App Service
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: '$(azureServiceConnection)'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: '$(resourceGroupName)'
+    location: '$(location)'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(templateFile)'
+    csmParametersFile: '$(templateParametersFile)'
+    deploymentMode: 'Incremental'
+    deploymentName: 'DeployPipelineTemplate'
+
+- task: AzureWebApp@1
+  displayName: Publish Xenia WebApi to App Service
+  inputs:
+    azureSubscription: '$(azureServiceConnection)'
+    ResourceGroupName: '$(resourceGroupName)'
+    appType: 'webAppLinux'
+    appName: 'screen-media-xenia-dev-app-service'
+    package: '$(Pipeline.Workspace)/CI-Pipeline/WebApi/Xenia.WebApi.zip'
