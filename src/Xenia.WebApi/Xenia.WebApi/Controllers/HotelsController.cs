@@ -12,12 +12,8 @@ namespace Xenia.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class HotelsController : ControllerBase
+public class HotelsController(ISender mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public HotelsController(IMediator mediator) => _mediator = mediator;
-
     [HttpGet(Name = nameof(GetHotels))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<HotelDto>))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -25,7 +21,7 @@ public class HotelsController : ControllerBase
     public async Task<IActionResult> GetHotels([FromQuery] string? name)
     {
         var qry = new GetHotelsQuery(name);
-        var dtos = await _mediator.Send(qry);
+        var dtos = await mediator.Send(qry);
 
         return dtos.IsNullOrEmpty()
             ? name != null ? NotFound() : NoContent() : Ok(dtos);
@@ -37,16 +33,9 @@ public class HotelsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetHotel(Guid id)
     {
-        try
-        {
             var qry = new GetHotelQuery(id);
-            var dto = await _mediator.Send(qry);
-            return Ok(dto);
-        }
-        catch (ResourceNotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
+
+            return (await mediator.Send(qry)).Match<IActionResult>(Ok, NotFound);
     }
 
     [HttpPost(Name = nameof(CreateHotel))]
@@ -54,13 +43,13 @@ public class HotelsController : ControllerBase
     public async Task<IActionResult> CreateHotel(HotelDto dto)
     {
         var cmd = new CreateHotelCommand(dto.Name);
-        var createdHotel = await _mediator.Send(cmd);
+        var createdHotel = await mediator.Send(cmd);
 
         // TODO: Validate Host header
         var selfLink = Url.Link(nameof(GetHotel), new { id = createdHotel.Id.ToString() });
         var hotelLinks = new List<LinkDto>
         {
-            new LinkDto(selfLink!, "self", "GET")
+            new(selfLink!, "self", "GET")
         };
 
         var hotelCreatedResponse = new HotelResponseDto(createdHotel, hotelLinks);

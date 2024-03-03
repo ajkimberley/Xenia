@@ -1,4 +1,5 @@
 using ErrorOr;
+
 using FluentValidation;
 
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Si
 
 builder.Services.AddMediatR(c =>
     c.RegisterServicesFromAssemblyContaining<Program>()
-    .AddValidation<GetAvailableRoomsQuery, ErrorOr<List<RoomDto>>>());
+        .AddValidation<GetAvailableRoomsQuery, ErrorOr<List<RoomDto>>>());
 
 var app = builder.Build();
 
@@ -51,4 +52,6 @@ app.MapControllers();
 app.Run();
 
 // Partial Program class added to support integration testing
-public partial class Program { }
+public partial class Program
+{
+}

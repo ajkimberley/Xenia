@@ -14,12 +14,8 @@ namespace Xenia.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BookingsController : ControllerBase
+public class BookingsController(ISender mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public BookingsController(IMediator mediator) => _mediator = mediator;
-
     [HttpGet(Name = nameof(GetBookings))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<BookingDto>))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -27,7 +23,7 @@ public class BookingsController : ControllerBase
     public async Task<IActionResult> GetBookings([FromQuery] string? bookingReference)
     {
         var qry = new GetBookingsQuery(bookingReference);
-        var dtos = await _mediator.Send(qry);
+        var dtos = await mediator.Send(qry);
 
         return dtos.IsNullOrEmpty()
             ? bookingReference != null ? NotFound() : NoContent()
@@ -40,16 +36,10 @@ public class BookingsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBooking(Guid id)
     {
-        try
-        {
-            var qry = new GetBookingQuery(id);
-            var dto = await _mediator.Send(qry);
-            return Ok(dto);
-        }
-        catch (ResourceNotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var qry = new GetBookingQuery(id);
+        
+        return (await mediator.Send(qry))
+            .Match<IActionResult>(Ok, NotFound);
     }
 
     [HttpPost(Name = nameof(CreateBooking))]
@@ -58,7 +48,7 @@ public class BookingsController : ControllerBase
     public async Task<IActionResult> CreateBooking(BookingDto dto)
     {
         var cmd = new BookRoomCommand(dto.HotelId, dto.RoomType, dto.BookerName, dto.BookerEmail, dto.From, dto.To);
-        var result = await _mediator.Send(cmd);
+        var result = await mediator.Send(cmd);
 
         return result.Match<IActionResult>(
             createdBooking =>

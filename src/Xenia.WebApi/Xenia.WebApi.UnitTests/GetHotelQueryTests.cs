@@ -1,4 +1,6 @@
-﻿using Xenia.Bookings.Domain.Entities;
+﻿using ErrorOr;
+
+using Xenia.Bookings.Domain.Entities;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
 using Xenia.WebApi.Dtos;
 using Xenia.WebApi.Exceptions;
@@ -33,14 +35,19 @@ public class GetHotelQueryTests
         var qry = new GetHotelQuery(newHotel.Id);
         var actual = await _sut.Handle(qry, CancellationToken.None);
 
-        var expected = new HotelDto(dto.Name, newHotel.Id);
-        Assert.Equivalent(expected, actual);
+        var expected = dto with { Id = newHotel.Id };
+        Assert.True(!actual.IsError);
+        Assert.Equivalent(expected, actual.Value);
     }
 
     [Fact]
     public async Task Given_HotelNotInRepo_Should_ThrowResourceNotFoundException()
     {
         var qry = new GetHotelQuery(Guid.NewGuid());
-        _ = await Assert.ThrowsAsync<ResourceNotFoundException>(() => _sut.Handle(qry, CancellationToken.None));
+        var actual = await _sut.Handle(qry, CancellationToken.None);
+
+        var expected = Error.NotFound();
+        Assert.True(actual.IsError);
+        Assert.Equal(expected, actual.FirstError);
     }
 }

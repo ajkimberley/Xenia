@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ErrorOr;
+
+using Microsoft.EntityFrameworkCore;
 
 using Xenia.Common;
 
@@ -6,15 +8,19 @@ namespace Xenia.Bookings.Persistence.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    internal readonly BookingContext _context;
+    protected readonly BookingContext Context;
 
-    public GenericRepository(BookingContext context) => _context = context;
+    protected GenericRepository(BookingContext context) => Context = context;
 
-    public async Task<T?> GetByIdAsync(Guid id) => await _context.Set<T>().FindAsync(id);
+    public async Task<ErrorOr<T>> GetByIdAsync(Guid id)
+    {
+        var result = await Context.Set<T>().FindAsync(id);
+        return result != null ? result : Error.NotFound();
+    }
+    
+    public async Task<IEnumerable<T>> GetAllAsync() => await Context.Set<T>().ToListAsync();
 
-    public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().ToListAsync();
+    public async Task AddAsync(T entity) => await Context.Set<T>().AddAsync(entity);
 
-    public async Task AddAsync(T entity) => await _context.Set<T>().AddAsync(entity);
-
-    public void DeleteRange(IEnumerable<T> range) => _context.Set<T>().RemoveRange(range);
+    public void DeleteRange(IEnumerable<T> range) => Context.Set<T>().RemoveRange(range);
 }

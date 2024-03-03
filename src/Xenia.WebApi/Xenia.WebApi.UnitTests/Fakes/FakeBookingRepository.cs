@@ -9,7 +9,7 @@ internal class FakeBookingRepository : FakeGenericRepository<Booking>, IBookingR
 
     public override Task AddAsync(Booking entity)
     {
-        _list.Add(entity);
+        List.Add(entity);
         entity.Room?.AddBooking(entity);
         return Task.CompletedTask;
     }
