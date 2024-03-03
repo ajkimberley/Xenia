@@ -74,11 +74,11 @@ public class BookingsController : ControllerBase
             {
                 return ex switch
                 {
-                    MaximumRetryError => new ConflictObjectResult(
-                        "Maximum number of retries were attempted in booking."),
-                    NoVacanciesError noVacanciesError => new ConflictObjectResult(noVacanciesError.Message),
-                    ResourceNotFoundError resourceNotFoundError => new NotFoundObjectResult(resourceNotFoundError),
-                    _ => new ObjectResult($"An unexpected error has occured. Inner error: {ex.Message}")
+                    // DatabaseErrors.MaximumRetryError => new ConflictObjectResult(
+                    //     "Maximum number of retries were attempted in booking."),
+                    // NoVacanciesError noVacanciesError => new ConflictObjectResult(noVacanciesError.Message),
+                    // ResourceNotFoundError resourceNotFoundError => new NotFoundObjectResult(resourceNotFoundError),
+                    _ => new ObjectResult($"An unexpected error has occured. Inner error: {ex}")
                     {
                         StatusCode = 500
                     }

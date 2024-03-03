@@ -1,9 +1,7 @@
+using ErrorOr;
 using FluentValidation;
 
-using MassTransit;
-
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Persistence;
@@ -12,8 +10,6 @@ using Xenia.WebApi.Queries;
 using Xenia.WebApi.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -26,20 +22,15 @@ builder.Services.AddDbContext<BookingContext>((container, options) =>
 
 // Composition Root
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IValidator<GetAvailableRoomsQuery>, GetAvailableRoomsQueryValidator>();
-
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Singleton);
 
 builder.Services.AddMediatR(c =>
     c.RegisterServicesFromAssemblyContaining<Program>()
-    .AddValidation<GetAvailableRoomsQuery, List<RoomDto>>());
-
-builder.Services.AddMassTransit(x => x.UsingInMemory((context, cfg) => { }));
+    .AddValidation<GetAvailableRoomsQuery, ErrorOr<List<RoomDto>>>());
 
 var app = builder.Build();
 
-// NOTE: Ordinarily I wouldn't expose Swagger in a non-dev enviornment
-//       I'm doing it here for simply for testing purposes.
+// TODO: Hide swagger in non-dev environment
 _ = app.UseSwagger();
 _ = app.UseSwaggerUI();
 

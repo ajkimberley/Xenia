@@ -1,8 +1,8 @@
-﻿using Xenia.Bookings.Domain.Exceptions;
+﻿using ErrorOr;
+
 using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Domain.Errors;
 using Xenia.Common;
-using Xenia.Common.Utilities;
 
 namespace Xenia.Bookings.Domain.Entities;
 
@@ -25,12 +25,13 @@ public class Hotel : Entity
     private IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to, RoomType roomType) =>
         GetAvailableRooms(from, to).Where(r => r.Type == roomType);
     
-    public Result<Booking, Error> BookRoom(string name, string email, DateTime from, DateTime to, RoomType roomType)
+    public ErrorOr<Booking> BookRoom(string name, string email, DateTime from, DateTime to, RoomType roomType)
     {
         var availableRooms = GetAvailableRooms(from, to, roomType).ToArray();
         if (availableRooms.Any()) return Booking.Create(Id, roomType, name, email, from, to, availableRooms.First());
-        return new NoVacanciesError(
-            $"There are no vacancies for a {roomType} room between dates {from:u} and {to:u}.");
+        return HotelErrors.NoVacancyAvailable;
+        // return new HotelErrors(
+        //     $"There are no vacancies for a {roomType} room between dates {from:u} and {to:u}.");
     }
 
     public static Hotel Create(string name)

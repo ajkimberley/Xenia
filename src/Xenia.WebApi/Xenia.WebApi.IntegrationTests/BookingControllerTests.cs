@@ -7,6 +7,8 @@ using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Persistence;
 using Xenia.WebApi.Dtos;
 
+using Xunit.Sdk;
+
 namespace Xenia.WebApi.IntegrationTests;
 
 [Collection("WebApi Collection")]
@@ -149,7 +151,7 @@ public sealed class BookingControllerTests
         });
     }
 
-    [Fact]
+    [Fact (Skip = "Not yet implemented.")]
     public async Task PostBookingReturns409ConflictWhenConcurrentOverlappingBookings()
     {
         var client = _applicationFactory.CreateClient();

@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using ErrorOr;
+using MediatR;
 
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Domain.Enums;
 using Xenia.Common;
-using Xenia.Common.Utilities;
 using Xenia.WebApi.Dtos;
 using Xenia.WebApi.Errors;
 
@@ -15,15 +15,15 @@ public record BookRoomCommand(Guid HotelId,
                               string BookerName,
                               string BookerEmail,
                               DateTime From,
-                              DateTime To) : IRequest<Result<BookingDto, Error>>;
+                              DateTime To) : IRequest<ErrorOr<BookingDto>>;
 
-public class BookRoomHandler : IRequestHandler<BookRoomCommand, Result<BookingDto, Error>>
+public class BookRoomHandler : IRequestHandler<BookRoomCommand, ErrorOr<BookingDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
     public BookRoomHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
 
-    public async Task<Result<BookingDto, Error>> Handle(BookRoomCommand cmd, CancellationToken cancellationToken)
+    public async Task<ErrorOr<BookingDto>> Handle(BookRoomCommand cmd, CancellationToken cancellationToken)
     {
         const int maxRetires = 3;
         var currentTry = 1;
@@ -38,17 +38,21 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, Result<BookingDt
             }
         while (currentTry <= maxRetires);
 
-        return new MaximumRetryError("Unable to book hotel room after maximum number of retries.");
+        return DatabaseErrors.MaximumRetryError;
+        //return new MaximumRetryError("Unable to book hotel room after maximum number of retries.");
     }
 
-    private async Task<Result<BookingDto, Error>> TryBook(BookRoomCommand cmd, CancellationToken cancellationToken)
+    private async Task<ErrorOr<BookingDto>> TryBook(BookRoomCommand cmd, CancellationToken cancellationToken)
     {
         var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(cmd.HotelId);
-        if (hotel is null) return new ResourceNotFoundError($"Unable to find hotel with Id {cmd.HotelId}.");
-        
-        return await
-            hotel.BookRoom(cmd.BookerName, cmd.BookerEmail, cmd.From, cmd.To, cmd.RoomType)
-            .Map2(OnSuccess, cancellationToken);
+        if (hotel is null) return DatabaseErrors.MaximumRetryError; 
+            //return new ResourceNotFoundError($"Unable to find hotel with Id {cmd.HotelId}.");
+
+        var result = 
+            await hotel.BookRoom(cmd.BookerName, cmd.BookerEmail, cmd.From, cmd.To, cmd.RoomType)
+                .ThenAsync(value => OnSuccess(value, cancellationToken));
+
+        return result;
     }
 
     private async Task<BookingDto> OnSuccess(Booking booking, CancellationToken cancellationToken)

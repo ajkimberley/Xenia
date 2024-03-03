@@ -43,7 +43,7 @@ public class BookRoomCommandTests
 
         var response = await _sut.Handle(cmd, CancellationToken.None);
 
-        Assert.True(response.IsSuccess);
+        Assert.True(!response.IsError);
     }
 
     [Theory]
@@ -67,8 +67,8 @@ public class BookRoomCommandTests
 
         Assert.Multiple(() =>
         {
-            Assert.True(result1.IsSuccess);
-            Assert.True(result2.IsSuccess);
+            Assert.True(!result1.IsError);
+            Assert.True(!result2.IsError);
             Assert.True(result3.IsError);
         });
     }

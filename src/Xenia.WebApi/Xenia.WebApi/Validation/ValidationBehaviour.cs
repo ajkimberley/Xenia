@@ -1,23 +1,32 @@
-﻿using FluentValidation;
+﻿using ErrorOr;
+
+using FluentValidation;
 
 using MediatR;
 
-using Xenia.Common.Utilities;
-
 namespace Xenia.WebApi.Validation;
 
-public class ValidationBehavior<TRequest, TResult> : IPipelineBehavior<TRequest, Result<TResult, ValidationFailed>> where TRequest : notnull
+public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
+    where TResponse : IErrorOr
 {
-    private readonly IValidator<TRequest> _validator;
-
-    public ValidationBehavior(IValidator<TRequest> validator) => _validator = validator;
-
-    public async Task<Result<TResult, ValidationFailed>> Handle(
+    public async Task<TResponse> Handle(
         TRequest request,
-        RequestHandlerDelegate<Result<TResult, ValidationFailed>> next,
+        RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(request);
-        return !validationResult.IsValid ? (Result<TResult, ValidationFailed>)new ValidationFailed(validationResult.Errors) : await next();
+        if (validator is null) return await next();
+
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (validationResult.IsValid) return await next();
+
+        var errors = validationResult.Errors
+            .ConvertAll(error => Error.Validation(
+                code: error.PropertyName,
+                description: error.ErrorMessage));
+
+        return (dynamic)errors;
     }
 }

@@ -101,4 +101,19 @@ public sealed class RoomControllerTests
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
+
+    [Fact]
+    public async Task GetRoomsFailsValidationWhenFromAndToDateNotValid()
+    {
+        var client = _applicationFactory.CreateClient();
+        using var scope = _applicationFactory.Services.CreateScope();
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+
+        var hotel = Hotel.Create("Foo");
+
+        var response = await client.GetAsync($"api/hotels/{hotel.Id}/Rooms?From={new DateTime(2024, 02, 01):u}&To={new DateTime(2024, 01, 01):u}");
+        
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+    }
 }

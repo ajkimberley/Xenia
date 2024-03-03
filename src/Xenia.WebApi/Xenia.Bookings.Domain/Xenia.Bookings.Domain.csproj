@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ErrorOr" Version="1.10.0" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.6" />
   </ItemGroup>
 

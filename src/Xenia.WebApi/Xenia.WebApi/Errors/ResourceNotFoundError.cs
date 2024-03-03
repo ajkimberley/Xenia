@@ -1,9 +1,10 @@
-﻿using Xenia.Common.Utilities;
+﻿using ErrorOr;
 
 namespace Xenia.WebApi.Errors;
 
-public class ResourceNotFoundError : Error
+public static class RestErrors
 {
-    public ResourceNotFoundError() : base(id: Guid.NewGuid()) { }
-    public ResourceNotFoundError(string message) : base(id: Guid.NewGuid(), message: message) { }
+    internal static Error ResourceNotFoundError = Error.Unexpected(
+        code: "RestError.ResourceNotFound",
+        description: "The requested resource cannot be found.");
 }
