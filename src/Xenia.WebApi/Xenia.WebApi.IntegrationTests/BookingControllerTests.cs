@@ -151,7 +151,7 @@ public sealed class BookingControllerTests
         });
     }
 
-    [Fact (Skip = "Not yet implemented.")]
+    [Fact]
     public async Task PostBookingReturns409ConflictWhenConcurrentOverlappingBookings()
     {
         var client = _applicationFactory.CreateClient();

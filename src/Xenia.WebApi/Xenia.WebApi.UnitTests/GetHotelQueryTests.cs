@@ -3,10 +3,10 @@
 using Xenia.Bookings.Domain.Entities;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
 using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Exceptions;
 using Xenia.WebApi.Queries;
 
 namespace Xenia.WebApi.Commands.UnitTests;
+
 public class GetHotelQueryTests
 {
     private readonly GetHotelHandler _sut;
@@ -14,7 +14,7 @@ public class GetHotelQueryTests
 
     public static IEnumerable<object[]> HotelDtoTestData()
     {
-        yield return new object[] { new HotelDto("Travel Bodge"), };
+        yield return new object[] { new HotelDto("Travel Bodge") };
         yield return new object[] { new HotelDto("Mediocre Inn") };
         yield return new object[] { new HotelDto("Holiday Bin") };
     }

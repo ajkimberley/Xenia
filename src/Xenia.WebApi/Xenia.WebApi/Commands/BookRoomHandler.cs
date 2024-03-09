@@ -45,7 +45,7 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, ErrorOr<BookingD
     private async Task<ErrorOr<BookingDto>> TryBook(BookRoomCommand cmd, CancellationToken cancellationToken)
     {
         var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(cmd.HotelId);
-        if (hotel is null) return DatabaseErrors.MaximumRetryError; 
+        if (hotel is null) return RestErrors.ResourceNotFoundError; 
             //return new ResourceNotFoundError($"Unable to find hotel with Id {cmd.HotelId}.");
 
         var result = 

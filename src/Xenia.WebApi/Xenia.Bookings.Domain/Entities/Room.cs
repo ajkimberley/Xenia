@@ -40,9 +40,9 @@ public class Room : Entity
     };
 
     public IReadOnlyCollection<Booking> Bookings => _bookings;
-
+    
     internal bool IsAvailable(DateTime from, DateTime to) 
-        => Bookings.All(booking => (from >= booking.To || to <= booking.From));
+        => Bookings.All(booking => booking.To < from || booking.From > to);
 
     public void AddBooking(Booking booking) => _bookings.Add(booking);
 

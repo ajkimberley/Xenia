@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Runtime.InteropServices.JavaScript;
 
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Domain.Enums;
@@ -14,38 +15,6 @@ public sealed class RoomControllerTests
 
     public RoomControllerTests(XeniaWebApplicationFactory<Program> applicationFactory) =>
         _applicationFactory = applicationFactory;
-
-    [Fact]
-    public async Task GetRoomsReturns200AndRoomsResourceWhenHotelHasRooms()
-    {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
-        await using var context = scope.ServiceProvider.GetService<BookingContext>()
-                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
-
-        var hotel = Hotel.Create("Foo");
-        _ = context.Add(hotel);
-        _ = await context.SaveChangesAsync();
-
-        var expected = new List<RoomDto>
-        {
-            new RoomDto(hotel.Id, RoomType.Single, 1),
-            new RoomDto(hotel.Id, RoomType.Double, 2),
-            new RoomDto(hotel.Id, RoomType.Double, 2),
-            new RoomDto(hotel.Id, RoomType.Deluxe, 2),
-            new RoomDto(hotel.Id, RoomType.Deluxe, 2),
-            new RoomDto(hotel.Id, RoomType.Single, 1)
-        };
-
-        var response = await client.GetAsync($"api/hotels/{hotel.Id}/Rooms");
-        var actual = await response.Content.ReadFromJsonAsync<List<RoomDto>>();
-
-        Assert.Multiple(() =>
-        {
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            Assert.Equivalent(expected, actual);
-        });
-    }
 
     public static IEnumerable<object[]> QueryData()
     {
@@ -88,6 +57,46 @@ public sealed class RoomControllerTests
             Assert.Equivalent(expected, actual.Count);
         });
     }
+    
+    // [Fact]
+    // public async Task GetRoomsFromAndToReturnsErrorWhenNoAvailableRooms()
+    // {
+    //     var client = _applicationFactory.CreateClient();
+    //     using var scope = _applicationFactory.Services.CreateScope();
+    //     await using var context = scope.ServiceProvider.GetService<BookingContext>()
+    //                               ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+    //
+    //     var hotel = Hotel.Create("Foo");
+    //     _ = context.Add(hotel);
+    //     _ = await context.SaveChangesAsync();
+    //     
+    //     var bookingDto = new BookingDto(
+    //         hotel.Id,
+    //         RoomType.Single,
+    //         "Joe Bloggs",
+    //         "j.bloggs@example.com",
+    //         new DateTime(2024, 1, 1),
+    //         new DateTime(2024, 1, 7));
+    //
+    //     var requestContent = JsonContent.Create(bookingDto);
+    //     _ = await client.PostAsync("api/Bookings", requestContent);
+    //     _ = await client.PostAsync("api/Bookings", requestContent);
+    //     _ = await client.PostAsync("api/Bookings", requestContent);
+    //
+    //
+    //     var from = new DateTime(2024, 01, 01);
+    //     var to = new DateTime(2024, 01, 07);
+    //     
+    //     var response = await client.GetAsync($"api/hotels/{hotel.Id}/Rooms?From={from:u}&To={to:u}");
+    //     var actual = await response.Content.ReadFromJsonAsync<List<RoomDto>>();
+    //
+    //     Assert.Multiple(() =>
+    //     {
+    //         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    //         Assert.NotNull(actual);
+    //         //Assert.Equivalent(expected, actual.Count);
+    //     });
+    // }
 
     [Fact]
     public async Task GetRoomsReturns404WhenNoHotelFound()
@@ -95,9 +104,13 @@ public sealed class RoomControllerTests
         var client = _applicationFactory.CreateClient();
         using var scope = _applicationFactory.Services.CreateScope();
         await using var context = scope.ServiceProvider.GetService<BookingContext>()
-                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+                                  ?? throw new InvalidOperationException(
+                                      $"Unable to find instance of {nameof(BookingContext)}");
 
-        var response = await client.GetAsync($"api/hotels/{Guid.NewGuid()}/Rooms");
+        var response = await client.GetAsync(
+            $"api/hotels/{Guid.NewGuid()}/Rooms" +
+            $"?From={new DateTime(2022, 01, 01)}" +
+            $"&To={new DateTime(2022, 01, 07)}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -112,7 +125,10 @@ public sealed class RoomControllerTests
 
         var hotel = Hotel.Create("Foo");
 
-        var response = await client.GetAsync($"api/hotels/{hotel.Id}/Rooms?From={new DateTime(2024, 02, 01):u}&To={new DateTime(2024, 01, 01):u}");
+        var response = await client.GetAsync(
+            $"api/hotels/{hotel.Id}/Rooms" +
+            $"?From={new DateTime(2024, 02, 01):u}" +
+            $"&To={new DateTime(2024, 01, 01):u}");
         
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }

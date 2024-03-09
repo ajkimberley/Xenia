@@ -14,7 +14,7 @@ public class RoomsController(ISender mediator) : ControllerBase
 {
     [HttpGet(Name = nameof(GetRooms))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RoomDto>))]
-    public async Task<IActionResult> GetRooms([FromRoute] Guid hotelId, [FromQuery] DateTime? from, DateTime? to)
+    public async Task<IActionResult> GetRooms([FromRoute] Guid hotelId, [FromQuery] DateTime from, [FromQuery] DateTime to)
     {
         try
         {

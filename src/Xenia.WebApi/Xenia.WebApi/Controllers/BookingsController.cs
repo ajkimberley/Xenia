@@ -1,13 +1,12 @@
-﻿using MediatR;
+﻿using ErrorOr;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
-using Xenia.Bookings.Domain.Errors;
-using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Errors;
-using Xenia.WebApi.Exceptions;
 using Xenia.WebApi.Commands;
+using Xenia.WebApi.Dtos;
 using Xenia.WebApi.Queries;
 
 namespace Xenia.WebApi.Controllers;
@@ -37,7 +36,7 @@ public class BookingsController(ISender mediator) : ControllerBase
     public async Task<IActionResult> GetBooking(Guid id)
     {
         var qry = new GetBookingQuery(id);
-        
+
         return (await mediator.Send(qry))
             .Match<IActionResult>(Ok, NotFound);
     }
@@ -50,7 +49,7 @@ public class BookingsController(ISender mediator) : ControllerBase
         var cmd = new BookRoomCommand(dto.HotelId, dto.RoomType, dto.BookerName, dto.BookerEmail, dto.From, dto.To);
         var result = await mediator.Send(cmd);
 
-        return result.Match<IActionResult>(
+        return result.MatchFirst<IActionResult>(
             createdBooking =>
             {
                 // TODO: Validate Host header
@@ -60,18 +59,13 @@ public class BookingsController(ISender mediator) : ControllerBase
                 var bookingResponse = new BookingResponseDto(createdBooking, bookingLinks);
                 return Created("Foo", bookingResponse);
             },
-            ex =>
+            error =>
             {
-                return ex switch
+                return error.Type switch
                 {
-                    // DatabaseErrors.MaximumRetryError => new ConflictObjectResult(
-                    //     "Maximum number of retries were attempted in booking."),
-                    // NoVacanciesError noVacanciesError => new ConflictObjectResult(noVacanciesError.Message),
-                    // ResourceNotFoundError resourceNotFoundError => new NotFoundObjectResult(resourceNotFoundError),
-                    _ => new ObjectResult($"An unexpected error has occured. Inner error: {ex}")
-                    {
-                        StatusCode = 500
-                    }
+                    ErrorType.Conflict => new ConflictResult(),
+                    ErrorType.NotFound => new NotFoundObjectResult(error),
+                    _ => new ObjectResult($"An unexpected error has occured. Inner error: {error}") { StatusCode = 500 }
                 };
             });
     }

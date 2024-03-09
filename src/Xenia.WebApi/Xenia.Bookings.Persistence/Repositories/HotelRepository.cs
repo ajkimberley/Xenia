@@ -23,16 +23,12 @@ public class HotelRepository : GenericRepository<Hotel>, IHotelRepository
                       .Include(h => h.Rooms)
                       .ThenInclude(r => r.Bookings)
                       .SingleOrDefaultAsync(h => h.Id == id);
-
-    // TODO: Validate against case where from = to
-    public async Task<Hotel?> GetHotelWithAvailableRooms(Guid id, DateTime? from, DateTime? to) =>
-        from is null || to is null
-            ? await GetHotelWithRoomsByIdAsync(id)
-            : await Context.Set<Hotel>()
+    
+    public async Task<Hotel?> GetHotelWithAvailableRooms(Guid id, DateTime from, DateTime to) =>
+            await Context.Set<Hotel>()
                              .Include(h => h.Rooms
                                 .Where(r => r.Bookings
-                                    .All(b => (b.From < from && b.To <= from)
-                                           || (b.From >= to))))
+                                    .All(b => (b.From < from && b.To <= from) || 
+                                                     (b.From >= to))))
                              .SingleOrDefaultAsync(h => h.Id == id);
-
 }
