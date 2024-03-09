@@ -3,7 +3,7 @@ using MediatR;
 
 using Xenia.Bookings.Domain;
 using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Exceptions;
+using Xenia.WebApi.Errors;
 
 namespace Xenia.WebApi.Queries;
 
@@ -14,8 +14,9 @@ public class GetAvailableRoomsHandler(IUnitOfWork unitOfWork)
 {
     public async Task<ErrorOr<List<RoomDto>>> Handle(GetAvailableRoomsQuery query, CancellationToken cancellationToken)
     {
-        var hotel = await unitOfWork.Hotels.GetHotelWithAvailableRooms(query.HotelId, query.From, query.To)
-            ?? throw new ResourceNotFoundException($"Unable to find hotel with Id {query.HotelId}.");
+        var hotel = await unitOfWork.Hotels.GetHotelWithAvailableRooms(query.HotelId, query.From, query.To);
+        if (hotel is null) return RestErrors.ResourceNotFoundError;
+        
         var availableRooms = hotel?.Rooms;
         return availableRooms != null ? availableRooms.Select(r => new RoomDto(r.Hotel.Id, r.Type, r.Capacity)).ToList() : new List<RoomDto>();
     }

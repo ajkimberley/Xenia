@@ -1,9 +1,10 @@
-﻿using MediatR;
+﻿using ErrorOr;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
 using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Exceptions;
 using Xenia.WebApi.Queries;
 
 namespace Xenia.WebApi.Controllers;
@@ -16,15 +17,15 @@ public class RoomsController(ISender mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RoomDto>))]
     public async Task<IActionResult> GetRooms([FromRoute] Guid hotelId, [FromQuery] DateTime from, [FromQuery] DateTime to)
     {
-        try
-        {
-            var qry = new GetAvailableRoomsQuery(hotelId, from, to);
-            var result = await mediator.Send(qry);
-            return result.Match<IActionResult>(Ok, BadRequest);
-        }
-        catch (ResourceNotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var qry = new GetAvailableRoomsQuery(hotelId, from, to);
+        var result = await mediator.Send(qry);
+        return result.MatchFirst<IActionResult>(
+            value => new OkObjectResult(value),
+            err => err.Type switch
+            {
+                ErrorType.Unexpected when err.Code == "RestError.ResourceNotFound" => new NotFoundObjectResult(err),
+                ErrorType.Validation => new BadRequestObjectResult(err.Description),
+                _ => new ObjectResult(new { error = new ArgumentOutOfRangeException(nameof(err.Type), err.Type, err.Description) }) { StatusCode = 500 }
+            });
     }
 }
