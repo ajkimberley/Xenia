@@ -29,7 +29,7 @@ public class Hotel : Entity
     {
         var availableRooms = GetAvailableRooms(from, to, roomType).ToArray();
         
-        if (!availableRooms.Any()) return HotelErrors.NoVacancyAvailable;
+        if (availableRooms.Length == 0) return HotelErrors.NoVacancyAvailable;
         // return new HotelErrors(
         //     $"There are no vacancies for a {roomType} room between dates {from:u} and {to:u}.");
         

@@ -1,7 +1,2 @@
 ﻿namespace Xenia.Bookings.Domain.Exceptions;
-public class InvalidRoomTypeException : Exception
-{
-    public InvalidRoomTypeException(string message) : base(message)
-    {
-    }
-}
+public class InvalidRoomTypeException(string message) : Exception(message);

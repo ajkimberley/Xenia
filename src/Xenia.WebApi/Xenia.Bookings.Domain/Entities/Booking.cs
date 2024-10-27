@@ -23,8 +23,8 @@ public class Booking : Entity
     public Guid HotelId { get; private set; }
     
     public string Reference { get; private set; }
-    public string BookerName { get; set; }
-    public string BookerEmail { get; set; }
+    public string BookerName { get; init; }
+    public string BookerEmail { get; init; }
     public RoomType RoomType { get; private set; }
     public DateTime From { get; private set; }
     public DateTime To { get; private set; }

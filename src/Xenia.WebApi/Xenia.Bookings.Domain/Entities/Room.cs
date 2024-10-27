@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 
 using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Domain.Exceptions;
@@ -11,6 +10,7 @@ public class Room : Entity
 {
     private readonly Collection<Booking> _bookings;
 
+    // TODO: Should it be possible to create a room without a hotel?
     private Room(Guid id, int number, RoomType type)
     {
         Id = id;
@@ -28,9 +28,10 @@ public class Room : Entity
         _bookings = new Collection<Booking>();
     }
 
-    public Hotel Hotel { get; set; } = null!;
-    public int Number { get; set; }
-    public RoomType Type { get; private set; }
+    public Hotel Hotel { get; init; } = null!;
+    public int Number { get; init; }
+    public RoomType Type { get; }
+
     public int Capacity => Type switch
     {
         RoomType.Single => 1,
@@ -40,8 +41,8 @@ public class Room : Entity
     };
 
     public IReadOnlyCollection<Booking> Bookings => _bookings;
-    
-    internal bool IsAvailable(DateTime from, DateTime to) 
+
+    internal bool IsAvailable(DateTime from, DateTime to)
         => Bookings.All(booking => booking.To < from || booking.From > to);
 
     public void AddBooking(Booking booking) => _bookings.Add(booking);
