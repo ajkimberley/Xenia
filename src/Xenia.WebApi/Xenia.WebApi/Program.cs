@@ -5,10 +5,10 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 using Xenia.Application.Commands;
+using Xenia.Application.Dtos;
 using Xenia.Application.Queries;
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Persistence;
-using Xenia.Common.Dtos;
 using Xenia.WebApi.Validation;
 
 var builder = WebApplication.CreateBuilder(args);

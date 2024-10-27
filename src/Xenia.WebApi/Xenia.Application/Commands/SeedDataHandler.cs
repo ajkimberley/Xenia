@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-using Xenia.Common.Dtos;
+using Xenia.Application.Dtos;
 
 namespace Xenia.Application.Commands;
 

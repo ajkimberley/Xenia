@@ -1,5 +1,5 @@
 ﻿using Xenia.Common.Enums;
 
-namespace Xenia.Common.Dtos;
+namespace Xenia.Application.Dtos;
 
 public record RoomDto(Guid HotelId, RoomType RoomType, int Capacity);

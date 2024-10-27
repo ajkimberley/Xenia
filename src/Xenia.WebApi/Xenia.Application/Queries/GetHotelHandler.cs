@@ -2,8 +2,8 @@
 
 using MediatR;
 
+using Xenia.Application.Dtos;
 using Xenia.Bookings.Domain;
-using Xenia.Common.Dtos;
 
 namespace Xenia.Application.Queries;
 

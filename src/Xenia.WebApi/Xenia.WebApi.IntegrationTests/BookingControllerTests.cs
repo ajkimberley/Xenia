@@ -2,9 +2,9 @@
 using System.Net.Http.Headers;
 using System.Net.Mime;
 
+using Xenia.Application.Dtos;
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Persistence;
-using Xenia.Common.Dtos;
 using Xenia.Common.Enums;
 
 using Xunit.Sdk;

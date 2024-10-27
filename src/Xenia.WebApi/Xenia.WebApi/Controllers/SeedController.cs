@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using Xenia.Application.Commands;
-using Xenia.Common.Dtos;
+using Xenia.Application.Dtos;
 
 namespace Xenia.WebApi.Controllers;
 

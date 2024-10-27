@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 using Xenia.Application.Commands;
+using Xenia.Application.Dtos;
 using Xenia.Application.Queries;
-using Xenia.Common.Dtos;
 
 namespace Xenia.WebApi.Controllers;
 

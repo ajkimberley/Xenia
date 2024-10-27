@@ -1,6 +1,6 @@
 ﻿using Xenia.Common.Enums;
 
-namespace Xenia.Common.Dtos;
+namespace Xenia.Application.Dtos;
 
 public record BookingDto(
     Guid HotelId,

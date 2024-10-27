@@ -2,10 +2,10 @@
 
 using MediatR;
 
+using Xenia.Application.Dtos;
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Common;
-using Xenia.Common.Dtos;
 using Xenia.Common.Enums;
 using Xenia.Common.Errors;
 

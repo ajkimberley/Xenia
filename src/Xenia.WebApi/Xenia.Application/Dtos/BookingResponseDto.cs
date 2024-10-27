@@ -1,3 +1,3 @@
-﻿namespace Xenia.Common.Dtos;
+﻿namespace Xenia.Application.Dtos;
 
 public record BookingResponseDto(BookingDto BookingDto, List<LinkDto> Links);
