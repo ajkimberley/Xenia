@@ -1,8 +1,8 @@
 ﻿using ErrorOr;
 
-using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Domain.Errors;
 using Xenia.Common;
+using Xenia.Common.Enums;
 
 namespace Xenia.Bookings.Domain.Entities;
 

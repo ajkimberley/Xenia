@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-using Xenia.WebApi.Dtos;
+using Xenia.Common.Dtos;
 
-namespace Xenia.WebApi.Commands;
+namespace Xenia.Application.Commands;
 
 public record SeedDataCommand() : IRequest<SeedDataDto>;
 

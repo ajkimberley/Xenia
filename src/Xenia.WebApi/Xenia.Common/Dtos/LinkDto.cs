@@ -1,3 +1,3 @@
-﻿namespace Xenia.WebApi.Dtos;
+﻿namespace Xenia.Common.Dtos;
 
 public record LinkDto(string Href, string Rel, string Method);

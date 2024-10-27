@@ -9,18 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ErrorOr" Version="1.10.0" />
+    <PackageReference Include="ErrorOr" Version="2.0.1" />
     <PackageReference Include="FluentValidation" Version="11.7.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.6" />
     <PackageReference Include="MassTransit" Version="8.1.1" />
-    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Xenia.Application\Xenia.Application.csproj" />
     <ProjectReference Include="..\Xenia.Bookings.Domain\Xenia.Bookings.Domain.csproj" />
     <ProjectReference Include="..\Xenia.Bookings.Persistence\Xenia.Bookings.Persistence.csproj" />
   </ItemGroup>

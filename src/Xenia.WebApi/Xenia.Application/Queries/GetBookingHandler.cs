@@ -3,9 +3,9 @@
 using MediatR;
 
 using Xenia.Bookings.Domain;
-using Xenia.WebApi.Dtos;
+using Xenia.Common.Dtos;
 
-namespace Xenia.WebApi.Queries;
+namespace Xenia.Application.Queries;
 
 public record GetBookingQuery(Guid Id) : IRequest<ErrorOr<BookingDto>>;
 

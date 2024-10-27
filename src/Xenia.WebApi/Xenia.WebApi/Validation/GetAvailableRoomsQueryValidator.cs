@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-using Xenia.WebApi.Queries;
+using Xenia.Application.Queries;
 
 namespace Xenia.WebApi.Validation;
 

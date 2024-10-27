@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="crockford-base32-core" Version="2.0.0" />
-    <PackageReference Include="ErrorOr" Version="1.10.0" />
+    <PackageReference Include="ErrorOr" Version="2.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.10" />
   </ItemGroup>

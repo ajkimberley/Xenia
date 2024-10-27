@@ -5,9 +5,9 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
-using Xenia.WebApi.Commands;
-using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Queries;
+using Xenia.Application.Commands;
+using Xenia.Application.Queries;
+using Xenia.Common.Dtos;
 
 namespace Xenia.WebApi.Controllers;
 

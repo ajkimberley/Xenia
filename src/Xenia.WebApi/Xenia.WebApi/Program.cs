@@ -4,10 +4,11 @@ using FluentValidation;
 
 using Microsoft.EntityFrameworkCore;
 
+using Xenia.Application.Commands;
+using Xenia.Application.Queries;
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Persistence;
-using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Queries;
+using Xenia.Common.Dtos;
 using Xenia.WebApi.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +27,7 @@ builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Singleton);
 
 builder.Services.AddMediatR(c =>
-    c.RegisterServicesFromAssemblyContaining<Program>()
+    c.RegisterServicesFromAssemblyContaining<BookRoomHandler>()
         .AddValidation<GetAvailableRoomsQuery, ErrorOr<List<RoomDto>>>());
 
 var app = builder.Build();

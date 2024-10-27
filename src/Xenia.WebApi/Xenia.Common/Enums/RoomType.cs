@@ -1,4 +1,4 @@
-﻿namespace Xenia.Bookings.Domain.Enums;
+﻿namespace Xenia.Common.Enums;
 public enum RoomType
 {
     Single,

@@ -3,9 +3,9 @@ using System.Net.Http.Headers;
 using System.Net.Mime;
 
 using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Persistence;
-using Xenia.WebApi.Dtos;
+using Xenia.Common.Dtos;
+using Xenia.Common.Enums;
 
 using Xunit.Sdk;
 

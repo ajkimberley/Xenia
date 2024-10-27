@@ -2,9 +2,9 @@
 using System.Runtime.InteropServices.JavaScript;
 
 using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Persistence;
-using Xenia.WebApi.Dtos;
+using Xenia.Common.Dtos;
+using Xenia.Common.Enums;
 
 namespace Xenia.WebApi.IntegrationTests;
 

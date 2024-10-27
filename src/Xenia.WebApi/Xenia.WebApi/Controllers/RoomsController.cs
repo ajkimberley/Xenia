@@ -4,8 +4,8 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Queries;
+using Xenia.Application.Queries;
+using Xenia.Common.Dtos;
 
 namespace Xenia.WebApi.Controllers;
 

@@ -2,8 +2,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-using Xenia.WebApi.Commands;
-using Xenia.WebApi.Dtos;
+using Xenia.Application.Commands;
+using Xenia.Common.Dtos;
 
 namespace Xenia.WebApi.Controllers;
 

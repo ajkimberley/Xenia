@@ -1,5 +1,5 @@
-﻿using Xenia.Bookings.Domain.Enums;
-using Xenia.Common;
+﻿using Xenia.Common;
+using Xenia.Common.Enums;
 using Xenia.Common.Utilities;
 
 namespace Xenia.Bookings.Domain.Entities;

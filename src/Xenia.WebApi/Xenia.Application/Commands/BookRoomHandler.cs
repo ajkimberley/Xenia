@@ -1,14 +1,15 @@
 ﻿using ErrorOr;
+
 using MediatR;
 
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
 using Xenia.Common;
-using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Errors;
+using Xenia.Common.Dtos;
+using Xenia.Common.Enums;
+using Xenia.Common.Errors;
 
-namespace Xenia.WebApi.Commands;
+namespace Xenia.Application.Commands;
 
 public record BookRoomCommand(Guid HotelId,
                               RoomType RoomType,

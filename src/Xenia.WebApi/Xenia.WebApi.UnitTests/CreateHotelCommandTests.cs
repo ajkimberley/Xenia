@@ -1,3 +1,4 @@
+using Xenia.Application.Commands;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
 
 namespace Xenia.WebApi.Commands.UnitTests;

@@ -1,10 +1,10 @@
 ﻿using ErrorOr;
 
-namespace Xenia.WebApi.Errors;
+namespace Xenia.Common.Errors;
 
 public static class RestErrors
 {
-    internal static Error ResourceNotFoundError = Error.Unexpected(
+    public static Error ResourceNotFoundError { get; } = Error.Unexpected(
         code: "RestError.ResourceNotFound",
         description: "The requested resource cannot be found.");
 }

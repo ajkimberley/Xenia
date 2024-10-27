@@ -1,10 +1,8 @@
-﻿using System.Text.RegularExpressions;
-
+﻿using Xenia.Application.Queries;
 using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
+using Xenia.Common.Dtos;
+using Xenia.Common.Enums;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
-using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Queries;
 
 namespace Xenia.WebApi.Commands.UnitTests;
 

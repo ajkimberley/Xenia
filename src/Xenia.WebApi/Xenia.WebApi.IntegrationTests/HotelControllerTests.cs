@@ -4,7 +4,7 @@ using System.Net.Mime;
 
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Persistence;
-using Xenia.WebApi.Dtos;
+using Xenia.Common.Dtos;
 
 namespace Xenia.WebApi.IntegrationTests;
 

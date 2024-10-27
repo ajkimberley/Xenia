@@ -2,9 +2,9 @@
 
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Domain.Entities;
-using Xenia.WebApi.Dtos;
+using Xenia.Common.Dtos;
 
-namespace Xenia.WebApi.Commands;
+namespace Xenia.Application.Commands;
 
 public record CreateHotelCommand(string Name) : IRequest<HotelDto>;
 

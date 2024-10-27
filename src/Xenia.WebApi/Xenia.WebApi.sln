@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xenia.Bookings.Domain", "Xe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xenia.Common", "Xenia.Common\Xenia.Common.csproj", "{39DE39D1-D943-4908-957C-17E1BE047943}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xenia.Application", "Xenia.Application\Xenia.Application.csproj", "{26EB8103-FB4A-4291-801B-05EB964FF425}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,11 +52,17 @@ Global
 		{39DE39D1-D943-4908-957C-17E1BE047943}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39DE39D1-D943-4908-957C-17E1BE047943}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39DE39D1-D943-4908-957C-17E1BE047943}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26EB8103-FB4A-4291-801B-05EB964FF425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26EB8103-FB4A-4291-801B-05EB964FF425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26EB8103-FB4A-4291-801B-05EB964FF425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26EB8103-FB4A-4291-801B-05EB964FF425}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F7782CD5-1164-4C30-9CD4-0AC2091600EF}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

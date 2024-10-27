@@ -2,7 +2,7 @@
 
 using Xenia.Bookings.Domain;
 
-namespace Xenia.WebApi.Commands;
+namespace Xenia.Application.Commands;
 
 public record UnseedDataCommand() : IRequest;
 

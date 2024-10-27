@@ -1,11 +1,12 @@
 ﻿using ErrorOr;
+
 using MediatR;
 
 using Xenia.Bookings.Domain;
-using Xenia.WebApi.Dtos;
-using Xenia.WebApi.Errors;
+using Xenia.Common.Dtos;
+using Xenia.Common.Errors;
 
-namespace Xenia.WebApi.Queries;
+namespace Xenia.Application.Queries;
 
 public record GetAvailableRoomsQuery(Guid HotelId, DateTime From, DateTime To) : IRequest<ErrorOr<List<RoomDto>>>;
 

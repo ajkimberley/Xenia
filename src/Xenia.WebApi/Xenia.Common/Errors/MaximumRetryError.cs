@@ -1,10 +1,10 @@
 ﻿using ErrorOr;
 
-namespace Xenia.WebApi.Errors;
+namespace Xenia.Common.Errors;
 
 public static class DatabaseErrors
 {
-    internal static Error MaximumRetryError = Error.Unexpected(
+    public static Error MaximumRetryError { get; } = Error.Unexpected(
         code: "Database.MaximumRetryReached",
         description: "Maximum number of retries to the Database has been reached");
 }
