@@ -1,8 +1,3 @@
 ﻿namespace Xenia.Common;
 
-public class ConcurrencyException : Exception
-{
-    public ConcurrencyException(string message, Exception ex) : base(message, ex)
-    {
-    }
-}
+public class ConcurrencyException(string message, Exception ex) : Exception(message, ex);

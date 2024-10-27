@@ -36,7 +36,7 @@ using System.Text;
 /// </remarks>
 namespace Xenia.Common.Utilities;
 
-public static partial class Crockbase32
+public static class Crockbase32
 {
     const string Symbols = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 
@@ -47,10 +47,10 @@ public static partial class Crockbase32
         return sb.ToString();
     }
 
-    public static void EncodeByteString(string input, StringBuilder output)
+    private static void EncodeByteString(string input, StringBuilder output)
     {
-        if (input == null) throw new ArgumentNullException(nameof(input));
-        if (output == null) throw new ArgumentNullException(nameof(output));
+        ArgumentNullException.ThrowIfNull(input);
+        ArgumentNullException.ThrowIfNull(output);
 
         ushort bb = 0;
         var bits = 0;
@@ -61,12 +61,12 @@ public static partial class Crockbase32
 
     public static string Encode(byte[] buffer)
     {
-        if (buffer == null) throw new ArgumentNullException(nameof(buffer));
+        ArgumentNullException.ThrowIfNull(buffer);
 
         return Encode(buffer, 0, buffer.Length);
     }
 
-    public static string Encode(byte[] buffer, int offset, int length)
+    private static string Encode(byte[] buffer, int offset, int length)
     {
         var sb = new StringBuilder();
         Encode(buffer, offset, length, sb);
@@ -75,25 +75,29 @@ public static partial class Crockbase32
 
     public static void Encode(byte[] buffer, StringBuilder output)
     {
-        if (buffer == null) throw new ArgumentNullException(nameof(buffer));
-        if (output == null) throw new ArgumentNullException(nameof(output));
+        ArgumentNullException.ThrowIfNull(buffer);
+        ArgumentNullException.ThrowIfNull(output);
 
         Encode(buffer, 0, buffer.Length, output);
     }
 
-    public static void Encode(byte[] buffer, int offset, int length, StringBuilder output)
+    private static void Encode(byte[] buffer, int offset, int length, StringBuilder output)
     {
-        if (buffer == null) throw new ArgumentNullException(nameof(buffer));
-        if (offset < 0) throw new ArgumentOutOfRangeException(nameof(offset));
-        if (length < 0) throw new ArgumentOutOfRangeException(nameof(length));
-        if (offset + length > buffer.Length) throw new ArgumentOutOfRangeException();
-        if (output == null) throw new ArgumentNullException(nameof(output));
+        ArgumentNullException.ThrowIfNull(buffer);
+        ArgumentOutOfRangeException.ThrowIfNegative(offset);
+        ArgumentOutOfRangeException.ThrowIfNegative(length);
+        if (offset + length <= buffer.Length)
+        {
+            ArgumentNullException.ThrowIfNull(output);
 
-        ushort bb = 0;
-        var bits = 0;
-        for (; length > 0; offset++, length--)
-            Encode(buffer[offset], ref bb, ref bits, output);
-        Flush(bb, bits, output);
+            ushort bb = 0;
+            var bits = 0;
+            for (; length > 0; offset++, length--)
+                Encode(buffer[offset], ref bb, ref bits, output);
+            Flush(bb, bits, output);
+        }
+        else
+            throw new ArgumentOutOfRangeException();
     }
 
     static void Encode(byte b, ref ushort bb, ref int bits, StringBuilder output)
@@ -138,7 +142,7 @@ public static partial class Crockbase32
 
     public static byte[] Decode(string input)
     {
-        if (input == null) throw new ArgumentNullException(nameof(input));
+        ArgumentNullException.ThrowIfNull(input);
 
         if (input.Length == 0)
             return ZeroBytes;
