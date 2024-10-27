@@ -5,10 +5,8 @@ using Xenia.Bookings.Domain.Repositories;
 
 namespace Xenia.Bookings.Persistence.Repositories;
 
-public class BookingRepository : GenericRepository<Booking>, IBookingRepository
+public class BookingRepository(BookingContext context) : GenericRepository<Booking>(context), IBookingRepository
 {
-    public BookingRepository(BookingContext context) : base(context) { }
-
     public async Task<IEnumerable<Booking>> GetAllAsync(string? bookingRef) =>
         await Context.Set<Booking>()
                       .Where(b => b.Reference == bookingRef)

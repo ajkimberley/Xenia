@@ -4,10 +4,8 @@ using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Domain.Repositories;
 
 namespace Xenia.Bookings.Persistence.Repositories;
-public class HotelRepository : GenericRepository<Hotel>, IHotelRepository
+public class HotelRepository(BookingContext context) : GenericRepository<Hotel>(context), IHotelRepository
 {
-    public HotelRepository(BookingContext context) : base(context) { }
-
     public async Task<IEnumerable<Hotel>> GetAllAsync(string? name) =>
         await Context.Set<Hotel>()
                       .Where(h => h.Name == name)

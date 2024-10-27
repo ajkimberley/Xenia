@@ -5,12 +5,8 @@ using Xenia.Bookings.Domain.Entities;
 
 namespace Xenia.Bookings.Persistence;
 
-public class BookingContext : DbContext
+public class BookingContext(DbContextOptions<BookingContext> context) : DbContext(context)
 {
-    public BookingContext(DbContextOptions<BookingContext> context) : base(context)
-    {
-    }
-
     public required DbSet<Hotel> Hotels { get; set; }
     public required DbSet<Booking> Bookings { get; set; }
     public required DbSet<Room> Rooms { get; set; }
