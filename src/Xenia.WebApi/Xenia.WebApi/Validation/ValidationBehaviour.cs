@@ -6,6 +6,7 @@ using MediatR;
 
 namespace Xenia.WebApi.Validation;
 
+// ReSharper disable once ClassNeverInstantiated.Global - instantiated implicitly
 public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
