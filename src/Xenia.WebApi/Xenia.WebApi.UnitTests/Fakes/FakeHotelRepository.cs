@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.Serialization;
 
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Domain.Repositories;
@@ -33,12 +32,18 @@ internal class FakeHotelRepository : FakeGenericRepository<Hotel>, IHotelReposit
 
     private static Hotel CloneHotelWithAvailableRooms(Hotel originalHotel, List<Room> availableRooms)
     {
-        var clonedHotel = (Hotel)FormatterServices.GetUninitializedObject(typeof(Hotel));
+        // Create a new instance of Hotel using a parameterless constructor
+        var clonedHotel = Hotel.Create(originalHotel.Name);
 
+        // Copy each writable property from the originalHotel to clonedHotel
         foreach (var property in typeof(Hotel).GetProperties())
-            if (property.CanWrite)
-                property.SetValue(clonedHotel, property.GetValue(originalHotel));
+        {
+            if (!property.CanWrite) continue;
+            var originalValue = property.GetValue(originalHotel);
+            property.SetValue(clonedHotel, originalValue);
+        }
 
+        // Override the Rooms property with availableRooms
         var roomsProperty = typeof(Hotel).GetProperty("Rooms", BindingFlags.Instance | BindingFlags.Public);
         roomsProperty?.SetValue(clonedHotel, availableRooms);
 
