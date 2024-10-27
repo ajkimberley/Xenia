@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
+using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Domain.Exceptions;
 using Xenia.Common;
-using Xenia.Common.Enums;
 
 namespace Xenia.Bookings.Domain.Entities;
 

@@ -1,4 +1,4 @@
-﻿namespace Xenia.Common.Enums;
+﻿namespace Xenia.Bookings.Domain.Enums;
 public enum BookingState
 {
     Reserved,

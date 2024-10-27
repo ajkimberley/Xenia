@@ -1,4 +1,4 @@
-﻿using Xenia.Common.Enums;
+﻿using Xenia.Bookings.Domain.Enums;
 
 namespace Xenia.Application.Dtos;
 
