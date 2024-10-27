@@ -13,12 +13,9 @@ public class GetHotelHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetHotelQ
 {
     public async Task<ErrorOr<HotelDto>> Handle(GetHotelQuery query, CancellationToken cancellationToken)
     {
-        var foo = await unitOfWork.Hotels.GetByIdAsync(query.Id);
-        if (!foo.IsError)
-        {
-            var hotel = foo.Value;
-            return new HotelDto(hotel.Name, hotel.Id);
-        }
-        return foo.Errors;
+        var hotelResult = await unitOfWork.Hotels.GetByIdAsync(query.Id);
+        if (hotelResult.IsError) return hotelResult.Errors;
+        var hotel = hotelResult.Value;
+        return new HotelDto(hotel.Name, hotel.Id);
     }
 }

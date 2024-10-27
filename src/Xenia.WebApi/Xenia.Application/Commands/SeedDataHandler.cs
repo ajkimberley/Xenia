@@ -4,7 +4,7 @@ using Xenia.Application.Dtos;
 
 namespace Xenia.Application.Commands;
 
-public record SeedDataCommand() : IRequest<SeedDataDto>;
+public record SeedDataCommand : IRequest<SeedDataDto>;
 
 public class SeedDataHandler : IRequestHandler<SeedDataCommand, SeedDataDto>
 {

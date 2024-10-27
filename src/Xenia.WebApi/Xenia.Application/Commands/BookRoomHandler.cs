@@ -3,11 +3,11 @@
 using MediatR;
 
 using Xenia.Application.Dtos;
+using Xenia.Application.Errors;
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Domain.Enums;
 using Xenia.Common;
-using Xenia.Common.Errors;
 
 namespace Xenia.Application.Commands;
 
@@ -18,12 +18,8 @@ public record BookRoomCommand(Guid HotelId,
                               DateTime From,
                               DateTime To) : IRequest<ErrorOr<BookingDto>>;
 
-public class BookRoomHandler : IRequestHandler<BookRoomCommand, ErrorOr<BookingDto>>
+public class BookRoomHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRoomCommand, ErrorOr<BookingDto>>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    public BookRoomHandler(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
-
     public async Task<ErrorOr<BookingDto>> Handle(BookRoomCommand cmd, CancellationToken cancellationToken)
     {
         const int maxRetires = 3;
@@ -40,14 +36,12 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, ErrorOr<BookingD
         while (currentTry <= maxRetires);
 
         return DatabaseErrors.MaximumRetryError;
-        //return new MaximumRetryError("Unable to book hotel room after maximum number of retries.");
     }
 
     private async Task<ErrorOr<BookingDto>> TryBook(BookRoomCommand cmd, CancellationToken cancellationToken)
     {
-        var hotel = await _unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(cmd.HotelId);
-        if (hotel is null) return RestErrors.ResourceNotFoundError; 
-            //return new ResourceNotFoundError($"Unable to find hotel with Id {cmd.HotelId}.");
+        var hotel = await unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(cmd.HotelId);
+        if (hotel is null) return RestErrors.ResourceNotFoundError;
 
         var result = 
             await hotel.BookRoom(cmd.BookerName, cmd.BookerEmail, cmd.From, cmd.To, cmd.RoomType)
@@ -58,8 +52,8 @@ public class BookRoomHandler : IRequestHandler<BookRoomCommand, ErrorOr<BookingD
 
     private async Task<BookingDto> OnSuccess(Booking booking, CancellationToken cancellationToken)
     {
-        await _unitOfWork.Bookings.AddAsync(booking);
-        _ = await _unitOfWork.CompleteAsync(cancellationToken);
+        await unitOfWork.Bookings.AddAsync(booking);
+        _ = await unitOfWork.CompleteAsync(cancellationToken);
         var bookingDto = CreateBookingDto(booking);
         return bookingDto;
     }

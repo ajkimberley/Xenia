@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
 
-namespace Xenia.Common.Errors;
+namespace Xenia.Application.Errors;
 
 public static class DatabaseErrors
 {
