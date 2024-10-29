@@ -22,8 +22,7 @@ public class HotelsController(ISender mediator) : ControllerBase
         var qry = new GetHotelsQuery(name);
         var dtos = await mediator.Send(qry);
 
-        return dtos.IsNullOrEmpty()
-            ? name != null ? NotFound() : NoContent() : Ok(dtos);
+        return dtos.IsNullOrEmpty() ? name != null ? NotFound() : NoContent() : Ok(dtos);
     }
 
     [HttpGet("{id:guid}", Name = nameof(GetHotel))]
