@@ -7,9 +7,9 @@ namespace Xenia.Bookings.Persistence;
 
 public class BookingContext(DbContextOptions<BookingContext> context) : DbContext(context)
 {
-    public required DbSet<Hotel> Hotels { get; set; }
-    public required DbSet<Booking> Bookings { get; set; }
-    public required DbSet<Room> Rooms { get; set; }
+    public required DbSet<Hotel> Hotels { get; init; }
+    public required DbSet<Booking> Bookings { get; init; }
+    public required DbSet<Room> Rooms { get; init; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -43,6 +43,7 @@ if (app.Environment.IsDevelopment())
     // TODO: Replace with migrations
     using var scope = app.Services.CreateScope();
     using var hotelContext = scope.ServiceProvider.GetService<BookingContext>();
+    _ = hotelContext?.Database.EnsureDeleted();
     _ = hotelContext?.Database.EnsureCreated();
 }
 

@@ -9,18 +9,14 @@ namespace Xenia.WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class SeedController : ControllerBase
+public class SeedController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public SeedController(IMediator mediator) => _mediator = mediator;
-
     [HttpPost(Name = nameof(Seed))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(HotelResponseDto))]
     public async Task<IActionResult> Seed()
     {
         var cmd = new SeedDataCommand();
-        var seededData = await _mediator.Send(cmd);
+        var seededData = await mediator.Send(cmd);
         return Ok(seededData);
     }
 
@@ -29,7 +25,7 @@ public class SeedController : ControllerBase
     public async Task<IActionResult> Unseed()
     {
         var cmd = new UnseedDataCommand();
-        await _mediator.Send(cmd);
+        await mediator.Send(cmd);
         return Ok();
     }
 }
