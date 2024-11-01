@@ -52,46 +52,6 @@ public sealed class RoomControllerTests(XeniaWebApplicationFactory<Program> appl
             Assert.Equivalent(expected, actual.Count);
         });
     }
-    
-    // [Fact]
-    // public async Task GetRoomsFromAndToReturnsErrorWhenNoAvailableRooms()
-    // {
-    //     var client = _applicationFactory.CreateClient();
-    //     using var scope = _applicationFactory.Services.CreateScope();
-    //     await using var context = scope.ServiceProvider.GetService<BookingContext>()
-    //                               ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
-    //
-    //     var hotel = Hotel.Create("Foo");
-    //     _ = context.Add(hotel);
-    //     _ = await context.SaveChangesAsync();
-    //     
-    //     var bookingDto = new BookingDto(
-    //         hotel.Id,
-    //         RoomType.Single,
-    //         "Joe Bloggs",
-    //         "j.bloggs@example.com",
-    //         new DateTime(2024, 1, 1),
-    //         new DateTime(2024, 1, 7));
-    //
-    //     var requestContent = JsonContent.Create(bookingDto);
-    //     _ = await client.PostAsync("api/Bookings", requestContent);
-    //     _ = await client.PostAsync("api/Bookings", requestContent);
-    //     _ = await client.PostAsync("api/Bookings", requestContent);
-    //
-    //
-    //     var from = new DateTime(2024, 01, 01);
-    //     var to = new DateTime(2024, 01, 07);
-    //     
-    //     var response = await client.GetAsync($"api/hotels/{hotel.Id}/Rooms?From={from:u}&To={to:u}");
-    //     var actual = await response.Content.ReadFromJsonAsync<List<RoomDto>>();
-    //
-    //     Assert.Multiple(() =>
-    //     {
-    //         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    //         Assert.NotNull(actual);
-    //         //Assert.Equivalent(expected, actual.Count);
-    //     });
-    // }
 
     [Fact]
     public async Task GetRoomsReturns404WhenNoHotelFound()
