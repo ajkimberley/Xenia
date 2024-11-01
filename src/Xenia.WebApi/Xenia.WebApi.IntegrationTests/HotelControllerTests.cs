@@ -9,17 +9,12 @@ using Xenia.Bookings.Persistence;
 namespace Xenia.WebApi.IntegrationTests;
 
 [Collection("WebApi Collection")]
-public sealed class HotelControllerTests
+public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> applicationFactory)
 {
-    private readonly XeniaWebApplicationFactory<Program> _applicationFactory;
-
-    public HotelControllerTests(XeniaWebApplicationFactory<Program> applicationFactory) =>
-        _applicationFactory = applicationFactory;
-
     [Fact]
     public async Task PostHotelReturns201WhenHotelDtoIsValid()
     {
-        var client = _applicationFactory.CreateClient();
+        var client = applicationFactory.CreateClient();
         var requestContent = JsonContent.Create(new HotelDto("Some Hotel Name"), new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
 
         var response = await client.PostAsync("api/Hotels", requestContent);
@@ -34,7 +29,7 @@ public sealed class HotelControllerTests
     [Fact]
     public async Task PostHotelReturns400WhenHotelDtoIsInvalid()
     {
-        var client = _applicationFactory.CreateClient();
+        var client = applicationFactory.CreateClient();
         var requestContent = JsonContent.Create("{\"Foo\": \"Bar\"}", new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
 
         var response = await client.PostAsync("api/Hotels", requestContent);
@@ -48,9 +43,9 @@ public sealed class HotelControllerTests
     [InlineData("Holiday Bin")]
     public async Task PostHotelPersistsHotelWhenDtoIsValid(string hotelName)
     {
-        var client = _applicationFactory.CreateClient();
+        var client = applicationFactory.CreateClient();
         var requestContent = JsonContent.Create(new HotelDto(hotelName), new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
-        using var scope = _applicationFactory.Services.CreateScope();
+        using var scope = applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -65,8 +60,8 @@ public sealed class HotelControllerTests
     [Fact]
     public async Task GetAllHotelsReturns204WhenDatabaseContainsNoHotels()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -82,8 +77,8 @@ public sealed class HotelControllerTests
     [Fact]
     public async Task GetAllHotelsReturns200WhenDatabaseContainsHotels()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -105,8 +100,8 @@ public sealed class HotelControllerTests
     [Fact]
     public async Task GetHotelReturns404WhenIdInvalid()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -118,8 +113,8 @@ public sealed class HotelControllerTests
     [Fact]
     public async Task GetHotelReturns404WhenHotelNotInRepo()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -131,8 +126,8 @@ public sealed class HotelControllerTests
     [Fact]
     public async Task GetHotelByIdReturns200AndCorrectHotelWhenHotelInRepo()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -158,8 +153,8 @@ public sealed class HotelControllerTests
     [Fact]
     public async Task GetHotelsByNameReturns200AndCorrectHotelsWhenHotelInRepo()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -185,8 +180,8 @@ public sealed class HotelControllerTests
     [Fact]
     public async Task GetHotelsByNameReturns404WhenNoHotelFoundInRepo()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         using var context = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 

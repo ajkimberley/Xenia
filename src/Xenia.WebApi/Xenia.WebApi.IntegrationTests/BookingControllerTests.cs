@@ -12,18 +12,13 @@ using Xunit.Sdk;
 namespace Xenia.WebApi.IntegrationTests;
 
 [Collection("WebApi Collection")]
-public sealed class BookingControllerTests
+public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> applicationFactory)
 {
-    private readonly XeniaWebApplicationFactory<Program> _applicationFactory;
-
-    public BookingControllerTests(XeniaWebApplicationFactory<Program> applicationFactory) =>
-        _applicationFactory = applicationFactory;
-
     [Fact]
     public async Task GetHotelsByBookingReferenceReturns200AndCorrectBookingWhenBookingInRepo()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         await using var context = scope.ServiceProvider.GetService<BookingContext>()
                                   ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -58,8 +53,8 @@ public sealed class BookingControllerTests
     [Fact]
     public async Task GetBookingReturns200WhenBookingIsInDatabase()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         await using var context = scope.ServiceProvider.GetService<BookingContext>()
                                   ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -91,8 +86,8 @@ public sealed class BookingControllerTests
     [Fact]
     public async Task GetBookingReturns404WhenBookingIsNotInDatabase()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
         await using var context = scope.ServiceProvider.GetService<BookingContext>()
                                   ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
@@ -108,7 +103,7 @@ public sealed class BookingControllerTests
     [Fact]
     public async Task PostBookingReturns400WhenBookingDtoIsInvalid()
     {
-        var client = _applicationFactory.CreateClient();
+        var client = applicationFactory.CreateClient();
         var requestContent = JsonContent.Create("{\"Foo\": \"Bar\"}", new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
 
         var response = await client.PostAsync("api/Bookings", requestContent);
@@ -119,8 +114,8 @@ public sealed class BookingControllerTests
     [Fact]
     public async Task PostBookingReturns201AndPersistsBookingWhenBookingDtoIsValid()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
 
         await using var bookingContext = scope.ServiceProvider.GetService<BookingContext>()
             ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
@@ -154,8 +149,8 @@ public sealed class BookingControllerTests
     [Fact]
     public async Task PostBookingReturns409ConflictWhenConcurrentOverlappingBookings()
     {
-        var client = _applicationFactory.CreateClient();
-        using var scope = _applicationFactory.Services.CreateScope();
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
 
         var bookingContext = scope.ServiceProvider.GetService<BookingContext>()
                              ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
