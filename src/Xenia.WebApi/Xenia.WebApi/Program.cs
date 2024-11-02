@@ -1,6 +1,7 @@
 using ErrorOr;
 
 using FluentValidation;
+using FluentValidation.AspNetCore;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ using Xenia.WebApi.Validation;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
