@@ -46,8 +46,8 @@ public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> app
         var client = applicationFactory.CreateClient();
         var requestContent = JsonContent.Create(new HotelDto(hotelName), new MediaTypeHeaderValue(MediaTypeNames.Application.Json));
         using var scope = applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var response = await client.PostAsync("api/Hotels", requestContent);
         _ = response.EnsureSuccessStatusCode();
@@ -85,11 +85,11 @@ public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> app
     {
         var client = applicationFactory.CreateClient();
         using var scope = applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         _ = context.Add(Hotel.Create("Foo"));
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var response = await client.GetAsync("api/Hotels");
         _ = response.EnsureSuccessStatusCode();
@@ -108,8 +108,8 @@ public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> app
     {
         var client = applicationFactory.CreateClient();
         using var scope = applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var response = await client.GetAsync("api/Hotels/foo");
 
@@ -121,8 +121,8 @@ public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> app
     {
         var client = applicationFactory.CreateClient();
         using var scope = applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var response = await client.GetAsync($"api/Hotels/{Guid.NewGuid()}");
 
@@ -134,14 +134,14 @@ public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> app
     {
         var client = applicationFactory.CreateClient();
         using var scope = applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotels = context.Hotels.ToList();
         context.Hotels.RemoveRange(hotels);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
         var entityEntry = context.Add(Hotel.Create("Foo"));
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var createdHotel = entityEntry.Entity;
         var expected = new HotelDto(createdHotel.Name, createdHotel.Id);
@@ -161,14 +161,14 @@ public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> app
     {
         var client = applicationFactory.CreateClient();
         using var scope = applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotels = context.Hotels.ToList();
         context.Hotels.RemoveRange(hotels);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
         var entityEntry = context.Add(Hotel.Create("Foo"));
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var createdHotel = entityEntry.Entity;
         var expected = new List<HotelDto>() { new HotelDto(createdHotel.Name, createdHotel.Id) };
@@ -188,12 +188,12 @@ public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> app
     {
         var client = applicationFactory.CreateClient();
         using var scope = applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotels = context.Hotels.ToList();
         context.Hotels.RemoveRange(hotels);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var response = await client.GetAsync($"api/Hotels?name=foo");
 
