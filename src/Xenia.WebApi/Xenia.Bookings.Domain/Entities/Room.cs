@@ -16,7 +16,7 @@ public class Room : Entity
         Id = id;
         Number = number;
         Type = type;
-        _bookings = new Collection<Booking>();
+        _bookings = [];
     }
 
     private Room(Guid id, Hotel hotel, int number, RoomType type)
@@ -25,7 +25,7 @@ public class Room : Entity
         Hotel = hotel;
         Number = number;
         Type = type;
-        _bookings = new Collection<Booking>();
+        _bookings = [];
     }
 
     public Hotel Hotel { get; init; } = null!;

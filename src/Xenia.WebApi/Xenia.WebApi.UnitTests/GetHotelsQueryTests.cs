@@ -9,12 +9,12 @@ public class GetHotelsQueryTests
     private readonly GetHotelsHandler _sut;
     private readonly FakeUow _uow;
 
-    private readonly List<Hotel> _seedData = new()
-    {
+    private readonly List<Hotel> _seedData =
+    [
         Hotel.Create("Travel Bodge"),
         Hotel.Create("Mediocre Inn"),
         Hotel.Create("Holiday Bin")
-    };
+    ];
 
     public GetHotelsQueryTests()
     {
@@ -28,7 +28,6 @@ public class GetHotelsQueryTests
         var qry = new GetHotelsQuery();
 
         var actual = await _sut.Handle(qry, CancellationToken.None);
-        var expected = _seedData.Select(h => new HotelDto(h.Name, h.Id)).ToList();
 
         Assert.Empty(actual);
     }

@@ -14,9 +14,9 @@ public class GetHotelQueryTests
 
     public static IEnumerable<object[]> HotelDtoTestData()
     {
-        yield return new object[] { new HotelDto("Travel Bodge") };
-        yield return new object[] { new HotelDto("Mediocre Inn") };
-        yield return new object[] { new HotelDto("Holiday Bin") };
+        yield return [new HotelDto("Travel Bodge")];
+        yield return [new HotelDto("Mediocre Inn")];
+        yield return [new HotelDto("Holiday Bin")];
     }
 
     public GetHotelQueryTests()

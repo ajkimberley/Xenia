@@ -8,7 +8,7 @@ namespace Xenia.WebApi.Commands.UnitTests.Fakes;
 
 internal class FakeGenericRepository<T> : IGenericRepository<T> where T : Entity
 {
-    protected readonly Collection<T> List = new();
+    protected readonly Collection<T> List = [];
 
     public virtual Task AddAsync(T entity)
     {
