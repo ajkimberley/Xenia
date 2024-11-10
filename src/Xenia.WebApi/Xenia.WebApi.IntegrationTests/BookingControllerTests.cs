@@ -2,6 +2,8 @@
 using System.Net.Http.Headers;
 using System.Net.Mime;
 
+using Newtonsoft.Json;
+
 using Xenia.Application.Dtos;
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Domain.Enums;
@@ -147,6 +149,41 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
     }
 
     [Fact]
+    public async Task PostBookingReturns400WhenToDateBeforeFromDate()
+    {
+        var client = applicationFactory.CreateClient();
+        using var scope = applicationFactory.Services.CreateScope();
+
+        await using var bookingContext = scope.ServiceProvider.GetService<BookingContext>()
+                                         ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+
+        var hotel = Hotel.Create("Holiday Bin");
+        bookingContext.Add(hotel);
+        
+        _ = await bookingContext.SaveChangesAsync();
+
+        var bookingDto = new BookingDto(
+            hotel.Id,
+            RoomType.Single,
+            "Joe Bloggs",
+            "j.bloggs@example.com",
+            new DateTime(2024, 1, 7),
+            new DateTime(2024, 1, 1));
+
+        var requestContent = JsonContent.Create(bookingDto);
+        var response = await client.PostAsync("api/Bookings", requestContent);
+        
+        var responseString = await response.Content.ReadAsStringAsync();
+        var errorResponse = JsonConvert.DeserializeObject<ValidationErrorResponse>(responseString);
+
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.True(errorResponse!.Errors.ContainsKey("From"), "Expected 'From' field to have validation errors.");
+        });
+    }
+
+    [Fact]
     public async Task PostBookingReturns409ConflictWhenConcurrentOverlappingBookings()
     {
         var client = applicationFactory.CreateClient();
@@ -207,4 +244,9 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
             Assert.Equal(2, statusCodes.Count(s => s == HttpStatusCode.Created));
         });
     }
+}
+
+public class ValidationErrorResponse
+{
+    public Dictionary<string, string[]> Errors { get; set; } = null!;
 }

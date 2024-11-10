@@ -6,9 +6,7 @@ namespace Xenia.WebApi.Validators;
 
 public class CreateBookingRequestValidator :  AbstractValidator<BookingDto>
 {
-    public CreateBookingRequestValidator()
-    {
+    public CreateBookingRequestValidator() =>
         RuleFor(x => x.From)
             .LessThan(x => x.To);
-    }
 }
