@@ -58,20 +58,26 @@ public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> app
     }
 
     [Fact]
-    public async Task GetAllHotelsReturns204WhenDatabaseContainsNoHotels()
+    public async Task GetAllHotelsReturns200WithEmptyResponseBodyWhenDatabaseContainsNoHotels()
     {
         var client = applicationFactory.CreateClient();
         using var scope = applicationFactory.Services.CreateScope();
-        using var context = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+        await using var context = scope.ServiceProvider.GetService<BookingContext>()
+                                  ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotels = context.Hotels.ToList();
         context.Hotels.RemoveRange(hotels);
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
 
         var response = await client.GetAsync("api/Hotels");
+        var actual = await response.Content.ReadFromJsonAsync<IEnumerable<HotelDto>>();
 
-        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.NotNull(actual);
+            Assert.Empty(actual); 
+        });
     }
 
     [Fact]

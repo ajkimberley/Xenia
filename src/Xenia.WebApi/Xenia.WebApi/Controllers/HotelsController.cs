@@ -15,14 +15,14 @@ public class HotelsController(ISender mediator) : ControllerBase
 {
     [HttpGet(Name = nameof(GetHotels))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<HotelDto>))]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetHotels([FromQuery] string? name)
     {
         var qry = new GetHotelsQuery(name);
         var dtos = await mediator.Send(qry);
-
-        return dtos.IsNullOrEmpty() ? name != null ? NotFound() : NoContent() : Ok(dtos);
+        
+        if (name != null) return dtos.IsNullOrEmpty() ? NotFound() : Ok(dtos);
+        return Ok(dtos);
     }
 
     [HttpGet("{id:guid}", Name = nameof(GetHotel))]
