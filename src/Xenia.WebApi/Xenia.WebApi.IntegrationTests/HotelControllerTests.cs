@@ -2,6 +2,10 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 
+using Microsoft.AspNetCore.Mvc;
+
+using NuGet.Frameworks;
+
 using Xenia.Application.Dtos;
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Persistence;
@@ -100,6 +104,25 @@ public sealed class HotelControllerTests(XeniaWebApplicationFactory<Program> app
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.NotNull(actual);
             Assert.NotEmpty(actual);
+        });
+    }
+
+    [Theory]
+    [InlineData("Name=a", "Hotel name must be at least three characters long.")]
+    public async Task GetAllHotelsReturns400WithCorrectErrorInBodyWhenQueryStringValidationFails(string qry, string expected)
+    {
+        var client = applicationFactory.CreateClient();
+
+        var response = await client.GetAsync($"api/Hotels?{qry}");
+        var content = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        
+        Assert.Multiple(() =>
+        {
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.NotNull(content);
+            Assert.True(content.Errors.ContainsKey("Name"));
+            Assert.Single(content.Errors["Name"]);
+            Assert.Equal(expected, content.Errors["Name"].First());
         });
     }
 

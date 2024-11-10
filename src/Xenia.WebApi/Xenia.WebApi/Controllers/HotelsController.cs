@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Xenia.Application.Commands;
 using Xenia.Application.Dtos;
 using Xenia.Application.Queries;
+using Xenia.WebApi.RequestsResponses;
 
 namespace Xenia.WebApi.Controllers;
 
@@ -16,8 +17,10 @@ public class HotelsController(ISender mediator) : ControllerBase
     [HttpGet(Name = nameof(GetHotels))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<HotelDto>))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetHotels([FromQuery] string? name)
+    public async Task<IActionResult> GetHotels([FromQuery] GetHotelsRequest? query)
     {
+        var name = query?.Name;
+        
         var qry = new GetHotelsQuery(name);
         var dtos = await mediator.Send(qry);
         
