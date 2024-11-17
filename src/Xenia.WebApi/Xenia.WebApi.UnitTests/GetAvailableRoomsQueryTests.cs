@@ -14,7 +14,7 @@ public class GetAvailableRoomsQueryTests
     public GetAvailableRoomsQueryTests()
     {
         _uow = new FakeUow();
-        _sut = new GetAvailableRoomsHandler(_uow);
+        _sut = new GetAvailableRoomsHandler(_uow.Hotels);
     }
 
     [Fact]

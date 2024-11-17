@@ -3,16 +3,16 @@
 using MediatR;
 
 using Xenia.Application.Dtos;
-using Xenia.Bookings.Domain;
+using Xenia.Bookings.Domain.Repositories;
 
 namespace Xenia.Application.Queries;
 
 public record GetBookingQuery(Guid Id) : IRequest<ErrorOr<BookingDto>>;
 
-public class GetBookingHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetBookingQuery, ErrorOr<BookingDto>>
+public class GetBookingHandler(IBookingRepository bookingRepo) : IRequestHandler<GetBookingQuery, ErrorOr<BookingDto>>
 {
     public async Task<ErrorOr<BookingDto>> Handle(GetBookingQuery query, CancellationToken cancellationToken) =>
-        (await unitOfWork.Bookings.GetByIdAsync(query.Id))
+        (await bookingRepo.GetByIdAsync(query.Id))
         .Then(booking =>
         {
             var bookingDto = new BookingDto(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail,

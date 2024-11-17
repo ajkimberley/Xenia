@@ -13,7 +13,7 @@ public class BookRoomCommandTests
     public BookRoomCommandTests()
     {
         _uow = new FakeUow();
-        _sut = new BookRoomHandler(_uow);
+        _sut = new BookRoomHandler(_uow, _uow.Hotels, _uow.Bookings);
     }
 
     [Fact]

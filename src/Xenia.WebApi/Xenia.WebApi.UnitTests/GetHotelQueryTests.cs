@@ -22,7 +22,7 @@ public class GetHotelQueryTests
     public GetHotelQueryTests()
     {
         _uow = new FakeUow();
-        _sut = new GetHotelHandler(_uow);
+        _sut = new GetHotelHandler(_uow.Hotels);
     }
 
     [Theory]

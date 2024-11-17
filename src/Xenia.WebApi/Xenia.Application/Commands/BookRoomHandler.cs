@@ -7,6 +7,7 @@ using Xenia.Application.Errors;
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Domain.Enums;
+using Xenia.Bookings.Domain.Repositories;
 using Xenia.Common;
 
 namespace Xenia.Application.Commands;
@@ -18,7 +19,7 @@ public record BookRoomCommand(Guid HotelId,
                               DateTime From,
                               DateTime To) : IRequest<ErrorOr<BookingDto>>;
 
-public class BookRoomHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRoomCommand, ErrorOr<BookingDto>>
+public class BookRoomHandler(IUnitOfWork unitOfWork, IHotelRepository hotelRepo, IBookingRepository bookingRepo) : IRequestHandler<BookRoomCommand, ErrorOr<BookingDto>>
 {
     public async Task<ErrorOr<BookingDto>> Handle(BookRoomCommand cmd, CancellationToken cancellationToken)
     {
@@ -40,7 +41,7 @@ public class BookRoomHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRoomC
 
     private async Task<ErrorOr<BookingDto>> TryBook(BookRoomCommand cmd, CancellationToken cancellationToken)
     {
-        var hotel = await unitOfWork.Hotels.GetHotelWithRoomsAndBookingsByIdAsync(cmd.HotelId);
+        var hotel = await hotelRepo.GetHotelWithRoomsAndBookingsByIdAsync(cmd.HotelId);
         if (hotel is null) return RestErrors.ResourceNotFoundError;
 
         var result = 
@@ -52,7 +53,7 @@ public class BookRoomHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRoomC
 
     private async Task<BookingDto> OnSuccess(Booking booking, CancellationToken cancellationToken)
     {
-        await unitOfWork.Bookings.AddAsync(booking);
+        await bookingRepo.AddAsync(booking);
         _ = await unitOfWork.CompleteAsync(cancellationToken);
         var bookingDto = CreateBookingDto(booking);
         return bookingDto;

@@ -28,10 +28,7 @@ public class Hotel : Entity
     public ErrorOr<Booking> BookRoom(string name, string email, DateTime from, DateTime to, RoomType roomType)
     {
         var availableRooms = GetAvailableRooms(from, to, roomType).ToArray();
-        
         if (availableRooms.Length == 0) return HotelErrors.NoVacancyAvailable;
-        // return new HotelErrors(
-        //     $"There are no vacancies for a {roomType} room between dates {from:u} and {to:u}.");
         
         var availableRoom = availableRooms.First();
         var booking = Booking.Create(Id, roomType, name, email, from, to, availableRoom);

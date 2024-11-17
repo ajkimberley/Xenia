@@ -9,7 +9,9 @@ using Xenia.Application.Commands;
 using Xenia.Application.Dtos;
 using Xenia.Application.Queries;
 using Xenia.Bookings.Domain;
+using Xenia.Bookings.Domain.Repositories;
 using Xenia.Bookings.Persistence;
+using Xenia.Bookings.Persistence.Repositories;
 using Xenia.WebApi.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +28,10 @@ builder.Services.AddDbContext<BookingContext>((container, options) =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Composition Root
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Singleton);
 
 builder.Services.AddMediatR(c =>

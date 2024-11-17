@@ -19,7 +19,7 @@ public class GetHotelsQueryTests
     public GetHotelsQueryTests()
     {
         _uow = new FakeUow();
-        _sut = new GetHotelsHandler(_uow);
+        _sut = new GetHotelsHandler(_uow, _uow.Hotels);
     }
 
     [Fact]

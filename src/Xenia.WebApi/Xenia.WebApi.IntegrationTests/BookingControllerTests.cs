@@ -9,8 +9,6 @@ using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Persistence;
 
-using Xunit.Sdk;
-
 namespace Xenia.WebApi.IntegrationTests;
 
 [Collection("WebApi Collection")]
@@ -46,10 +44,10 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
         var actual = await response.Content.ReadFromJsonAsync<List<BookingDto>>();
 
         Assert.Multiple(() =>
-            {
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                Assert.Equal(expected, actual);
-            });
+        {
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(expected, actual);
+        });
     }
 
     [Fact]
@@ -120,11 +118,11 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
         using var scope = applicationFactory.Services.CreateScope();
 
         await using var bookingContext = scope.ServiceProvider.GetService<BookingContext>()
-            ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
+                                         ?? throw new InvalidOperationException($"Unable to find instance of {nameof(BookingContext)}");
 
         var hotel = Hotel.Create("Holiday Bin");
         bookingContext.Add(hotel);
-        
+
         _ = await bookingContext.SaveChangesAsync();
 
         var bookingDto = new BookingDto(
@@ -159,7 +157,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var hotel = Hotel.Create("Holiday Bin");
         bookingContext.Add(hotel);
-        
+
         _ = await bookingContext.SaveChangesAsync();
 
         var bookingDto = new BookingDto(
@@ -172,7 +170,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var requestContent = JsonContent.Create(bookingDto);
         var response = await client.PostAsync("api/Bookings", requestContent);
-        
+
         var responseString = await response.Content.ReadAsStringAsync();
         var errorResponse = JsonConvert.DeserializeObject<ValidationErrorResponse>(responseString);
 
@@ -211,7 +209,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
             "j.doe@example.com",
             new DateTime(2024, 1, 1),
             new DateTime(2024, 1, 7));
-        
+
         var bookingDto3 = new BookingDto(
             hotel.Id,
             RoomType.Single,
@@ -230,12 +228,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         await Task.WhenAll(request1, request2, request3);
 
-        var statusCodes = new List<HttpStatusCode>
-        {
-            (await request1).StatusCode,
-            (await request2).StatusCode,
-            (await request3).StatusCode
-        };
+        var statusCodes = new List<HttpStatusCode> { (await request1).StatusCode, (await request2).StatusCode, (await request3).StatusCode };
 
         Assert.Multiple(() =>
         {
@@ -248,5 +241,5 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
 public class ValidationErrorResponse
 {
-    public Dictionary<string, string[]> Errors { get; set; } = null!;
+    public Dictionary<string, string[]> Errors { get; } = null!;
 }

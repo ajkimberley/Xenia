@@ -11,7 +11,7 @@ public class CreateHotelCommandTests
     public CreateHotelCommandTests()
     {
         _uow = new FakeUow();
-        _sut = new CreateHotelHandler(_uow);
+        _sut = new CreateHotelHandler(_uow, _uow.Hotels);
     }
 
     [Theory]

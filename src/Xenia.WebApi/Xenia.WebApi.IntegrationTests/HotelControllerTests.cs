@@ -4,8 +4,6 @@ using System.Net.Mime;
 
 using Microsoft.AspNetCore.Mvc;
 
-using NuGet.Frameworks;
-
 using Xenia.Application.Dtos;
 using Xenia.Bookings.Domain.Entities;
 using Xenia.Bookings.Persistence;
