@@ -6,14 +6,13 @@ using Xenia.Application.Dtos;
 using Xenia.Application.Errors;
 using Xenia.Bookings.Domain;
 using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Domain.Repositories;
 using Xenia.Common;
 
 namespace Xenia.Application.Commands;
 
 public record BookRoomCommand(Guid HotelId,
-                              RoomType RoomType,
+                              string RoomType,
                               string BookerName,
                               string BookerEmail,
                               DateTime From,
@@ -61,7 +60,7 @@ public class BookRoomHandler(IUnitOfWork unitOfWork, IHotelRepository hotelRepo,
     
     private static BookingDto CreateBookingDto(Booking booking) =>
         new(booking.HotelId,
-            booking.RoomType,
+            booking.RoomType.Name,
             booking.BookerName,
             booking.BookerEmail,
             booking.From,

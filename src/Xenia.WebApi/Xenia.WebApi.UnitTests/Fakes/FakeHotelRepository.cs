@@ -30,7 +30,7 @@ internal class FakeHotelRepository : FakeGenericRepository<Hotel>, IHotelReposit
         return Task.FromResult(hotelWithAvailableRooms)!;
     }
 
-    private static Hotel CloneHotelWithAvailableRooms(Hotel originalHotel, List<Room> availableRooms)
+    private static Hotel CloneHotelWithAvailableRooms(Hotel originalHotel, List<RoomType> availableRooms)
     {
         // Create a new instance of Hotel using a parameterless constructor
         var clonedHotel = Hotel.Create(originalHotel.Name);

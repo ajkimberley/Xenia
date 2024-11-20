@@ -1,6 +1,5 @@
 ﻿using ErrorOr;
 
-using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Domain.Errors;
 using Xenia.Common;
 
@@ -12,26 +11,26 @@ public class Hotel : Entity
     {
         Id = id;
         Name = name;
-        Rooms = new List<Room>();
+        Rooms = new List<RoomType>();
     }
 
     public string Name { get; private set; }
     
-    public ICollection<Room> Rooms { get; private set; }
+    public ICollection<RoomType> Rooms { get; private set; }
 
-    private IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to)
+    private IEnumerable<RoomType> GetAvailableRooms(DateTime from, DateTime to)
         => Rooms.Where(r => r.IsAvailable(from, to));
 
-    private IEnumerable<Room> GetAvailableRooms(DateTime from, DateTime to, RoomType roomType) =>
-        GetAvailableRooms(from, to).Where(r => r.Type == roomType);
+    private IEnumerable<RoomType> GetAvailableRooms(DateTime from, DateTime to, string name) =>
+        GetAvailableRooms(from, to).Where(r => r.Name == name);
     
-    public ErrorOr<Booking> BookRoom(string name, string email, DateTime from, DateTime to, RoomType roomType)
+    public ErrorOr<Booking> BookRoom(string name, string email, DateTime from, DateTime to, string roomType)
     {
         var availableRooms = GetAvailableRooms(from, to, roomType).ToArray();
         if (availableRooms.Length == 0) return HotelErrors.NoVacancyAvailable;
         
         var availableRoom = availableRooms.First();
-        var booking = Booking.Create(Id, roomType, name, email, from, to, availableRoom);
+        var booking = Booking.Create(Id, name, email, from, to, availableRoom);
         availableRoom.AddBooking(booking);
         
         return booking;
@@ -40,14 +39,14 @@ public class Hotel : Entity
     public static Hotel Create(string name)
     {
         var newHotel = new Hotel(Guid.NewGuid(), name);
-        var rooms = new List<Room>
+        var rooms = new List<RoomType>
         {
-            Room.CreateSingle(newHotel, 1),
-            Room.CreateSingle(newHotel, 2),
-            Room.CreateDouble(newHotel, 3),
-            Room.CreateDouble(newHotel, 4),
-            Room.CreateDeluxe(newHotel, 5),
-            Room.CreateDeluxe(newHotel, 6),
+            RoomType.CreateSingle(newHotel),
+            RoomType.CreateSingle(newHotel),
+            RoomType.CreateDouble(newHotel),
+            RoomType.CreateDouble(newHotel),
+            RoomType.CreateDeluxe(newHotel),
+            RoomType.CreateDeluxe(newHotel),
         };
         newHotel.Rooms = rooms;
         return newHotel;

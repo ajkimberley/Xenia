@@ -15,7 +15,7 @@ public class GetBookingHandler(IBookingRepository bookingRepo) : IRequestHandler
         (await bookingRepo.GetByIdAsync(query.Id))
         .Then(booking =>
         {
-            var bookingDto = new BookingDto(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail,
+            var bookingDto = new BookingDto(booking.HotelId, booking.RoomType.Name, booking.BookerName, booking.BookerEmail,
                 booking.From, booking.To, booking.State, booking.Id);
             return bookingDto;
         });

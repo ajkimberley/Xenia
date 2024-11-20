@@ -2,11 +2,12 @@
 using System.Net.Http.Headers;
 using System.Net.Mime;
 
+using Microsoft.AspNetCore.Mvc;
+
 using Newtonsoft.Json;
 
 using Xenia.Application.Dtos;
 using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Persistence;
 
 namespace Xenia.WebApi.IntegrationTests;
@@ -28,7 +29,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var hotel = Hotel.Create("Travel Bodge");
         var room = hotel.Rooms.First();
-        var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1),
+        var booking = Booking.Create(hotel.Id,"Joe", "Bloggs", new DateTime(2024, 1, 1),
             new DateTime(2024, 1, 7), room);
         room.AddBooking(booking);
         _ = context.Add(hotel);
@@ -36,7 +37,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var expected = new List<BookingDto>()
         {
-            new(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail, booking.From, booking.To,
+            new(booking.HotelId, booking.RoomType.Name, booking.BookerName, booking.BookerEmail, booking.From, booking.To,
                 booking.State, booking.Id, booking.Reference)
         };
 
@@ -64,18 +65,19 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var hotel = Hotel.Create("Travel Bodge");
         var room = hotel.Rooms.First();
-        var booking = Booking.Create(hotel.Id, room.Type, "Joe", "Bloggs", new DateTime(2024, 1, 1),
+        var booking = Booking.Create(hotel.Id, "Joe", "Bloggs", new DateTime(2024, 1, 1),
             new DateTime(2024, 1, 7), room);
         room.AddBooking(booking);
         _ = context.Add(hotel);
         _ = await context.SaveChangesAsync();
 
-        var expected = new BookingDto(booking.HotelId, booking.RoomType, booking.BookerName, booking.BookerEmail,
+        var expected = new BookingDto(booking.HotelId, booking.RoomType.Name, booking.BookerName, booking.BookerEmail,
             booking.From, booking.To, booking.State, booking.Id);
 
         var response = await client.GetAsync($"api/Bookings/{booking.Id}");
+        
+        Assert.True(response.IsSuccessStatusCode);
         var actual = await response.Content.ReadFromJsonAsync<BookingDto>();
-
         Assert.Multiple(() =>
         {
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -127,7 +129,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var bookingDto = new BookingDto(
             hotel.Id,
-            RoomType.Single,
+            "single",
             "Joe Bloggs",
             "j.bloggs@example.com",
             new DateTime(2024, 1, 1),
@@ -162,7 +164,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var bookingDto = new BookingDto(
             hotel.Id,
-            RoomType.Single,
+            "single",
             "Joe Bloggs",
             "j.bloggs@example.com",
             new DateTime(2024, 1, 7),
@@ -172,7 +174,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
         var response = await client.PostAsync("api/Bookings", requestContent);
 
         var responseString = await response.Content.ReadAsStringAsync();
-        var errorResponse = JsonConvert.DeserializeObject<ValidationErrorResponse>(responseString);
+        var errorResponse = JsonConvert.DeserializeObject<ValidationProblemDetails>(responseString);
 
         Assert.Multiple(() =>
         {
@@ -196,7 +198,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var bookingDto1 = new BookingDto(
             hotel.Id,
-            RoomType.Single,
+            "single",
             "Joe Bloggs",
             "j.bloggs@example.com",
             new DateTime(2024, 1, 1),
@@ -204,7 +206,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var bookingDto2 = new BookingDto(
             hotel.Id,
-            RoomType.Single,
+            "single",
             "Jill Doe",
             "j.doe@example.com",
             new DateTime(2024, 1, 1),
@@ -212,7 +214,7 @@ public sealed class BookingControllerTests(XeniaWebApplicationFactory<Program> a
 
         var bookingDto3 = new BookingDto(
             hotel.Id,
-            RoomType.Single,
+            "single",
             "John Smith",
             "j.smith@example.com",
             new DateTime(2024, 1, 1),

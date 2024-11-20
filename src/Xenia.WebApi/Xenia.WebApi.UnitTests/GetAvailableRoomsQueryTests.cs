@@ -1,7 +1,6 @@
 ﻿using Xenia.Application.Dtos;
 using Xenia.Application.Queries;
 using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
 
 namespace Xenia.WebApi.Commands.UnitTests;
@@ -26,7 +25,7 @@ public class GetAvailableRoomsQueryTests
         var existingFrom = new DateTime(2024, 04, 15);
         var existingTo = new DateTime(2024, 04, 20);
 
-        hotel.BookRoom("Foo", "foo@bar.com", existingFrom, existingTo, RoomType.Single);
+        hotel.BookRoom("Foo", "foo@bar.com", existingFrom, existingTo, "single");
         
         await _uow.Hotels.AddAsync(hotel);
 

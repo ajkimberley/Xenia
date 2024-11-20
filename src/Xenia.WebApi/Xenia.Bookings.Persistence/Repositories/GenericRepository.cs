@@ -12,7 +12,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     protected GenericRepository(BookingContext context) => Context = context;
 
-    public async Task<ErrorOr<T>> GetByIdAsync(Guid id)
+    public virtual async Task<ErrorOr<T>> GetByIdAsync(Guid id)
     {
         var result = await Context.Set<T>().FindAsync(id);
         return result != null ? result : Error.NotFound();

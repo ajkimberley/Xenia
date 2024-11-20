@@ -1,6 +1,5 @@
 ﻿using Xenia.Application.Commands;
 using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
 
 namespace Xenia.WebApi.Commands.UnitTests;
@@ -21,7 +20,7 @@ public class BookRoomCommandTests
     {
         var from = new DateTime(2024, 1, 1);
         var to = new DateTime(2024, 1, 7);
-        var cmd = new BookRoomCommand(Guid.NewGuid(), RoomType.Single, "Joe", "Bloggs", from, to);
+        var cmd = new BookRoomCommand(Guid.NewGuid(), "single", "Joe", "Bloggs", from, to);
 
         var result = await _sut.Handle(cmd, CancellationToken.None);
 
@@ -29,10 +28,10 @@ public class BookRoomCommandTests
     }
 
     [Theory]
-    [InlineData(RoomType.Single)]
-    [InlineData(RoomType.Double)]
-    [InlineData(RoomType.Deluxe)]
-    public async Task Given_NoBookingsForRoomType_ShouldSuccessfullyBook(RoomType roomType)
+    [InlineData("single")]
+    [InlineData("double")]
+    [InlineData("deluxe")]
+    public async Task Given_NoBookingsForRoomType_ShouldSuccessfullyBook(string roomType)
     {
         var hotel = Hotel.Create("Holiday Bin");
         await _uow.Hotels.AddAsync(hotel);
@@ -48,10 +47,10 @@ public class BookRoomCommandTests
     }
 
     [Theory]
-    [InlineData(RoomType.Single)]
-    [InlineData(RoomType.Double)]
-    [InlineData(RoomType.Deluxe)]
-    public async Task Given_RoomTypeFullyBooked_ResultIsError(RoomType roomType)
+    [InlineData("single")]
+    [InlineData("double")]
+    [InlineData("deluxe")]
+    public async Task Given_RoomTypeFullyBooked_ResultIsError(string roomType)
     {
         var hotel = Hotel.Create("Holiday Bin");
         await _uow.Hotels.AddAsync(hotel);

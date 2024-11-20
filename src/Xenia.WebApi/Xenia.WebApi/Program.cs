@@ -32,7 +32,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
-builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Singleton);
+builder.Services.AddValidatorsFromAssemblyContaining<Xenia.WebApi.Program>(ServiceLifetime.Singleton);
 
 builder.Services.AddMediatR(c =>
     c.RegisterServicesFromAssemblyContaining<BookRoomHandler>()
@@ -62,6 +62,9 @@ app.MapControllers();
 app.Run();
 
 // Partial Program class added to support integration testing
-public partial class Program
+namespace Xenia.WebApi
 {
+    public partial class Program
+    {
+    }
 }

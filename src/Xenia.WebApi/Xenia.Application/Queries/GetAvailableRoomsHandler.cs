@@ -18,6 +18,6 @@ public class GetAvailableRoomsHandler(IHotelRepository hotelRepo) : IRequestHand
         if (hotel is null) return RestErrors.ResourceNotFoundError;
 
         var availableRooms = hotel?.Rooms;
-        return availableRooms != null ? availableRooms.Select(r => new RoomDto(r.Hotel.Id, r.Type, r.Capacity)).ToList() : [];
+        return availableRooms != null ? availableRooms.Select(r => new RoomDto(r.Hotel.Id, r.Name, r.Capacity)).ToList() : [];
     }
 }

@@ -2,7 +2,6 @@
 
 using Xenia.Application.Dtos;
 using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
 using Xenia.Bookings.Persistence;
 
 namespace Xenia.WebApi.IntegrationTests;
@@ -35,7 +34,7 @@ public sealed class RoomControllerTests(XeniaWebApplicationFactory<Program> appl
 
         var hotel = Hotel.Create("Foo");
         var room = hotel.Rooms.First();
-        var booking = Booking.Create(hotel.Id, RoomType.Single, "Joe Bloggs", "j.bloggs@example.com",
+        var booking = Booking.Create(hotel.Id, "Joe Bloggs", "j.bloggs@example.com",
             new DateTime(2024, 01, 01), new DateTime(2024, 01, 07), room);
         hotel.Rooms.FirstOrDefault()!.AddBooking(booking);
         _ = context.Add(hotel);
