@@ -4,8 +4,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Xenia.Application.Dtos;
-using Xenia.Application.Queries;
+using Xenia.Application.HotelManagement;
 
 namespace Xenia.WebApi.Controllers;
 

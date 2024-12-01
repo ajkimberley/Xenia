@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Repositories;
+using Xenia.Bookings.Domain.Hotels;
 
 namespace Xenia.Bookings.Persistence.Repositories;
 public class HotelRepository(BookingContext context) : GenericRepository<Hotel>(context), IHotelRepository

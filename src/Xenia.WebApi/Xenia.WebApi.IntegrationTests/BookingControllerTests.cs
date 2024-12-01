@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json;
 
-using Xenia.Application.Dtos;
-using Xenia.Bookings.Domain.Entities;
+using Xenia.Application.Bookings;
+using Xenia.Bookings.Domain.Bookings;
+using Xenia.Bookings.Domain.Hotels;
 using Xenia.Bookings.Persistence;
 
 namespace Xenia.WebApi.IntegrationTests;

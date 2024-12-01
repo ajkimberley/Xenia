@@ -1,5 +1,6 @@
-﻿using Xenia.Application.Commands;
-using Xenia.Bookings.Domain.Entities;
+﻿using Xenia.Application.Bookings;
+using Xenia.Application.Bookings.BookRoom;
+using Xenia.Bookings.Domain.Hotels;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
 
 namespace Xenia.WebApi.Commands.UnitTests;

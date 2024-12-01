@@ -1,5 +1,6 @@
 ﻿using Xenia.Bookings.Domain;
-using Xenia.Bookings.Domain.Repositories;
+using Xenia.Bookings.Domain.Bookings;
+using Xenia.Bookings.Domain.Hotels;
 
 namespace Xenia.WebApi.Commands.UnitTests.Fakes;
 internal class FakeUow : IUnitOfWork

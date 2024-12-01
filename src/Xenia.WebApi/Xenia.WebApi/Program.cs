@@ -5,11 +5,12 @@ using FluentValidation.AspNetCore;
 
 using Microsoft.EntityFrameworkCore;
 
-using Xenia.Application.Commands;
-using Xenia.Application.Dtos;
-using Xenia.Application.Queries;
+using Xenia.Application.Bookings;
+using Xenia.Application.Bookings.BookRoom;
+using Xenia.Application.HotelManagement;
 using Xenia.Bookings.Domain;
-using Xenia.Bookings.Domain.Repositories;
+using Xenia.Bookings.Domain.Bookings;
+using Xenia.Bookings.Domain.Hotels;
 using Xenia.Bookings.Persistence;
 using Xenia.Bookings.Persistence.Repositories;
 using Xenia.WebApi.Validation;

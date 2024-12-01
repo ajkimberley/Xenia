@@ -1,7 +1,8 @@
 ﻿using System.Net;
 
-using Xenia.Application.Dtos;
-using Xenia.Bookings.Domain.Entities;
+using Xenia.Application.HotelManagement;
+using Xenia.Bookings.Domain.Bookings;
+using Xenia.Bookings.Domain.Hotels;
 using Xenia.Bookings.Persistence;
 
 namespace Xenia.WebApi.IntegrationTests;

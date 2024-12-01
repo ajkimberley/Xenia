@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 
-using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Repositories;
+using Xenia.Bookings.Domain.Hotels;
 
 namespace Xenia.WebApi.Commands.UnitTests.Fakes;
 

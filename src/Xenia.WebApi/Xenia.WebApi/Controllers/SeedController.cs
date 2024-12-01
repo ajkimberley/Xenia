@@ -2,8 +2,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-using Xenia.Application.Commands;
-using Xenia.Application.Dtos;
+using Xenia.Application.HotelManagement;
+using Xenia.Application.Seeding;
 
 namespace Xenia.WebApi.Controllers;
 

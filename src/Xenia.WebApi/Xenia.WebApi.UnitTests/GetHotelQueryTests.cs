@@ -1,8 +1,7 @@
 ﻿using ErrorOr;
 
-using Xenia.Application.Dtos;
-using Xenia.Application.Queries;
-using Xenia.Bookings.Domain.Entities;
+using Xenia.Application.HotelManagement;
+using Xenia.Bookings.Domain.Hotels;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
 
 namespace Xenia.WebApi.Commands.UnitTests;

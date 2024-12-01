@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Enums;
+using Xenia.Bookings.Domain.Bookings;
+using Xenia.Bookings.Domain.Hotels;
 
 namespace Xenia.Bookings.Persistence;
 

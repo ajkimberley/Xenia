@@ -1,4 +1,4 @@
-using Xenia.Application.Commands;
+using Xenia.Application.HotelManagement;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
 
 namespace Xenia.WebApi.Commands.UnitTests;

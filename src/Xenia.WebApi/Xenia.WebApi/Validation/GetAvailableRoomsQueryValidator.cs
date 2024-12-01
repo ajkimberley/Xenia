@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-using Xenia.Application.Queries;
+using Xenia.Application.HotelManagement;
 
 namespace Xenia.WebApi.Validation;
 

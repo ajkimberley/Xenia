@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-using Xenia.Application.Dtos;
+using Xenia.Application.Bookings;
 
 namespace Xenia.WebApi.Validation;
 

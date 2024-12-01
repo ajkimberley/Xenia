@@ -3,10 +3,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
-using Xenia.Application.Commands;
-using Xenia.Application.Dtos;
-using Xenia.Application.Queries;
-using Xenia.WebApi.RequestsResponses;
+using Xenia.Application.HotelManagement;
+using Xenia.Common;
+using Xenia.WebApi.RequestResponse;
 
 namespace Xenia.WebApi.Controllers;
 

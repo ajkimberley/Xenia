@@ -2,8 +2,8 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Repositories;
+using Xenia.Bookings.Domain.Bookings;
+using Xenia.Bookings.Domain.Hotels;
 
 namespace Xenia.Bookings.Persistence.Repositories;
 

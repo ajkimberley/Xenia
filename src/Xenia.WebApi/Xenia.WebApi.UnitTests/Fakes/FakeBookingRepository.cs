@@ -1,5 +1,4 @@
-﻿using Xenia.Bookings.Domain.Entities;
-using Xenia.Bookings.Domain.Repositories;
+﻿using Xenia.Bookings.Domain.Bookings;
 
 namespace Xenia.WebApi.Commands.UnitTests.Fakes;
 internal class FakeBookingRepository : FakeGenericRepository<Booking>, IBookingRepository
