@@ -1,5 +1,4 @@
-﻿using Xenia.Application.Bookings;
-using Xenia.Application.Bookings.BookRoom;
+﻿using Xenia.Application.Bookings.BookRoom;
 using Xenia.Bookings.Domain.Hotels;
 using Xenia.WebApi.Commands.UnitTests.Fakes;
 
@@ -17,7 +16,7 @@ public class BookRoomCommandTests
     }
 
     [Fact]
-    public async Task Given_NoHotelsInDb_ShouldResultInError()
+    public async Task Given_NoHotelsInDb_Should_ResultInError()
     {
         var from = new DateTime(2024, 1, 1);
         var to = new DateTime(2024, 1, 7);
@@ -32,7 +31,7 @@ public class BookRoomCommandTests
     [InlineData("single")]
     [InlineData("double")]
     [InlineData("deluxe")]
-    public async Task Given_NoBookingsForRoomType_ShouldSuccessfullyBook(string roomType)
+    public async Task Given_NoBookingsForRoomType_Should_SuccessfullyBook(string roomType)
     {
         var hotel = Hotel.Create("Holiday Bin");
         await _uow.Hotels.AddAsync(hotel);
@@ -51,7 +50,7 @@ public class BookRoomCommandTests
     [InlineData("single")]
     [InlineData("double")]
     [InlineData("deluxe")]
-    public async Task Given_RoomTypeFullyBooked_ResultIsError(string roomType)
+    public async Task Given_RoomTypeFullyBooked_Then_ResultIsError(string roomType)
     {
         var hotel = Hotel.Create("Holiday Bin");
         await _uow.Hotels.AddAsync(hotel);

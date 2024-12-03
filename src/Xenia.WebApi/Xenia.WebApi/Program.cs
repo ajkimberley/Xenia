@@ -5,10 +5,10 @@ using FluentValidation.AspNetCore;
 
 using Microsoft.EntityFrameworkCore;
 
-using Xenia.Application.Bookings;
 using Xenia.Application.Bookings.BookRoom;
 using Xenia.Application.HotelManagement;
 using Xenia.Bookings.Domain;
+using Xenia.Bookings.Domain.Availabilities;
 using Xenia.Bookings.Domain.Bookings;
 using Xenia.Bookings.Domain.Hotels;
 using Xenia.Bookings.Persistence;
@@ -32,6 +32,7 @@ builder.Services.AddDbContext<BookingContext>((container, options) =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<Xenia.WebApi.Program>(ServiceLifetime.Singleton);
 

@@ -23,7 +23,7 @@ public class BookingRepository(BookingContext context) : GenericRepository<Booki
                       .Include(b => b.RoomType)
                       .ToListAsync();
 
-    public new async Task AddAsync(Booking booking)
+    public override async Task AddAsync(Booking booking)
     {
         await base.AddAsync(booking);
         UpdateVersion(booking.RoomType);
