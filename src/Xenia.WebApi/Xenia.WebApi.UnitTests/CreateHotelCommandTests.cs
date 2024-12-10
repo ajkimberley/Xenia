@@ -23,7 +23,8 @@ public class CreateHotelCommandTests
         var cmd = new CreateHotelCommand(hotelName);
 
         _ = await _sut.Handle(cmd, CancellationToken.None);
-        var actual = _uow.Hotels.GetAllAsync().Result.SingleOrDefault();
+        var hotels = await _uow.Hotels.GetAllAsync();
+        var actual = hotels.SingleOrDefault();
 
         Assert.Multiple(() =>
         {

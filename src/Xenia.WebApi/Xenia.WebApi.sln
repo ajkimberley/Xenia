@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8CB20FEA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{59BF481F-05BF-4321-90B8-92768D9A63DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xenia.WebApi.PerformanceTests", "Xenia.WebApi.PerformanceTests\Xenia.WebApi.PerformanceTests.csproj", "{59529CD8-AFCF-4878-BE99-139E2413FCC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,10 @@ Global
 		{26EB8103-FB4A-4291-801B-05EB964FF425}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26EB8103-FB4A-4291-801B-05EB964FF425}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26EB8103-FB4A-4291-801B-05EB964FF425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59529CD8-AFCF-4878-BE99-139E2413FCC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59529CD8-AFCF-4878-BE99-139E2413FCC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59529CD8-AFCF-4878-BE99-139E2413FCC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59529CD8-AFCF-4878-BE99-139E2413FCC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,5 +81,6 @@ Global
 		{85DEA5C2-93C3-4AD2-98A9-646EFC15508C} = {59BF481F-05BF-4321-90B8-92768D9A63DA}
 		{39DE39D1-D943-4908-957C-17E1BE047943} = {59BF481F-05BF-4321-90B8-92768D9A63DA}
 		{ED42559A-46B1-41B6-8992-64CF7846FC81} = {59BF481F-05BF-4321-90B8-92768D9A63DA}
+		{59529CD8-AFCF-4878-BE99-139E2413FCC9} = {8CB20FEA-7544-489A-A0EC-6AA1D8E9BC42}
 	EndGlobalSection
 EndGlobal

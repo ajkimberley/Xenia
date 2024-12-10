@@ -9,7 +9,14 @@ internal class FakeAvailabilityRepository : FakeGenericRepository<Availability>,
 
     public override Task AddAsync(Availability entity)
     {
-        List.Add(entity);
+        var existingEntity = List
+            .FirstOrDefault(a => 
+                a.HotelId == entity.HotelId && 
+                a.RoomType == entity.RoomType && 
+                a.Date == entity.Date);
+    
+        if (existingEntity == null) List.Add(entity);
+        else existingEntity.AvailableRooms = entity.AvailableRooms;
         return Task.CompletedTask;
     }
 }
