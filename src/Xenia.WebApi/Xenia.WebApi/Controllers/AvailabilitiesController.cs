@@ -2,7 +2,8 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-using Xenia.Application.Availabilities;
+using Modules.HotelAdmin.Application.SetAvailability;
+
 using Xenia.WebApi.RequestResponse;
 
 namespace Xenia.WebApi.Controllers;

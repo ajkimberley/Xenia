@@ -1,16 +1,17 @@
-﻿using ErrorOr;
+﻿using Common.Endpoints;
+
+using ErrorOr;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
-using Xenia.Application.Bookings;
-using Xenia.Application.Bookings.BookRoom;
-using Xenia.Application.Bookings.GetBooking;
-using Xenia.Application.Bookings.GetBookings;
-using Xenia.Application.HotelManagement;
-using Xenia.Common;
+using Modules.Bookings.Application;
+using Modules.Bookings.Application.BookRoom;
+using Modules.Bookings.Application.GetBooking;
+using Modules.Bookings.Application.GetBookings;
+using Modules.HotelAdmin.Application;
+
 using Xenia.WebApi.RequestResponse;
 
 namespace Xenia.WebApi.Controllers;
@@ -28,7 +29,7 @@ public class BookingsController(ISender mediator) : ControllerBase
         var qry = new GetBookingsQuery(bookingReference);
         var dtos = await mediator.Send(qry);
 
-        return dtos.IsNullOrEmpty()
+        return !dtos.Any()
             ? bookingReference != null ? NotFound() : NoContent()
             : Ok(dtos);
     }

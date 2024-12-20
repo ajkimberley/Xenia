@@ -1,5 +1,6 @@
-﻿using Xenia.Application.Bookings;
-using Xenia.Common;
+﻿using Common.Endpoints;
+
+using Modules.Bookings.Application;
 
 namespace Xenia.WebApi.RequestResponse;
 

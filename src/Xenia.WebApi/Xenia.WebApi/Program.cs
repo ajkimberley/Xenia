@@ -1,3 +1,5 @@
+using Common.Domain;
+
 using ErrorOr;
 
 using FluentValidation;
@@ -5,14 +7,16 @@ using FluentValidation.AspNetCore;
 
 using Microsoft.EntityFrameworkCore;
 
-using Xenia.Application.Bookings.BookRoom;
-using Xenia.Application.HotelManagement;
-using Xenia.Bookings.Domain;
-using Xenia.Bookings.Domain.Availabilities;
-using Xenia.Bookings.Domain.Bookings;
-using Xenia.Bookings.Domain.Hotels;
-using Xenia.Bookings.Persistence;
-using Xenia.Bookings.Persistence.Repositories;
+using Modules.Bookings.Application.BookRoom;
+using Modules.Bookings.Domain;
+using Modules.Bookings.Persistence;
+using Modules.Bookings.Persistence.Repositories;
+using Modules.HotelAdmin.Application;
+using Modules.HotelAdmin.Application.GetAvailableRooms;
+using Modules.HotelAdmin.Domain.Availabilities;
+using Modules.HotelAdmin.Domain.Hotels;
+using Modules.HotelAdmin.Persistence.Repositories;
+
 using Xenia.WebApi.Validation;
 
 var builder = WebApplication.CreateBuilder(args);

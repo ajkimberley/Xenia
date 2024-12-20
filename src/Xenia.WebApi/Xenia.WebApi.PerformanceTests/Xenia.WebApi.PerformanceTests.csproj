@@ -17,10 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Xenia.Bookings.Persistence\Xenia.Bookings.Persistence.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Remove="appsettings.Performance.json" />
       <Content Include="appsettings.Performance.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>

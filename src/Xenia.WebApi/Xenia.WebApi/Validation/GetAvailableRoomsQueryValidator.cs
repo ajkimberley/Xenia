@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-using Xenia.Application.HotelManagement;
+using Modules.HotelAdmin.Application.GetAvailableRooms;
 
 namespace Xenia.WebApi.Validation;
 

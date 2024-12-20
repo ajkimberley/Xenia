@@ -4,7 +4,8 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Xenia.Application.HotelManagement;
+using Modules.HotelAdmin.Application;
+using Modules.HotelAdmin.Application.GetAvailableRooms;
 
 namespace Xenia.WebApi.Controllers;
 

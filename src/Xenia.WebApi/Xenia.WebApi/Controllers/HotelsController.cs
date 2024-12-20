@@ -1,10 +1,14 @@
-﻿using MediatR;
+﻿using Common.Endpoints;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
-using Xenia.Application.HotelManagement;
-using Xenia.Common;
+using Modules.HotelAdmin.Application;
+using Modules.HotelAdmin.Application.CreateHotel;
+using Modules.HotelAdmin.Application.GetHotel;
+using Modules.HotelAdmin.Application.GetHotels;
+
 using Xenia.WebApi.RequestResponse;
 
 namespace Xenia.WebApi.Controllers;
@@ -23,7 +27,7 @@ public class HotelsController(ISender mediator) : ControllerBase
         var qry = new GetHotelsQuery(name);
         var dtos = await mediator.Send(qry);
         
-        if (name != null) return dtos.IsNullOrEmpty() ? NotFound() : Ok(dtos);
+        if (name != null) return dtos.Length() < 1 ? NotFound() : Ok(dtos);
         return Ok(dtos);
     }
 
