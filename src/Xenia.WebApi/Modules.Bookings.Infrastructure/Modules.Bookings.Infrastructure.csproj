@@ -6,4 +6,23 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Common.Infrastructure\Common.Infrastructure.csproj" />
+      <ProjectReference Include="..\Modules.Bookings.Application\Modules.Bookings.Application.csproj" />
+      <ProjectReference Include="..\Modules.Bookings.Domain\Modules.Bookings.Domain.csproj" />
+      <ProjectReference Include="..\Modules.Bookings.Endpoints\Modules.Bookings.Endpoints.csproj" />
+      <ProjectReference Include="..\Modules.Bookings.IntegrationEvents\Modules.Bookings.IntegrationEvents.csproj" />
+      <ProjectReference Include="..\Modules.Bookings.Persistence\Modules.Bookings.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>  
+
 </Project>

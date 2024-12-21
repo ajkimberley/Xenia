@@ -1,23 +1,8 @@
-using Common.Domain;
+using Common.Infrastructure.Extensions;
 
-using ErrorOr;
-
-using FluentValidation;
 using FluentValidation.AspNetCore;
 
-using Microsoft.EntityFrameworkCore;
-
-using Modules.Bookings.Application.BookRoom;
-using Modules.Bookings.Domain;
 using Modules.Bookings.Persistence;
-using Modules.Bookings.Persistence.Repositories;
-using Modules.HotelAdmin.Application;
-using Modules.HotelAdmin.Application.GetAvailableRooms;
-using Modules.HotelAdmin.Domain.Availabilities;
-using Modules.HotelAdmin.Domain.Hotels;
-using Modules.HotelAdmin.Persistence.Repositories;
-
-using Xenia.WebApi.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,21 +13,29 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services
+    .InstallServicesFromAssemblies(
+        builder.Configuration,
+        Xenia.WebApi.AssemblyReference.Assembly)
+    .InstallModulesFromAssemblies(
+        builder.Configuration,
+        Modules.Bookings.Infrastructure.AssemblyReference.Assembly);
+
 // Db Context
-builder.Services.AddDbContext<BookingContext>((container, options) =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Composition Root
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IHotelRepository, HotelRepository>();
-builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
-
-builder.Services.AddValidatorsFromAssemblyContaining<Xenia.WebApi.Program>(ServiceLifetime.Singleton);
-
-builder.Services.AddMediatR(c =>
-    c.RegisterServicesFromAssemblyContaining<BookRoomHandler>()
-        .AddValidation<GetAvailableRoomsQuery, ErrorOr<List<RoomDto>>>());
+// builder.Services.AddDbContext<BookingContext>((container, options) =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//
+// // Composition Root
+// builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+// builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+// builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+// builder.Services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
+//
+// builder.Services.AddValidatorsFromAssemblyContaining<Xenia.WebApi.Program>(ServiceLifetime.Singleton);
+//
+// builder.Services.AddMediatR(c =>
+//     c.RegisterServicesFromAssemblyContaining<BookRoomHandler>()
+//         .AddValidation<GetAvailableRoomsQuery, ErrorOr<List<RoomDto>>>());
 
 var app = builder.Build();
 
