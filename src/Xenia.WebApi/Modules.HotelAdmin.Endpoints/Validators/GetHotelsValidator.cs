@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
-using Xenia.WebApi.RequestResponse;
+using Modules.HotelAdmin.Endpoints.RequestResponse;
 
-namespace Xenia.WebApi.Validation;
+namespace Modules.HotelAdmin.Endpoints.Validators;
 
 public class GetHotelsRequestValidator : AbstractValidator<GetHotelsRequest>
 {

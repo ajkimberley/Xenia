@@ -8,7 +8,7 @@ namespace Common.Persistence.Options;
 /// </summary>
 internal sealed class ConnectionStringSetup : IConfigureOptions<ConnectionStringOptions>
 {
-    private const string ConnectionStringName = "Database";
+    private const string ConnectionStringName = "DefaultConnection";
     private readonly IConfiguration _configuration;
 
     /// <summary>

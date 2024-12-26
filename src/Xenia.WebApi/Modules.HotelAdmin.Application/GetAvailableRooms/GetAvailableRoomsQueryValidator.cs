@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
 
-using Modules.HotelAdmin.Application.GetAvailableRooms;
-
-namespace Xenia.WebApi.Validation;
+namespace Modules.HotelAdmin.Application.GetAvailableRooms;
 
 public class GetAvailableRoomsQueryValidator : AbstractValidator<GetAvailableRoomsQuery>
 {

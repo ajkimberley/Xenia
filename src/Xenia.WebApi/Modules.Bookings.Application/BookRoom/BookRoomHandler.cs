@@ -6,7 +6,6 @@ using MediatR;
 using ErrorOr;
 
 using Modules.Bookings.Domain;
-//using Modules.HotelAdmin.Domain.Hotels;
 
 namespace Modules.Bookings.Application.BookRoom;
 
@@ -17,22 +16,22 @@ public record BookRoomCommand(Guid HotelId,
                               DateTime From,
                               DateTime To) : IRequest<ErrorOr<BookingDto>>;
 
-public class BookRoomHandler(IUnitOfWork unitOfWork, object hotelRepo, IBookingRepository bookingRepo) : IRequestHandler<BookRoomCommand, ErrorOr<BookingDto>>
+public class BookRoomHandler(IUnitOfWork unitOfWork, IBookingRepository bookingRepo) : IRequestHandler<BookRoomCommand, ErrorOr<BookingDto>>
 {
     public async Task<ErrorOr<BookingDto>> Handle(BookRoomCommand cmd, CancellationToken cancellationToken)
     {
-        const int maxRetires = 3;
-        var currentTry = 1;
-        do
-            try
-            {
-                return await TryBook(cmd, cancellationToken);
-            }
-            catch (ConcurrencyException)
-            {
-                currentTry++;
-            }
-        while (currentTry <= maxRetires);
+        // const int maxRetires = 3;
+        // var currentTry = 1;
+        // do
+        //     try
+        //     {
+        //         return await TryBook(cmd, cancellationToken);
+        //     }
+        //     catch (ConcurrencyException)
+        //     {
+        //         currentTry++;
+        //     }
+        // while (currentTry <= maxRetires);
 
         return DatabaseErrors.MaximumRetryError;
     }

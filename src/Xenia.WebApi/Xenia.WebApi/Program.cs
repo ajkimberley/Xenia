@@ -1,69 +1,66 @@
 using Common.Infrastructure.Extensions;
 
-using FluentValidation.AspNetCore;
+using ErrorOr;
+
+using FastEndpoints;
+using FastEndpoints.Swagger;
 
 using Modules.Bookings.Persistence;
 
+using Xenia.WebApi.Processors.PostProcessors;
+using Xenia.WebApi.Processors.PostProcessors.HateoasEnrichment;
+
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers();
-builder.Services.AddFluentValidationAutoValidation();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services
     .InstallServicesFromAssemblies(
         builder.Configuration,
-        Xenia.WebApi.AssemblyReference.Assembly)
+        Xenia.WebApi.AssemblyReference.Assembly,
+        Common.Persistence.AssemblyReference.Assembly)
     .InstallModulesFromAssemblies(
         builder.Configuration,
-        Modules.Bookings.Infrastructure.AssemblyReference.Assembly);
-
-// Db Context
-// builder.Services.AddDbContext<BookingContext>((container, options) =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-//
-// // Composition Root
-// builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-// builder.Services.AddScoped<IHotelRepository, HotelRepository>();
-// builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-// builder.Services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
-//
-// builder.Services.AddValidatorsFromAssemblyContaining<Xenia.WebApi.Program>(ServiceLifetime.Singleton);
-//
-// builder.Services.AddMediatR(c =>
-//     c.RegisterServicesFromAssemblyContaining<BookRoomHandler>()
-//         .AddValidation<GetAvailableRoomsQuery, ErrorOr<List<RoomDto>>>());
+        Modules.Bookings.Infrastructure.AssemblyReference.Assembly)
+        //Modules.Utilities.Infrastructure.AssemblyReference.Assembly)
+    .SwaggerDocument()
+    .AddFastEndpoints();
 
 var app = builder.Build();
 
-// TODO: Hide swagger in non-dev environment
-_ = app.UseSwagger();
-_ = app.UseSwaggerUI();
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // For initial dev purposes only
-    // TODO: Replace with migrations
     using var scope = app.Services.CreateScope();
     using var hotelContext = scope.ServiceProvider.GetService<BookingContext>();
     _ = hotelContext?.Database.EnsureDeleted();
     _ = hotelContext?.Database.EnsureCreated();
 }
 
-app.UseHttpsRedirection();
-
-app.MapControllers();
+app
+    .UseHttpsRedirection()
+    .UseFastEndpoints(
+        c =>
+        {
+            c.Errors.UseProblemDetails();
+            c.Endpoints.Configurator =
+                ep =>
+                {
+                    if (!ep.ResDtoType.IsAssignableTo(typeof(IErrorOr))) return;
+                    ep.DontAutoSendResponse();
+                    ep.PostProcessor<ErrorOrHandler>(Order.After);
+                    ep.PostProcessor<HateoasHandler>(Order.After);
+                    ep.Description(
+                        b => b.ClearDefaultProduces()
+                            .Produces(200, ep.ResDtoType.GetGenericArguments()[0])
+                            .ProducesProblemDetails());
+                };
+        })
+    .UseSwaggerGen();
 
 app.Run();
 
 // Partial Program class added to support integration testing
 namespace Xenia.WebApi
 {
-    public partial class Program
-    {
-    }
+    // ReSharper disable once UnusedType.Global
+    // ReSharper disable once PartialTypeWithSinglePart
+    public partial class Program;
 }

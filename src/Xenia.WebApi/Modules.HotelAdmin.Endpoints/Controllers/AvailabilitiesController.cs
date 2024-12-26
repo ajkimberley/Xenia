@@ -1,12 +1,12 @@
 ﻿using MediatR;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Modules.HotelAdmin.Application.SetAvailability;
+using Modules.HotelAdmin.Endpoints.RequestResponse;
 
-using Xenia.WebApi.RequestResponse;
-
-namespace Xenia.WebApi.Controllers;
+namespace Modules.HotelAdmin.Endpoints.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

@@ -2,7 +2,7 @@
 
 using Modules.Bookings.Application;
 
-namespace Xenia.WebApi.Validation;
+namespace Modules.HotelAdmin.Endpoints.Validators;
 
 public class CreateBookingRequestValidator :  AbstractValidator<BookingDto>
 {

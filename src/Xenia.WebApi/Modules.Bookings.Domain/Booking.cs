@@ -8,7 +8,7 @@ public class Booking : Entity
     private Booking() {}
     
     private Booking(Guid id, Guid hotelId, string bookerName, string bookerEmail, BookingState state,
-        DateTime from, DateTime to, object roomType)
+        DateTime from, DateTime to, string roomType)
     {
         Id = id;
         Reference = Crockbase32.EncodeByteString(id.ToString());
@@ -28,8 +28,8 @@ public class Booking : Entity
     public DateTime From { get; private set; }
     public DateTime To { get; private set; }
     public BookingState State { get; private set; }
-    public object RoomType { get; private set; }
+    public string RoomType { get; private set; }
 
-    public static Booking Create(Guid hotelId, string bookerName, string bookerEmail, DateTime from, DateTime to, object roomType)
+    public static Booking Create(Guid hotelId, string bookerName, string bookerEmail, DateTime from, DateTime to, string roomType)
         => new(Guid.NewGuid(), hotelId, bookerName, bookerEmail, BookingState.Reserved, from, to, roomType);
 }

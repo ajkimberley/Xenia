@@ -1,4 +1,6 @@
-﻿using ErrorOr;
+﻿using Common.Application.Behaviours;
+
+using ErrorOr;
 
 using MediatR;
 

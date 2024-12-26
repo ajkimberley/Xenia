@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="ErrorOr" Version="2.0.1" />
+    <PackageReference Include="FastEndpoints.Swagger" Version="5.32.0" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
@@ -36,6 +37,7 @@
     <ProjectReference Include="..\Common.Infrastructure\Common.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules.Bookings.Infrastructure\Modules.Bookings.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules.HotelAdmin.Infrastructure\Modules.HotelAdmin.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules.Utilities.Infrastructure\Modules.Utilities.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,6 @@
 
 using Modules.Bookings.Application;
 
-namespace Xenia.WebApi.RequestResponse;
+namespace Modules.Bookings.Endpoints.RequestResponse;
 
 public record BookingResponseDto(BookingDto BookingDto, List<LinkDto> Links);

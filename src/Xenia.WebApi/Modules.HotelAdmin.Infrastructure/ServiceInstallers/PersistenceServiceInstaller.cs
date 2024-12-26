@@ -8,12 +8,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-using Modules.Bookings.Domain;
-using Modules.Bookings.Persistence;
-using Modules.Bookings.Persistence.Constants;
-using Modules.Bookings.Persistence.Repositories;
+using Modules.HotelAdmin.Domain.Availabilities;
+using Modules.HotelAdmin.Domain.Hotels;
+using Modules.HotelAdmin.Persistence;
+using Modules.HotelAdmin.Persistence.Constants;
+using Modules.HotelAdmin.Persistence.Repositories;
 
-namespace Modules.Bookings.Infrastructure.ServiceInstallers;
+namespace Modules.HotelAdmin.Infrastructure.ServiceInstallers;
 
 /// <summary>
 /// Represents the Bookings module persistence service installer.
@@ -23,13 +24,14 @@ public sealed class PersistenceServiceInstaller : IServiceInstaller
     /// <inheritdoc />
     public void Install(IServiceCollection services, IConfiguration configuration) =>
         services
-            .AddDbContext<BookingContext>((serviceProvider, options) =>
+            .AddDbContext<HotelAdminContext>((serviceProvider, options) =>
             {
                 var connectionString = serviceProvider.GetService<IOptions<ConnectionStringOptions>>()!.Value;
                 options.UseSqlServer(
                     connectionString,
-                    dbContextOptionsBuilder => dbContextOptionsBuilder.WithMigrationHistoryTableInSchema(Schemas.Booking));
+                    dbContextOptionsBuilder => dbContextOptionsBuilder.WithMigrationHistoryTableInSchema(Schemas.HotelAdmin));
             })
-            .AddScoped<IBookingRepository, BookingRepository>()
+            .AddScoped<IHotelRepository, HotelRepository>()
+            .AddScoped<IAvailabilityRepository, AvailabilityRepository>()
             .AddScoped<IUnitOfWork, UnitOfWork>();
 }

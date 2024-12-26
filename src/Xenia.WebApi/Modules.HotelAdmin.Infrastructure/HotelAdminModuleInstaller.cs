@@ -4,11 +4,11 @@ using Common.Infrastructure.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Modules.Bookings.Infrastructure;
+namespace Modules.HotelAdmin.Infrastructure;
 
-internal sealed class BookingsModuleInstaller : IModuleInstaller
+public class HotelAdminModuleInstaller : IModuleInstaller
 {
-    public void Install(IServiceCollection services, IConfiguration configuration) =>
+    public void Install(IServiceCollection services, IConfiguration configuration) => 
         services
             .InstallServicesFromAssemblies(configuration, AssemblyReference.Assembly)
             .AddTransientAsMatchingInterfaces(AssemblyReference.Assembly)

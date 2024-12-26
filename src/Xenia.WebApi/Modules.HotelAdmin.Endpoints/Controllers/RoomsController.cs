@@ -2,12 +2,13 @@
 
 using MediatR;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Modules.HotelAdmin.Application;
 using Modules.HotelAdmin.Application.GetAvailableRooms;
 
-namespace Xenia.WebApi.Controllers;
+namespace Modules.HotelAdmin.Endpoints.Controllers;
 
 [Route("api/hotels/{hotelId:Guid}/[controller]")]
 [ApiController]

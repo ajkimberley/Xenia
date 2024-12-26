@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Modules.HotelAdmin.Domain;
+namespace Modules.Utilities.Infrastructure;
 
 public static class AssemblyReference
 {

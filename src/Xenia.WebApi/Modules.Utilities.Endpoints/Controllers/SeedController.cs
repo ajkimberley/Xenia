@@ -1,11 +1,12 @@
 ﻿using MediatR;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Modules.HotelAdmin.Application;
 using Modules.Utilities.Application.Seeding;
 
-namespace Xenia.WebApi.Controllers;
+namespace Modules.Utilities.Endpoints.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
