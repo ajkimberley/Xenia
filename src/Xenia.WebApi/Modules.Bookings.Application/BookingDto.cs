@@ -1,7 +1,10 @@
-﻿using Modules.Bookings.Domain;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Modules.Bookings.Domain;
 
 namespace Modules.Bookings.Application;
 
+[SuppressMessage("ReSharper", "NotAccessedPositionalProperty.Global")]
 public record BookingDto(
     Guid HotelId,
     string RoomType,

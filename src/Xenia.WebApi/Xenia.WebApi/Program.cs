@@ -20,7 +20,6 @@ builder.Services
     .InstallModulesFromAssemblies(
         builder.Configuration,
         Modules.Bookings.Infrastructure.AssemblyReference.Assembly)
-        //Modules.Utilities.Infrastructure.AssemblyReference.Assembly)
     .SwaggerDocument()
     .AddFastEndpoints();
 
@@ -35,7 +34,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app
-    .UseHttpsRedirection()
     .UseFastEndpoints(
         c =>
         {
@@ -52,6 +50,8 @@ app
                             .Produces(200, ep.ResDtoType.GetGenericArguments()[0])
                             .ProducesProblemDetails());
                 };
+            c.Versioning.Prefix = "v";
+            c.Versioning.DefaultVersion = 0;
         })
     .UseSwaggerGen();
 

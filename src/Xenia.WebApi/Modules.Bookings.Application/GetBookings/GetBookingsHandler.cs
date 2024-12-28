@@ -16,8 +16,7 @@ public class GetBookingsHandler(IUnitOfWork unitOfWork, IBookingRepository booki
             request.BookingReference != null
                 ? await bookingRepo.GetAllAsync(request.BookingReference)
                 : await bookingRepo.GetAllAsync();
-        var dtos = bookings.Select(b =>
-            new BookingDto(b.HotelId, "Room Type Name", b.BookerName, b.BookerEmail, b.From, b.To, b.State, b.Id, b.Reference));
+        var dtos = bookings.Select(b => new BookingDto(b.HotelId, "Room Type Name", b.BookerName, b.BookerEmail, b.From, b.To, b.State, b.Id, b.Reference));
         return dtos;
     }
 }

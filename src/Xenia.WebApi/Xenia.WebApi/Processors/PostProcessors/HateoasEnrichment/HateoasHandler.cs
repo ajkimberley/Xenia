@@ -37,12 +37,13 @@ public class HateoasHandler(IServiceScopeFactory scopeFactory) : IGlobalPostProc
     private IHateoasEnricher? GetEnricherForType(Type dtoType)
     {
         using var scope = scopeFactory.CreateScope();
-        return scope.ServiceProvider.GetService(typeof(IHateoasEnricher<>).MakeGenericType(dtoType)) as IHateoasEnricher;
+        var type = typeof(IHateoasEnricher<>).MakeGenericType(dtoType);
+        return scope.ServiceProvider.GetService(type) as IHateoasEnricher;
     }
     
     //cached compiled expressions for reading ErrorOr<T>.Value property
-    static readonly ConcurrentDictionary<Type, Func<object, object>> ValueAccessors = new();
-    
+    static readonly ConcurrentDictionary<Type, Func<object, object>> _valueAccessors = new();
+
     static object GetValueFromErrorOr(object errorOr)
     {
         ArgumentNullException.ThrowIfNull(errorOr);
@@ -51,7 +52,7 @@ public class HateoasHandler(IServiceScopeFactory scopeFactory) : IGlobalPostProc
         if (!tErrorOr.IsGenericType || tErrorOr.GetGenericTypeDefinition() != typeof(ErrorOr<>))
             throw new InvalidOperationException("The provided object is not an instance of ErrorOr<>.");
 
-        return ValueAccessors.GetOrAdd(tErrorOr, CreateValueAccessor)(errorOr);
+        return _valueAccessors.GetOrAdd(tErrorOr, CreateValueAccessor)(errorOr);
 
         static Func<object, object> CreateValueAccessor(Type errorOrType)
         {

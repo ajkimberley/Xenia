@@ -49,22 +49,22 @@ public class BookRoomHandler(IUnitOfWork unitOfWork, IBookingRepository bookingR
         throw new NotImplementedException();
     }
 
-    private async Task<BookingDto> OnSuccess(Booking booking, CancellationToken cancellationToken)
-    {
-        await bookingRepo.AddAsync(booking);
-        _ = await unitOfWork.CompleteAsync(cancellationToken);
-        var bookingDto = CreateBookingDto(booking);
-        return bookingDto;
-    }
-    
-    private static BookingDto CreateBookingDto(Booking booking) =>
-        new(booking.HotelId,
-            "Room Type Name",
-            booking.BookerName,
-            booking.BookerEmail,
-            booking.From,
-            booking.To,
-            booking.State,
-            booking.Id,
-            booking.Reference);
+    // private async Task<BookingDto> OnSuccess(Booking booking, CancellationToken cancellationToken)
+    // {
+    //     await bookingRepo.AddAsync(booking);
+    //     _ = await unitOfWork.CompleteAsync(cancellationToken);
+    //     var bookingDto = CreateBookingDto(booking);
+    //     return bookingDto;
+    // }
+    //
+    // private static BookingDto CreateBookingDto(Booking booking) =>
+    //     new(booking.HotelId,
+    //         "Room Type Name",
+    //         booking.BookerName,
+    //         booking.BookerEmail,
+    //         booking.From,
+    //         booking.To,
+    //         booking.State,
+    //         booking.Id,
+    //         booking.Reference);
 }
