@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
 
-using Modules.HotelAdmin.Endpoints.RequestResponse;
-
-namespace Modules.HotelAdmin.Endpoints.Validators;
+namespace Modules.HotelAdmin.Endpoints.Hotels.GetHotels;
 
 public class GetHotelsRequestValidator : AbstractValidator<GetHotelsRequest>
 {

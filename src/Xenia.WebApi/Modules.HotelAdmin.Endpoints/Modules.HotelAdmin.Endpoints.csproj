@@ -21,4 +21,8 @@
       <ProjectReference Include="..\Modules.HotelAdmin.Application\Modules.HotelAdmin.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Hotels\CreateHotel\CreateHotelResponse\" />
+    </ItemGroup>
+
 </Project>

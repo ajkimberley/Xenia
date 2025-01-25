@@ -1,4 +1,4 @@
-﻿using Common.Endpoints;
+﻿using Common.Endpoints.Hateoas;
 
 namespace Modules.HotelAdmin.Application;
 

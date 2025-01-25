@@ -1,4 +1,5 @@
 ﻿using Common.Infrastructure.Configuration;
+using Common.Infrastructure.Extensions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +12,7 @@ namespace Modules.Bookings.Infrastructure.ServiceInstallers;
 public class EndpointsServiceInstaller : IServiceInstaller
 {
     /// <inheritdoc />
-    public void Install(IServiceCollection services, IConfiguration configuration) => 
+    public void Install(IServiceCollection services, IConfiguration configuration) =>
         services
-            .AddControllers()
-            .AddApplicationPart(Endpoints.AssemblyReference.Assembly);
+            .AddEndpointRegistrationsFromAssembly(Endpoints.AssemblyReference.Assembly);
 }

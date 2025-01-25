@@ -1,4 +1,5 @@
-﻿using Common.Endpoints.Hateoas;
+﻿using Common.Endpoints;
+using Common.Endpoints.Hateoas;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -12,15 +13,13 @@ public class BookingHateoasEnricher : HateoasEnricherBase<BookingDto>
     public override object Enrich(BookingDto dto, LinkGenerator linkGenerator, HttpContext httpContext) =>
         new
         {
-            dto.HotelId,
-            dto.RoomType,
-            dto.BookerName,
-            dto.BookerEmail,
-            dto.From,
-            dto.To,
-            dto.BookingState,
-            dto.Id,
-            dto.Reference,
-            Links = new Dictionary<string, string> { ["self"] = linkGenerator.GetPathByName(httpContext, "GetBookingById", dto.Id)!, }
+            Booking = dto,
+            Links = new List<LinkDto>
+            {
+                new(
+                    linkGenerator.GetPathByName(httpContext, EndpointNames.GetById, new { id = dto.Id })!,
+                    "self",
+                    HttpMethod.Get.Method)
+            }
         };
 }

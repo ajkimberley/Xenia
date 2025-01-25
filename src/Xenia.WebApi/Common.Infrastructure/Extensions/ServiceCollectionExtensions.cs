@@ -72,4 +72,10 @@ public static class ServiceCollectionExtensions
                 .UsingRegistrationStrategy(RegistrationStrategy.Throw)
                 .AsMatchingInterface()
                 .WithTransientLifetime());
+
+    public static IServiceCollection AddEndpointRegistrationsFromAssembly(this IServiceCollection services, Assembly assembly)
+    {
+        EndpointRegistrationFactory.Instance.Assemblies.Add(assembly);
+        return services;
+    }
 }

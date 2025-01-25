@@ -1,6 +1,4 @@
-﻿using Common.Domain;
-
-using MediatR;
+﻿using MediatR;
 
 using Modules.HotelAdmin.Domain.Hotels;
 
@@ -8,7 +6,7 @@ namespace Modules.HotelAdmin.Application.GetHotels;
 
 public record GetHotelsQuery(string? Name = null) : IRequest<IEnumerable<HotelDto>>;
 
-public class GetHotelsHandler(IUnitOfWork unitOfWork, IHotelRepository hotelRepo) : IRequestHandler<GetHotelsQuery, IEnumerable<HotelDto>>
+public class GetHotelsHandler(IHotelRepository hotelRepo) : IRequestHandler<GetHotelsQuery, IEnumerable<HotelDto>>
 {
     public async Task<IEnumerable<HotelDto>> Handle(GetHotelsQuery request, CancellationToken cancellationToken)
     {

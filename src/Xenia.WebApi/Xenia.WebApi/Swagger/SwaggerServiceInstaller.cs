@@ -10,10 +10,7 @@ internal sealed class SwaggerServiceInstaller : IServiceInstaller
     /// <inheritdoc />
     void IServiceInstaller.Install(IServiceCollection services, IConfiguration configuration)
     {
-        services.ConfigureOptions<SwaggerGenOptionsSetup>();
-
+        SwaggerDocumentSetup.Configure(services);
         services.ConfigureOptions<SwaggerUiOptionsSetup>();
-
-        services.AddSwaggerGen();
     }
 }

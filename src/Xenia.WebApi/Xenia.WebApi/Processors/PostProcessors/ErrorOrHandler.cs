@@ -11,11 +11,8 @@ sealed class ErrorOrHandler : IGlobalPostProcessor
 {
     public Task PostProcessAsync(IPostProcessorContext ctx, CancellationToken ct)
     {
-        if (ctx.HttpContext.ResponseStarted() || ctx.Response is not IErrorOr errorOr)
-            return Task.CompletedTask;
-
-        if (!errorOr.IsError) return Task.CompletedTask;
-
+        if (ctx.HttpContext.ResponseStarted() || ctx.Response is not IErrorOr { IsError: true } errorOr) return Task.CompletedTask;
+        
         if (errorOr.Errors?.All(e => e.Type == ErrorType.Validation) is true)
             return ctx.HttpContext.Response.SendErrorsAsync(
                 failures: [..errorOr.Errors.Select(e => new ValidationFailure(e.Code, e.Description))],

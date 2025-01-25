@@ -1,3 +1,6 @@
+using System.Reflection;
+
+using Common.Infrastructure.Configuration;
 using Common.Infrastructure.Extensions;
 
 using ErrorOr;
@@ -8,21 +11,19 @@ using FastEndpoints.Swagger;
 using Modules.Bookings.Persistence;
 
 using Xenia.WebApi.Processors.PostProcessors;
-using Xenia.WebApi.Processors.PostProcessors.HateoasEnrichment;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .InstallServicesFromAssemblies(
-        builder.Configuration,
-        Xenia.WebApi.AssemblyReference.Assembly,
-        Common.Persistence.AssemblyReference.Assembly)
     .InstallModulesFromAssemblies(
         builder.Configuration,
-        Modules.Bookings.Infrastructure.AssemblyReference.Assembly)
-        //Modules.Utilities.Infrastructure.AssemblyReference.Assembly)
-    .SwaggerDocument()
-    .AddFastEndpoints();
+        Modules.Bookings.Infrastructure.AssemblyReference.Assembly,
+        Modules.HotelAdmin.Infrastructure.AssemblyReference.Assembly,
+        Modules.Utilities.Infrastructure.AssemblyReference.Assembly)
+    .InstallServicesFromAssemblies(
+        builder.Configuration,
+        Common.Persistence.AssemblyReference.Assembly,
+        Xenia.WebApi.AssemblyReference.Assembly);
 
 var app = builder.Build();
 

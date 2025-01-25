@@ -1,4 +1,5 @@
 ﻿using Common.Endpoints;
+using Common.Endpoints.Hateoas;
 
 using Modules.Bookings.Application;
 

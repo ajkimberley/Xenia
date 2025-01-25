@@ -20,22 +20,22 @@ internal sealed class SwaggerGenOptionsSetup : IConfigureOptions<SwaggerGenOptio
             Description = "This swagger document describes the available API endpoints."
         });
 
-        options.AddSecurityRequirement(
-            new OpenApiSecurityRequirement()
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    Array.Empty<string>()
-                }
-            });
+        // options.AddSecurityRequirement(
+        //     new OpenApiSecurityRequirement()
+        //     {
+        //         {
+        //             new OpenApiSecurityScheme
+        //             {
+        //                 Reference = new OpenApiReference
+        //                 {
+        //                     Type = ReferenceType.SecurityScheme,
+        //                     Id = "Bearer"
+        //                 }
+        //             },
+        //             Array.Empty<string>()
+        //         }
+        //     });
 
-        options.CustomSchemaIds(type => type.FullName);
+        //options.CustomSchemaIds(type => type.FullName);
     }
 }

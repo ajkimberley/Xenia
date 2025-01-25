@@ -2,7 +2,7 @@
 
 using Modules.Bookings.Application;
 
-namespace Modules.HotelAdmin.Endpoints.Validators;
+namespace Modules.Bookings.Endpoints.Bookings.CreateBooking;
 
 public class CreateBookingRequestValidator :  AbstractValidator<BookingDto>
 {
