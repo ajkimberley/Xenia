@@ -20,8 +20,4 @@
       <ProjectReference Include="..\Modules.Bookings.Application\Modules.Bookings.Application.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Bookings\GetBookings\" />
-    </ItemGroup>
-
 </Project>

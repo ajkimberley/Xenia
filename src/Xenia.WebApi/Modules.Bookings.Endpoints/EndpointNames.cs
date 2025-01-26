@@ -2,5 +2,6 @@
 
 public static class EndpointNames
 {
-    public const string GetById = "GetById";
+    public const string ListAllBookings = "List all bookings";
+    public const string RetrieveABooking = "Retrieve a booking";
 }

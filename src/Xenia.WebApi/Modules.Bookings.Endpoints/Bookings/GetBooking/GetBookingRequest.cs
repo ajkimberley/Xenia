@@ -1,6 +1,6 @@
 ﻿using FastEndpoints;
 
-namespace Modules.Bookings.Endpoints.Bookings;
+namespace Modules.Bookings.Endpoints.Bookings.GetBooking;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public record GetBookingRequest

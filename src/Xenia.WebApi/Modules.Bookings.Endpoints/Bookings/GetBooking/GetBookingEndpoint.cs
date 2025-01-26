@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Modules.Bookings.Application;
 using Modules.Bookings.Application.GetBooking;
 
-namespace Modules.Bookings.Endpoints.Bookings;
+namespace Modules.Bookings.Endpoints.Bookings.GetBooking;
 
 public sealed class GetBookingEndpoint(ISender mediator) : Ep.Req<GetBookingRequest>.Res<ErrorOr<BookingDto>>
 {
@@ -17,7 +17,7 @@ public sealed class GetBookingEndpoint(ISender mediator) : Ep.Req<GetBookingRequ
     {
         Get( "bookings/get-booking");
         AllowAnonymous();
-        Description(x => x.WithName(EndpointNames.GetById));
+        Description(x => x.WithName(EndpointNames.RetrieveABooking));
     }
 
     public override Task<ErrorOr<BookingDto>> ExecuteAsync(GetBookingRequest req, CancellationToken ct)

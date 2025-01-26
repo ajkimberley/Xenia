@@ -11,7 +11,7 @@ namespace Xenia.WebApi.Processors.PostProcessors;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class HateoasHandler(IServiceScopeFactory scopeFactory) : IGlobalPostProcessor
-{   
+{
     public async Task PostProcessAsync(IPostProcessorContext ctx, CancellationToken ct)
     {
         if (ctx.HttpContext.ResponseStarted() || ctx.Response is not IErrorOr errorOr) return;
@@ -30,8 +30,7 @@ public class HateoasHandler(IServiceScopeFactory scopeFactory) : IGlobalPostProc
         using var scope = scopeFactory.CreateScope();
         var linkGenerator = scope.ServiceProvider.GetRequiredService<LinkGenerator>();
         var enricher = GetEnricherForType(dto.GetType());
-        return enricher != null ? enricher.Enrich(dto, linkGenerator, httpContext) :
-            dto;
+        return enricher != null ? enricher.Enrich(dto, linkGenerator, httpContext) : dto;
     }
 
     private IHateoasEnricher? GetEnricherForType(Type dtoType)
